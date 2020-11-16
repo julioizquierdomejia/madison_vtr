@@ -19,17 +19,17 @@
             </div>
             <div class="card-body">
                 <p><strong>A continuación,te explicamos con unos breves videos todas las funcionalidades disponibles.</strong></p>
-                <div class="embed-responsive embed-responsive-16by9 form-group">
+                <div class="embed-responsive embed-responsive-16by9 bg-dark form-group">
                   <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0" allowfullscreen></iframe>
                 </div>
-                <div class="embed-responsive embed-responsive-16by9 form-group">
+                <div class="embed-responsive embed-responsive-16by9 bg-dark">
                   <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0" allowfullscreen></iframe>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-12 col-md-6">
-        <div class="card shadow h-100 mb-4">
+    <div class="col-12 col-md-6 mb-4">
+        <div class="card shadow h-100">
             <div class="card-header py-3 d-flex align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Contáctanos</h6>
                 <div class="dropdown no-arrow">
@@ -48,31 +48,31 @@
                 <p><strong>Estamos para servirte</strong></p>
                 <ul class="list-unstyled">
                     <li class="item my-3 d-flex justify-content-between">
-                        <span>Quiero cambiar el plan que tengo</span>
-                        <input type="radio" name="tipoproblema">
+                        <label for="cambiarplan">Quiero cambiar el plan que tengo</label>
+                        <input type="radio" name="soporte" id="cambiarplan" value="1">
                     </li>
                     <li class="item my-3 d-flex justify-content-between">
-                        <span>Tengo dudas sobre los rituales</span>
-                        <input type="radio" name="tipoproblema">
+                        <label for="dudas">Tengo dudas sobre los rituales</label>
+                        <input type="radio" name="soporte" id="dudas" value="2">
                     </li>
                     <li class="item my-3 d-flex justify-content-between">
-                        <span>No entiendo muy bien como subir o solicitar un video</span>
-                        <input type="radio" name="tipoproblema">
+                        <label for="solicitarvideo">No entiendo muy bien como subir o solicitar un video</label>
+                        <input type="radio" name="soporte" id="solicitarvideo" value="3">
                     </li>
                     <li class="item my-3 d-flex justify-content-between">
-                        <span>Tengo un problema</span>
-                        <input type="radio" name="tipoproblema">
+                        <label for="tngoproblema">Tengo un problema</label>
+                        <input type="radio" name="soporte" id="tngoproblema" value="4">
                     </li>
                     <li class="item my-3 d-flex justify-content-between">
-                        <span>Otro tema</span>
-                        <input type="radio" name="tipoproblema">
+                        <label for="otrotema">Otro tema</label>
+                        <input type="radio" name="soporte" id="otrotema" value="5">
                     </li>
                 </ul>
                 <div class="form-group">
                     <textarea class="form-control" rows="5" name="mensaje" placeholder="Mensaje"></textarea>
                 </div>
                 <div class="buttons text-right">
-                    <button class="btn btn-dark">Enviar</button>
+                    <button class="btn btn-dark btn-sm px-5">Enviar</button>
                 </div>
             </div>
         </div>

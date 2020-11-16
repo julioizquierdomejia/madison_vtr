@@ -22,21 +22,21 @@
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
 
-    <li class="nav-item active">
+    <li class="nav-item{{request()->segment(1) == 'rituales' ? ' active' : '' }}">
         <a class="nav-link" href="/rituales">
             <i class="fas fa-fw fa-check-circle"></i>
             <span>Rituales</span>
         </a>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item{{request()->segment(1) == 'videos' ? ' active' : '' }}">
         <a class="nav-link" href="/videos">
             <i class="fas fa-fw fa-play"></i>
             <span>Vídeos</span>
         </a>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item{{request()->segment(1) == 'resumen' ? ' active' : '' }}">
         <a class="nav-link" href="/resumen">
             <i class="fas fa-fw fa-chart-area"></i>
             <span>Resumen</span></a>
@@ -44,7 +44,7 @@
 
     <hr class="sidebar-divider my-0">
 
-    <li class="nav-item">
+    <li class="nav-item{{request()->segment(1) == 'soporte' ? ' active' : '' }}">
         <a class="nav-link" href="soporte">
             <i class="fas fa-fw fa-question-circle"></i>
             <span>Soporte</span></a>

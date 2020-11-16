@@ -23,6 +23,6 @@ class RitualController extends Controller
      */
     public function index()
     {
-        return view('admin.ritual');
+        return view('admin.rituales.index');
     }
 }
