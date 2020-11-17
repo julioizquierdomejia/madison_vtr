@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Ritual;
 use App\Models\RitualObjective;
 use App\Models\RitualStatus;
+use App\Models\RitualType;
 
 class RitualController extends Controller
 {
@@ -26,6 +27,7 @@ class RitualController extends Controller
      */
     public function index()
     {
+        $ritual_types = RitualType::all();
         $objectives = RitualObjective::where('enabled', 1)->get();
         $rituales = Ritual::join('ritual_status', 'ritual_status.id', '=', 'rituals.ritual_status_id')
             ->join('ritual_types', 'ritual_types.id', '=', 'rituals.ritual_type_id')
@@ -33,6 +35,6 @@ class RitualController extends Controller
             ->select('rituals.*', 'ritual_status.name as status', 'rituals.ritual_status_id', 'ritual_objectives.name as objective');
         $status = RitualStatus::all();
 
-        return view('admin.rituales.index', compact('rituales', 'objectives', 'status'));
+        return view('admin.rituales.index', compact('rituales', 'objectives', 'status', 'ritual_types'));
     }
 }

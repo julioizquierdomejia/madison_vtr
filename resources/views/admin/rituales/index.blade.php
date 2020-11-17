@@ -35,14 +35,12 @@
                     <div class="form-group">
                         <label class="mb-4" for="modo">¿Cómo Quieres armar el ritual?</label>
                         <br>
+                        @foreach($ritual_types as $key => $type)
                         <div class="form-check form-check-inline">
-                            <input type="radio" class="form-check-input" id="modo1" value="1" name="modo">
-                            <label class="form-check-label" for="modo1"><span class="align-middle">Sugerirme un ritual</span></label>
+                            <input type="radio" class="form-check-input" id="ritual_type_id{{$key}}" value="{{$type->id}}" name="ritual_type_id">
+                            <label class="form-check-label" for="ritual_type_id{{$key}}"><span class="align-middle">{{$type->name}}</span></label>
                         </div>
-                        <div class="form-check form-check-inline">
-                            <input type="radio" class="form-check-input" id="modo2" value="2" name="modo">
-                            <label class="form-check-label" for="modo2"><span class="align-middle">Armaré el ritual a medida</span></label>
-                        </div>
+                        @endforeach
                     </div>
                     <div class="form-group">
                         <label class="mb-4" for="modo">Tercera parte</label>
@@ -348,10 +346,10 @@
                                 </h6>
                                 <p class="mb-0">{{$ritual->name}}</p>
                             </div>
-                            <div class="col-4 d-flex">
+                            <div class="col-4 btn-group">
                                 @if($ritual->ritual_status_id == 1)
-                                <button class="btn col btn-sm btn-success shadow-sm h-100"><i class="fas fa-check d-block"></i> aprobar</button>
-                                <button class="btn col btn-sm btn-danger shadow-sm h-100">hacer <br>cambios</button>
+                                <button class="btn btn-sm btn-success shadow-sm h-100"><i class="fas fa-check d-block"></i> aprobar</button>
+                                <button class="btn btn-sm btn-danger shadow-sm h-100">hacer <br>cambios</button>
                                 @elseif($ritual->ritual_status_id == 2)
                                 <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-eye fa-2x text-danger d-block"></i> En revisión</button>
                                 @elseif($ritual->ritual_status_id == 3)
@@ -383,7 +381,7 @@
                                 <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-danger">Armado</span></h6>
                                 <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
                             </div>
-                            <div class="col-4 d-flex">
+                            <div class="col-4 btn-group">
                                 <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-eye fa-2x text-danger d-block"></i> En revisión</button>
                             </div>
                         </div>
@@ -399,7 +397,7 @@
                                 <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-warning">Armado</span></h6>
                                 <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
                             </div>
-                            <div class="col-4 d-flex">
+                            <div class="col-4 btn-group">
                                 <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-play fa-2x text-warning d-block"></i> En producción</button>
                             </div>
                         </div>
@@ -415,7 +413,7 @@
                                 <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-success">Armado</span></h6>
                                 <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
                             </div>
-                            <div class="col-4 d-flex">
+                            <div class="col-4 btn-group">
                                 <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-check fa-2x text-success d-block"></i> Aprobado</button>
                             </div>
                         </div>
@@ -431,9 +429,9 @@
                                 <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-primary">Sugerido</span></h6>
                                 <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
                             </div>
-                            <div class="col-4 d-flex">
-                                <button class="btn col btn-sm btn-primary shadow-sm h-100"><i class="fas fa-check d-block"></i> publicar</button>
-                                <button class="btn col btn-sm btn-danger shadow-sm h-100"><i class="fas fa-trash d-block"></i> borrar</button>
+                            <div class="col-4 btn-group">
+                                <button class="btn btn-sm btn-primary shadow-sm h-100"><i class="fas fa-check d-block"></i> publicar</button>
+                                <button class="btn btn-sm btn-danger shadow-sm h-100"><i class="fas fa-trash d-block"></i> borrar</button>
                             </div>
                         </div>
                     </li> --}}

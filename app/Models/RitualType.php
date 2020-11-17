@@ -10,6 +10,7 @@ class RitualType extends Model
     use HasFactory;
 
     protected $fillable = [
+        'alias',
         'name',
     ];
 

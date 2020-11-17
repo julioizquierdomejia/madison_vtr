@@ -49,11 +49,13 @@ class RitualSeeder extends Seeder
 
         //Estados de rituales
         $ritual_type = new RitualType();
-        $ritual_type->name = "Armado";
+        $ritual_type->alias = "Armado";
+        $ritual_type->name = "Armaré el ritual a medida";
         $ritual_type->save();
 
         $ritual_type = new RitualType();
-        $ritual_type->name = "Sugerido";
+        $ritual_type->alias = "Sugerido";
+        $ritual_type->name = "Sugerirme un ritual";
         $ritual_type->save();
 
         //Estados de rituales

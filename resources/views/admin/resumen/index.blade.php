@@ -54,7 +54,7 @@
     <div class="col-12 col-md-6">
         <div class="card shadow h-100 mb-4">
             <div class="card-header py-3 d-flex align-items-center">
-                <h6 class="m-0 font-weight-bold text-primary">Historial de Rituales <button class="btn btn-info btn-circle btn-sm" type="button"><i class="fas fa-info-circle"></i></button></h6>
+                <h6 class="m-0 font-weight-bold text-primary">Historial de Rituales</h6>
                 <div class="text-right ml-auto">
                     <select class="form-control" name="filter">
                         <option value="">Ver todos</option>
@@ -62,6 +62,15 @@
                         <option value="{{$ritem->id}}">{{$ritem->name}}</option>
                         @endforeach
                     </select>
+                </div>
+                <div class="dropdown no-arrow ml-2">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuSVideo" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                        aria-labelledby="dropdownMenuSVideo">
+                        <a class="dropdown-item" href="#">Action</a>
+                    </div>
                 </div>
             </div>
             <div class="card-body">
@@ -78,9 +87,9 @@
                                 <h6 class="mb-1">{{date('d-m-Y', strtotime($ritual->created_at))}} <span class="badge badge-dark">Armado</span></h6>
                                 <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
                             </div>
-                            <div class="col-4 d-flex">
-                                <button class="btn col btn-sm btn-success shadow-sm h-100"><i class="fas fa-check d-block"></i> aprobar</button>
-                                <button class="btn col btn-sm btn-danger shadow-sm h-100">hacer <br>cambios</button>
+                            <div class="col-4 btn-group">
+                                <button class="btn btn-sm btn-success shadow-sm h-100"><i class="fas fa-check d-block"></i> aprobar</button>
+                                <button class="btn btn-sm btn-danger shadow-sm h-100">hacer <br>cambios</button>
                             </div>
                         </div>
                     </li>
@@ -96,9 +105,9 @@
                                 <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-dark">Armado</span></h6>
                                 <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
                             </div>
-                            <div class="col-4 d-flex">
-                                <button class="btn col btn-sm btn-success shadow-sm h-100"><i class="fas fa-check d-block"></i> aprobar</button>
-                                <button class="btn col btn-sm btn-danger shadow-sm h-100">hacer <br>cambios</button>
+                            <div class="col-4 btn-group">
+                                <button class="btn btn-sm btn-success shadow-sm h-100"><i class="fas fa-check d-block"></i> aprobar</button>
+                                <button class="btn btn-sm btn-danger shadow-sm h-100">hacer <br>cambios</button>
                             </div>
                         </div>
                     </li>
@@ -113,7 +122,7 @@
                                 <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-danger">Armado</span></h6>
                                 <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
                             </div>
-                            <div class="col-4 d-flex">
+                            <div class="col-4 btn-group">
                                 <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-eye fa-2x text-danger d-block"></i> En revisión</button>
                             </div>
                         </div>
@@ -129,7 +138,7 @@
                                 <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-warning">Armado</span></h6>
                                 <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
                             </div>
-                            <div class="col-4 d-flex">
+                            <div class="col-4 btn-group">
                                 <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-play fa-2x text-warning d-block"></i> En producción</button>
                             </div>
                         </div>
@@ -145,7 +154,7 @@
                                 <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-success">Armado</span></h6>
                                 <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
                             </div>
-                            <div class="col-4 d-flex">
+                            <div class="col-4 btn-group">
                                 <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-check fa-2x text-success d-block"></i> Aprobado</button>
                             </div>
                         </div>
@@ -161,9 +170,9 @@
                                 <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-primary">Sugerido</span></h6>
                                 <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
                             </div>
-                            <div class="col-4 d-flex">
-                                <button class="btn col btn-sm btn-primary shadow-sm h-100"><i class="fas fa-check d-block"></i> publicar</button>
-                                <button class="btn col btn-sm btn-danger shadow-sm h-100"><i class="fas fa-trash d-block"></i> borrar</button>
+                            <div class="col-4 btn-group">
+                                <button class="btn btn-sm btn-primary shadow-sm h-100"><i class="fas fa-check d-block"></i> publicar</button>
+                                <button class="btn btn-sm btn-danger shadow-sm h-100"><i class="fas fa-trash d-block"></i> borrar</button>
                             </div>
                         </div>
                     </li>
@@ -174,7 +183,7 @@
     <div class="col-12 col-md-6">
         <div class="card shadow h-100 mb-4">
             <div class="card-header py-3 d-flex align-items-center">
-                <h6 class="m-0 font-weight-bold text-primary">Historia de Vídeos <button class="btn btn-info btn-circle btn-sm" type="button"><i class="fas fa-info-circle"></i></button></h6>
+                <h6 class="m-0 font-weight-bold text-primary">Historia de Vídeos</h6>
                 <div class="text-right ml-auto">
                     <select class="form-control" name="filter">
                         <option value="">Ver todos</option>
@@ -182,6 +191,15 @@
                         <option value="{{$vitem->id}}">{{$vitem->name}}</option>
                         @endforeach
                     </select>
+                </div>
+                <div class="dropdown no-arrow ml-2">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuSVideo" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                        aria-labelledby="dropdownMenuSVideo">
+                        <a class="dropdown-item" href="#">Action</a>
+                    </div>
                 </div>
             </div>
             <div class="card-body">
@@ -198,9 +216,9 @@
                                 <h6 class="mb-1">{{date('d-m-Y', strtotime($video->created_at))}} <span class="badge badge-dark">Armado</span></h6>
                                 <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
                             </div>
-                            <div class="col-4 d-flex">
-                                <button class="btn col btn-sm btn-success shadow-sm h-100"><i class="fas fa-check d-block"></i> aprobar</button>
-                                <button class="btn col btn-sm btn-danger shadow-sm h-100">hacer <br>cambios</button>
+                            <div class="col-4 btn-group">
+                                <button class="btn btn-sm btn-success shadow-sm h-100"><i class="fas fa-check d-block"></i> aprobar</button>
+                                <button class="btn btn-sm btn-danger shadow-sm h-100">hacer <br>cambios</button>
                             </div>
                         </div>
                     </li>
@@ -216,9 +234,9 @@
                                 <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-dark">Armado</span></h6>
                                 <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
                             </div>
-                            <div class="col-4 d-flex">
-                                <button class="btn col btn-sm btn-success shadow-sm h-100"><i class="fas fa-check d-block"></i> aprobar</button>
-                                <button class="btn col btn-sm btn-danger shadow-sm h-100">hacer <br>cambios</button>
+                            <div class="col-4 btn-group">
+                                <button class="btn btn-sm btn-success shadow-sm h-100"><i class="fas fa-check d-block"></i> aprobar</button>
+                                <button class="btn btn-sm btn-danger shadow-sm h-100">hacer <br>cambios</button>
                             </div>
                         </div>
                     </li>
@@ -233,7 +251,7 @@
                                 <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-danger">Armado</span></h6>
                                 <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
                             </div>
-                            <div class="col-4 d-flex">
+                            <div class="col-4 btn-group">
                                 <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-eye fa-2x text-danger d-block"></i> En revisión</button>
                             </div>
                         </div>
@@ -249,7 +267,7 @@
                                 <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-warning">Armado</span></h6>
                                 <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
                             </div>
-                            <div class="col-4 d-flex">
+                            <div class="col-4 btn-group">
                                 <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-play fa-2x text-warning d-block"></i> En producción</button>
                             </div>
                         </div>
@@ -265,7 +283,7 @@
                                 <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-success">Armado</span></h6>
                                 <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
                             </div>
-                            <div class="col-4 d-flex">
+                            <div class="col-4 btn-group">
                                 <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-check fa-2x text-success d-block"></i> Aprobado</button>
                             </div>
                         </div>
@@ -281,9 +299,9 @@
                                 <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-primary">Sugerido</span></h6>
                                 <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
                             </div>
-                            <div class="col-4 d-flex">
-                                <button class="btn col btn-sm btn-primary shadow-sm h-100"><i class="fas fa-check d-block"></i> publicar</button>
-                                <button class="btn col btn-sm btn-danger shadow-sm h-100"><i class="fas fa-trash d-block"></i> borrar</button>
+                            <div class="col-4 btn-group">
+                                <button class="btn btn-sm btn-primary shadow-sm h-100"><i class="fas fa-check d-block"></i> publicar</button>
+                                <button class="btn btn-sm btn-danger shadow-sm h-100"><i class="fas fa-trash d-block"></i> borrar</button>
                             </div>
                         </div>
                     </li>

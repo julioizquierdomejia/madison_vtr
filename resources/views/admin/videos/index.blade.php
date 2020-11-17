@@ -150,10 +150,10 @@
                                 </h6>
                                 <p class="mb-0">{{$video->name}}</p>
                             </div>
-                            <div class="col-4 d-flex">
+                            <div class="col-4 btn-group">
                                 @if($video->video_status_id == 1)
-                                <button class="btn col btn-sm btn-success shadow-sm h-100"><i class="fas fa-check d-block"></i> aprobar</button>
-                                <button class="btn col btn-sm btn-danger shadow-sm h-100">hacer <br>cambios</button>
+                                <button class="btn btn-sm btn-success shadow-sm h-100"><i class="fas fa-check d-block"></i> aprobar</button>
+                                <button class="btn btn-sm btn-danger shadow-sm h-100">hacer <br>cambios</button>
                                 @elseif($video->video_status_id == 2)
                                 <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-eye fa-2x text-danger d-block"></i> En revisión</button>
                                 @elseif($video->video_status_id == 3)
@@ -185,9 +185,9 @@
                                 <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-dark">Armado</span></h6>
                                 <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
                             </div>
-                            <div class="col-4 d-flex">
-                                <button class="btn col btn-sm btn-success shadow-sm h-100"><i class="fas fa-check d-block"></i> aprobar</button>
-                                <button class="btn col btn-sm btn-danger shadow-sm h-100">hacer <br>cambios</button>
+                            <div class="col-4 btn-group">
+                                <button class="btn btn-sm btn-success shadow-sm h-100"><i class="fas fa-check d-block"></i> aprobar</button>
+                                <button class="btn btn-sm btn-danger shadow-sm h-100">hacer <br>cambios</button>
                             </div>
                         </div>
                     </li>
@@ -202,7 +202,7 @@
                                 <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-danger">Armado</span></h6>
                                 <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
                             </div>
-                            <div class="col-4 d-flex">
+                            <div class="col-4 btn-group">
                                 <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-eye fa-2x text-danger d-block"></i> En revisión</button>
                             </div>
                         </div>
@@ -218,7 +218,7 @@
                                 <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-warning">Armado</span></h6>
                                 <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
                             </div>
-                            <div class="col-4 d-flex">
+                            <div class="col-4 btn-group">
                                 <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-play fa-2x text-warning d-block"></i> En producción</button>
                             </div>
                         </div>
@@ -234,7 +234,7 @@
                                 <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-success">Armado</span></h6>
                                 <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
                             </div>
-                            <div class="col-4 d-flex">
+                            <div class="col-4 btn-group">
                                 <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-check fa-2x text-success d-block"></i> Aprobado</button>
                             </div>
                         </div>
@@ -250,9 +250,9 @@
                                 <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-primary">Sugerido</span></h6>
                                 <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
                             </div>
-                            <div class="col-4 d-flex">
-                                <button class="btn col btn-sm btn-primary shadow-sm h-100"><i class="fas fa-check d-block"></i> publicar</button>
-                                <button class="btn col btn-sm btn-danger shadow-sm h-100"><i class="fas fa-trash d-block"></i> borrar</button>
+                            <div class="col-4 btn-group">
+                                <button class="btn btn-sm btn-primary shadow-sm h-100"><i class="fas fa-check d-block"></i> publicar</button>
+                                <button class="btn btn-sm btn-danger shadow-sm h-100"><i class="fas fa-trash d-block"></i> borrar</button>
                             </div>
                         </div>
                     </li> --}}
