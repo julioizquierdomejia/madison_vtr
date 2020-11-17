@@ -58,16 +58,33 @@
                 <div class="text-right ml-auto">
                     <select class="form-control" name="filter">
                         <option value="">Ver todos</option>
-                        <option value="1">Subidos</option>
-                        <option value="2">Por aprobar</option>
-                        <option value="3">Aprobados</option>
-                        <option value="4">En producción</option>
-                        <option value="5">En revisión</option>
+                        @foreach($ritual_status as $ritem)
+                        <option value="{{$ritem->id}}">{{$ritem->name}}</option>
+                        @endforeach
                     </select>
                 </div>
             </div>
             <div class="card-body">
                 <ul class="list list-unstyled mb-0">
+                    @foreach($rituales as $ritual)
+                    <li class="item my-1" id="ritual-{{$ritual->id}}">
+                        <div class="row py-2 bg-light">
+                            <div class="col-2 text-center">
+                                <div class="video h-100 p-2 d-table w-100 bg-dark">
+                                    <span class="d-table-cell align-middle"><i class="fa fa-play text-white-50"></i></span>
+                                </div>
+                            </div>
+                            <div class="col-6 my-auto">
+                                <h6 class="mb-1">{{date('d-m-Y', strtotime($ritual->created_at))}} <span class="badge badge-dark">Armado</span></h6>
+                                <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
+                            </div>
+                            <div class="col-4 d-flex">
+                                <button class="btn col btn-sm btn-success shadow-sm h-100"><i class="fas fa-check d-block"></i> aprobar</button>
+                                <button class="btn col btn-sm btn-danger shadow-sm h-100">hacer <br>cambios</button>
+                            </div>
+                        </div>
+                    </li>
+                    @endforeach
                     <li class="item my-1">
                         <div class="row py-2 bg-light">
                             <div class="col-2 text-center">
@@ -161,16 +178,33 @@
                 <div class="text-right ml-auto">
                     <select class="form-control" name="filter">
                         <option value="">Ver todos</option>
-                        <option value="1">Subidos</option>
-                        <option value="2">Por aprobar</option>
-                        <option value="3">Aprobados</option>
-                        <option value="4">En producción</option>
-                        <option value="5">En revisión</option>
+                        @foreach($video_status as $vitem)
+                        <option value="{{$vitem->id}}">{{$vitem->name}}</option>
+                        @endforeach
                     </select>
                 </div>
             </div>
             <div class="card-body">
                 <ul class="list list-unstyled mb-0">
+                    @foreach($videos as $video)
+                    <li class="item my-1" id="video-{{$video->id}}">
+                        <div class="row py-2 bg-light">
+                            <div class="col-2 text-center">
+                                <div class="video h-100 p-2 d-table w-100 bg-dark">
+                                    <span class="d-table-cell align-middle"><i class="fa fa-play text-white-50"></i></span>
+                                </div>
+                            </div>
+                            <div class="col-6 my-auto">
+                                <h6 class="mb-1">{{date('d-m-Y', strtotime($video->created_at))}} <span class="badge badge-dark">Armado</span></h6>
+                                <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
+                            </div>
+                            <div class="col-4 d-flex">
+                                <button class="btn col btn-sm btn-success shadow-sm h-100"><i class="fas fa-check d-block"></i> aprobar</button>
+                                <button class="btn col btn-sm btn-danger shadow-sm h-100">hacer <br>cambios</button>
+                            </div>
+                        </div>
+                    </li>
+                    @endforeach
                     <li class="item my-1">
                         <div class="row py-2 bg-light">
                             <div class="col-2 text-center">

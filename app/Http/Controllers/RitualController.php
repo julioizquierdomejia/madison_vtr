@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Ritual;
+use App\Models\RitualObjective;
+use App\Models\RitualStatus;
 
 class RitualController extends Controller
 {
@@ -13,7 +16,7 @@ class RitualController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        //$this->middleware('auth');
     }
 
     /**
@@ -23,6 +26,13 @@ class RitualController extends Controller
      */
     public function index()
     {
-        return view('admin.rituales.index');
+        $objectives = RitualObjective::where('enabled', 1)->get();
+        $rituales = Ritual::join('ritual_status', 'ritual_status.id', '=', 'rituals.ritual_status_id')
+            ->join('ritual_types', 'ritual_types.id', '=', 'rituals.ritual_type_id')
+            ->join('ritual_objectives', 'ritual_objectives.id', '=', 'rituals.ritual_objective_id')
+            ->select('rituals.*', 'ritual_status.name as status', 'rituals.ritual_status_id', 'ritual_objectives.name as objective');
+        $status = RitualStatus::all();
+
+        return view('admin.rituales.index', compact('rituales', 'objectives', 'status'));
     }
 }

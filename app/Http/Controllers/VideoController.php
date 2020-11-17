@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Video;
 use Illuminate\Http\Request;
+use App\Models\Video;
+use App\Models\VideoStatus;
 
 class VideoController extends Controller
 {
@@ -16,8 +17,13 @@ class VideoController extends Controller
     {
         //$request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
         
-        //$videos = Video::all();
-        return view('admin.videos.index'/*, compact('videos')*/);
+        $videos = Video::join('video_types', 'video_types.id', '=', 'videos.video_type_id')
+            ->join('video_status', 'video_status.id', '=', 'videos.video_status_id')
+            ->select('videos.*', 'video_types.name as video_type', 'video_status.name as status', 'videos.video_status_id')
+            ->get();
+        $status = VideoStatus::all();
+
+        return view('admin.videos.index', compact('videos', 'status'));
     }
 
     /**
