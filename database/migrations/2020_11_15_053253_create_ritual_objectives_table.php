@@ -16,6 +16,7 @@ class CreateRitualObjectivesTable extends Migration
         Schema::create('ritual_objectives', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->boolean('enabled');
             $table->timestamps();
         });
     }
