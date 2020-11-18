@@ -117,11 +117,9 @@
                 <div class="text-right ml-auto">
                     <select class="form-control" name="filter">
                         <option value="">Ver todos</option>
-                        <option value="1">Subidos</option>
-                        <option value="2">Por aprobar</option>
-                        <option value="3">Aprobados</option>
-                        <option value="4">En producción</option>
-                        <option value="5">En revisión</option>
+                        @foreach($status as $item)
+                        <option value="{{$item->id}}">{{$item->name}}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="dropdown no-arrow ml-2">
@@ -137,7 +135,46 @@
             </div>
             <div class="card-body">
                 <ul class="list list-unstyled mb-0">
-                    <li class="item my-1">
+                    @if($videos->count())
+                    @foreach($videos as $video)
+                    <li class="item my-1" id="video-{{$video->id}}">
+                        <div class="row py-2 bg-light">
+                            <div class="col-2 text-center">
+                                <div class="video h-100 p-2 d-table w-100 bg-dark">
+                                    <span class="d-table-cell align-middle"><i class="fa fa-play text-white-50"></i></span>
+                                </div>
+                            </div>
+                            <div class="col-6 my-auto">
+                                <h6 class="mb-1">{{date('d-m-Y', strtotime($video->created_at))}} 
+                                    <span class="badge badge-dark">{{$video->video_type}}</span>
+                                </h6>
+                                <p class="mb-0">{{$video->name}}</p>
+                            </div>
+                            <div class="col-4 btn-group">
+                                @if($video->video_status_id == 1)
+                                <button class="btn btn-sm btn-success shadow-sm h-100"><i class="fas fa-check d-block"></i> aprobar</button>
+                                <button class="btn btn-sm btn-danger shadow-sm h-100">hacer <br>cambios</button>
+                                @elseif($video->video_status_id == 2)
+                                <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-eye fa-2x text-danger d-block"></i> En revisión</button>
+                                @elseif($video->video_status_id == 3)
+                                <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-check fa-2x text-success d-block"></i> Aprobado</button>
+                                @elseif($video->video_status_id == 4)
+                                <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-eye fa-2x text-danger d-block"></i> En revisión</button>
+                                @elseif($video->video_status_id == 5)
+                                <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-play fa-2x text-warning d-block"></i> En producción</button>
+                                @endif
+                            </div>
+                        </div>
+                    </li>
+                    @endforeach
+                    @else
+                    <li class="item my-1 text-center py-3">
+                        <i class="fa fa-play text-dark fa-2x mb-4"></i>
+                        <p>No existen vídeos por el momento.</p>
+                        <p>Sube o solicita un vídeo para empezar.</p>
+                    </li>
+                    @endif
+                    {{-- <li class="item my-1">
                         <div class="row py-2 bg-light">
                             <div class="col-2 text-center">
                                 <div class="video h-100 p-2 d-table w-100 bg-dark">
@@ -148,9 +185,9 @@
                                 <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-dark">Armado</span></h6>
                                 <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
                             </div>
-                            <div class="col-4 d-flex">
-                                <button class="btn col btn-sm btn-success shadow-sm h-100"><i class="fas fa-check d-block"></i> aprobar</button>
-                                <button class="btn col btn-sm btn-danger shadow-sm h-100">hacer <br>cambios</button>
+                            <div class="col-4 btn-group">
+                                <button class="btn btn-sm btn-success shadow-sm h-100"><i class="fas fa-check d-block"></i> aprobar</button>
+                                <button class="btn btn-sm btn-danger shadow-sm h-100">hacer <br>cambios</button>
                             </div>
                         </div>
                     </li>
@@ -165,7 +202,7 @@
                                 <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-danger">Armado</span></h6>
                                 <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
                             </div>
-                            <div class="col-4 d-flex">
+                            <div class="col-4 btn-group">
                                 <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-eye fa-2x text-danger d-block"></i> En revisión</button>
                             </div>
                         </div>
@@ -181,7 +218,7 @@
                                 <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-warning">Armado</span></h6>
                                 <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
                             </div>
-                            <div class="col-4 d-flex">
+                            <div class="col-4 btn-group">
                                 <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-play fa-2x text-warning d-block"></i> En producción</button>
                             </div>
                         </div>
@@ -197,7 +234,7 @@
                                 <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-success">Armado</span></h6>
                                 <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
                             </div>
-                            <div class="col-4 d-flex">
+                            <div class="col-4 btn-group">
                                 <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-check fa-2x text-success d-block"></i> Aprobado</button>
                             </div>
                         </div>
@@ -213,12 +250,12 @@
                                 <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-primary">Sugerido</span></h6>
                                 <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
                             </div>
-                            <div class="col-4 d-flex">
-                                <button class="btn col btn-sm btn-primary shadow-sm h-100"><i class="fas fa-check d-block"></i> publicar</button>
-                                <button class="btn col btn-sm btn-danger shadow-sm h-100"><i class="fas fa-trash d-block"></i> borrar</button>
+                            <div class="col-4 btn-group">
+                                <button class="btn btn-sm btn-primary shadow-sm h-100"><i class="fas fa-check d-block"></i> publicar</button>
+                                <button class="btn btn-sm btn-danger shadow-sm h-100"><i class="fas fa-trash d-block"></i> borrar</button>
                             </div>
                         </div>
-                    </li>
+                    </li> --}}
                 </ul>
             </div>
         </div>

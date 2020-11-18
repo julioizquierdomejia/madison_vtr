@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRitualesTable extends Migration
+class CreateRitualsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateRitualesTable extends Migration
      */
     public function up()
     {
-        Schema::create('rituales', function (Blueprint $table) {
+        Schema::create('rituals', function (Blueprint $table) {
             $table->id();
             $table->string('name');
 
@@ -22,6 +22,9 @@ class CreateRitualesTable extends Migration
 
             $table->bigInteger('ritual_status_id')->unsigned();
             $table->foreign('ritual_status_id')->references('id')->on('ritual_status');
+
+            $table->bigInteger('ritual_type_id')->unsigned();
+            $table->foreign('ritual_type_id')->references('id')->on('ritual_types');
 
             $table->date('published');
             $table->boolean('enabled');
@@ -33,7 +36,7 @@ class CreateRitualesTable extends Migration
             $table->id();
 
             $table->bigInteger('ritual_id')->unsigned();
-            $table->foreign('ritual_id')->references('id')->on('rituales');
+            $table->foreign('ritual_id')->references('id')->on('rituals');
 
             $table->bigInteger('video_id')->unsigned();
             $table->foreign('video_id')->references('id')->on('videos');
@@ -49,9 +52,10 @@ class CreateRitualesTable extends Migration
      */
     public function down()
     {
-        Schema::table('rituales', function (Blueprint $table) {
+        Schema::table('rituals', function (Blueprint $table) {
             $table->dropForeign('ritual_objective_id_foreign');
             $table->dropForeign('ritual_status_id_foreign');
+            $table->dropForeign('ritual_type_id_foreign');
         });
 
         Schema::table('ritual_parts', function (Blueprint $table) {
@@ -59,7 +63,7 @@ class CreateRitualesTable extends Migration
             $table->dropForeign('ritual_video_id_foreign');
         });
 
-        Schema::dropIfExists('rituales');
+        Schema::dropIfExists('rituals');
         Schema::dropIfExists('ritual_parts');
     }
 }

@@ -15,6 +15,7 @@ class CreateRitualTypesTable extends Migration
     {
         Schema::create('ritual_types', function (Blueprint $table) {
             $table->id();
+            $table->string('alias');
             $table->string('name');
             $table->timestamps();
         });

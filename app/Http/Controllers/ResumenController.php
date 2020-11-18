@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Video;
 use Illuminate\Http\Request;
+use App\Models\Video;
+use App\Models\Ritual;
+use App\Models\VideoStatus;
+use App\Models\RitualStatus;
 
 class ResumenController extends Controller
 {
@@ -16,8 +19,11 @@ class ResumenController extends Controller
     {
         //$request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
         
-        //$resumen = Video::all();
-        return view('admin.resumen.index'/*, compact('resumen')*/);
+        $videos = Video::all();
+        $rituales = Ritual::all();
+        $ritual_status = RitualStatus::all();
+        $video_status = VideoStatus::all();
+        return view('admin.resumen.index', compact('rituales', 'videos', 'ritual_status', 'video_status'));
     }
 
     /**
