@@ -1,8 +1,8 @@
 @extends('admin.layouts.app', ['title' => 'Home'])
 @section('content')
 <div class="row">
-    <div class="col-12 col-md-6">
-        <div class="card shadow card-steps h-100 mb-4">
+    <div class="col-12 col-md-6 mb-4">
+        <div class="card shadow card-steps h-100">
             <nav class="card-header py-3 d-flex align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary"><span>Crea un ritual</span></h6>
                 <div class="nav nav-tabs ml-auto" id="nav-tab" role="tablist">
@@ -307,8 +307,8 @@
             </div>
         </div>
     </div>
-    <div class="col-12 col-md-6">
-        <div class="card shadow h-100 mb-4">
+    <div class="col-12 col-md-6 mb-4">
+        <div class="card shadow h-100">
             <div class="card-header py-3 d-flex align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">Estado Rituales</h6>
                 <div class="text-right ml-auto">
