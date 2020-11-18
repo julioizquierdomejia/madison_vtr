@@ -23,7 +23,7 @@ class CreateVideosTable extends Migration
             $table->foreign('video_type_id')->references('id')->on('videos');
 
             $table->bigInteger('video_status_id')->unsigned();
-            $table->foreign('video_status_id')->references('id')->on('video_statuss');
+            $table->foreign('video_status_id')->references('id')->on('video_status');
 
             $table->string('format');
             $table->string('quality');
