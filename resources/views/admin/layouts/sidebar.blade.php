@@ -1,5 +1,5 @@
 <!-- Sidebar -->
-<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+<ul class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion" id="accordionSidebar">
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/perfil">
         <div class="sidebar-brand-icon rotate-n-15">
@@ -24,34 +24,29 @@
 
     <li class="nav-item{{request()->segment(1) == 'rituales' ? ' active' : '' }}">
         <a class="nav-link" href="/rituales">
-            <i class="fas fa-fw fa-check-circle"></i>
-            <span>Rituales</span>
+            <i class="fas fa-fw fa-check-circle" style="color: #FBB911"></i>
+            <span>RITUALES</span>
         </a>
     </li>
 
     <li class="nav-item{{request()->segment(1) == 'videos' ? ' active' : '' }}">
         <a class="nav-link" href="/videos">
-            <i class="fas fa-fw fa-play"></i>
-            <span>Vídeos</span>
+            <i class="fas fa-fw fa-play" style="color: #E72E7A"></i>
+            <span>VÍDEOS</span>
         </a>
     </li>
 
     <li class="nav-item{{request()->segment(1) == 'resumen' ? ' active' : '' }}">
         <a class="nav-link" href="/resumen">
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>Resumen</span></a>
+            <i class="fas fa-fw fa-chart-area" style="color: #E54C16"></i>
+            <span>RESUMEN</span></a>
     </li>
-
-    <hr class="sidebar-divider my-0">
 
     <li class="nav-item{{request()->segment(1) == 'soporte' ? ' active' : '' }}">
         <a class="nav-link" href="soporte">
-            <i class="fas fa-fw fa-question-circle"></i>
-            <span>Soporte</span></a>
+            <i class="fas fa-fw fa-question-circle" style="color: #39B8BC"></i>
+            <span>SOPORTE</span></a>
     </li>
-
-    <!-- Divider -->
-    <hr class="sidebar-divider d-none d-md-block">
 
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">

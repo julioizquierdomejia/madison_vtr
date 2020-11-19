@@ -4,7 +4,7 @@
     <div class="col-12 col-md-6 mb-4">
         <div class="card shadow card-steps h-100">
             <nav class="card-header py-3 d-flex align-items-center">
-                <h6 class="m-0 font-weight-bold text-primary"><span>Crea un ritual</span></h6>
+                <h6 class="m-0 font-weight-bold text-white"><span>Crea un ritual</span></h6>
                 <div class="nav nav-tabs ml-auto" id="nav-tab" role="tablist">
                     <a class="nav-item nav-link active" id="nav-home-tab" data-text="Crea un ritual" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true"><i class="fas fa-dot-circle"></i></a>
                     <a class="nav-item nav-link" id="nav-armando1-tab" data-text="Armando ritual" data-toggle="tab" href="#nav-armando1" role="tab" aria-controls="nav-armando1" aria-selected="false"><i class="fas fa-dot-circle"></i></a>
@@ -310,7 +310,7 @@
     <div class="col-12 col-md-6 mb-4">
         <div class="card shadow h-100">
             <div class="card-header py-3 d-flex align-items-center">
-                <h6 class="m-0 font-weight-bold text-primary">Estado Rituales</h6>
+                <h6 class="m-0 font-weight-bold text-white">Estado Rituales</h6>
                 <div class="text-right ml-auto">
                     <select class="form-control" name="filter">
                         <option value="">Ver todos</option>

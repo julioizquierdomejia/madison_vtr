@@ -15,7 +15,9 @@
         href="https://fonts.googleapis.com/css?family=Nunito:400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
     <!-- Custom styles for this template-->
-    <link href="/online/css/sb-admin-2.css" rel="stylesheet">
+    <!--link href="/online/css/sb-admin-2.css" rel="stylesheet"-->
+    <!-- Styles -->
+    <link href="{{ asset('online/css/app.css') }}" rel="stylesheet">
 
 </head>
 
