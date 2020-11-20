@@ -26,6 +26,6 @@ Auth::routes();
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/ruleta', function () {
-    return view('ruleta');
+    return 'soy la ruleta';
 });
 
