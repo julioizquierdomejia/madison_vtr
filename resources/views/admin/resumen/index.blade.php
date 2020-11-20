@@ -54,7 +54,7 @@
     <div class="col-12 col-md-6 mb-4">
         <div class="card shadow h-100">
             <div class="card-header py-3 d-flex align-items-center">
-                <h6 class="m-0 font-weight-bold text-primary">Historial de Rituales</h6>
+                <h6 class="m-0 font-weight-bold">Historial de Rituales</h6>
                 <div class="text-right ml-auto">
                     <select class="form-control" name="filter">
                         <option value="">Ver todos</option>
@@ -65,7 +65,7 @@
                 </div>
                 <div class="dropdown no-arrow ml-2">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuSVideo" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-white"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                         aria-labelledby="dropdownMenuSVideo">
@@ -183,7 +183,7 @@
     <div class="col-12 col-md-6 mb-4">
         <div class="card shadow h-100">
             <div class="card-header py-3 d-flex align-items-center">
-                <h6 class="m-0 font-weight-bold text-primary">Historia de Vídeos</h6>
+                <h6 class="m-0 font-weight-bold">Historia de Vídeos</h6>
                 <div class="text-right ml-auto">
                     <select class="form-control" name="filter">
                         <option value="">Ver todos</option>
@@ -194,7 +194,7 @@
                 </div>
                 <div class="dropdown no-arrow ml-2">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuSVideo" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-white"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                         aria-labelledby="dropdownMenuSVideo">

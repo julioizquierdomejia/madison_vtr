@@ -4,11 +4,11 @@
     <div class="col-12 col-md-6">
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary"><span>Tutoriales</span></h6>
+                <h6 class="m-0 font-weight-bold"><span>Tutoriales</span></h6>
                 <div class="dropdown no-arrow">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuTutorial"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-white"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                         aria-labelledby="dropdownMenuTutorial">
@@ -31,11 +31,11 @@
     <div class="col-12 col-md-6 mb-4">
         <div class="card shadow h-100">
             <div class="card-header py-3 d-flex align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Contáctanos</h6>
+                <h6 class="m-0 font-weight-bold">Contáctanos</h6>
                 <div class="dropdown no-arrow">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuContacto"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-white"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                         aria-labelledby="dropdownMenuContacto">

@@ -13,7 +13,7 @@
                 </div>
                 <div class="dropdown no-arrow ml-2">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuSVideo" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-white"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                         aria-labelledby="dropdownMenuSVideo">
@@ -210,7 +210,7 @@
                 <div class="tab-pane fade" id="nav-configuracion" role="tabpanel" aria-labelledby="nav-configuracion-tab">
                     <h4 class="title"><strong>Configuración final</strong> <button class="btn btn-info btn-circle btn-sm" type="button"><i class="fas fa-info-circle"></i></button></h4>
                     <div class="form-group">
-                    <h6 class="m-0 font-weight-bold text-primary"><span>Primera parte</span></h6>
+                    <h6 class="m-0 font-weight-bold"><span>Primera parte</span></h6>
                     <ul class="list list-unstyled mb-0">
                         <li class="item my-1">
                             <div class="row py-2 bg-light">
@@ -232,7 +232,7 @@
                             </div>
                         </li>
                     </ul>
-                    <h6 class="m-0 font-weight-bold text-primary"><span>Segunda parte</span></h6>
+                    <h6 class="m-0 font-weight-bold"><span>Segunda parte</span></h6>
                     <ul class="list list-unstyled mb-0">
                         <li class="item my-1">
                             <div class="row py-2 bg-light">
@@ -254,7 +254,7 @@
                             </div>
                         </li>
                     </ul>
-                    <h6 class="m-0 font-weight-bold text-primary"><span>Tercera parte</span></h6>
+                    <h6 class="m-0 font-weight-bold"><span>Tercera parte</span></h6>
                     <ul class="list list-unstyled mb-0">
                         <li class="item my-1">
                             <div class="row py-2 bg-light">
@@ -276,7 +276,7 @@
                             </div>
                         </li>
                     </ul>
-                    <h6 class="m-0 font-weight-bold text-primary"><span>Parte final</span></h6>
+                    <h6 class="m-0 font-weight-bold"><span>Parte final</span></h6>
                     <ul class="list list-unstyled mb-0">
                         <li class="item my-1">
                             <div class="row py-2 bg-light">
@@ -321,7 +321,7 @@
                 </div>
                 <div class="dropdown no-arrow ml-2">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuERituales" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-white"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                         aria-labelledby="dropdownMenuERituales">

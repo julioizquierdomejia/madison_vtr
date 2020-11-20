@@ -4,7 +4,7 @@
     <div class="col-12 col-md-6">
         <div class="card shadow card-steps mb-4">
             <nav class="card-header py-3 d-flex align-items-center">
-                <h6 class="m-0 font-weight-bold text-primary"><span>Subir un vídeo</span></h6>
+                <h6 class="m-0 font-weight-bold"><span>Subir un vídeo</span></h6>
                 <div class="input-group ml-auto col-6 col-md-7">
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-upload"></i></span>
@@ -18,7 +18,7 @@
                 <div class="dropdown no-arrow ml-2" style="z-index: 2">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuSbVideo"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-white"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                         aria-labelledby="dropdownMenuSbVideo">
@@ -50,10 +50,10 @@
         </div>
         <div class="card shadow card-steps mb-4">
             <div class="card-header py-3 d-flex align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary"><span>Solicitar un vídeo</span></h6>
+                <h6 class="m-0 font-weight-bold"><span>Solicitar un vídeo</span></h6>
                 <div class="dropdown no-arrow ml-2">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuSVideo" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-white"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                         aria-labelledby="dropdownMenuSVideo">
@@ -113,7 +113,7 @@
     <div class="col-12 col-md-6 mb-4">
         <div class="card shadow h-100">
             <div class="card-header py-3 d-flex align-items-center">
-                <h6 class="m-0 font-weight-bold text-primary">Estado de Vídeos</h6>
+                <h6 class="m-0 font-weight-bold">Estado de Vídeos</h6>
                 <div class="text-right ml-auto">
                     <select class="form-control" name="filter">
                         <option value="">Ver todos</option>
@@ -124,7 +124,7 @@
                 </div>
                 <div class="dropdown no-arrow ml-2">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuSVideo" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-white"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                         aria-labelledby="dropdownMenuSVideo">

@@ -1,13 +1,13 @@
 <!-- Sidebar -->
 <ul class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion" id="accordionSidebar">
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/perfil">
+    <a class="sidebar-brand pt-0" href="/perfil">
         <div class="sidebar-brand-icon rotate-n-15">
-            <img class="img-profile rounded-circle" src="/online/img/undraw_profile.svg" width="30">
+            <img class="img-profile rounded-circle" src="/online/img/undraw_profile.svg" width="50">
         </div>
-        <div class="sidebar-brand-text mx-3 d-flex text-left">
-            <span class="mr-2 d-none d-lg-block small">Douglas <br>McGee</span>
-            <i class="fas fa-fw fa-cog"></i>
+        <div class="sidebar-brand-text mx-3 pt-3">
+            <span class="mr-2 d-inline-block small align-middle">Douglas <br>McGee</span>
+            <i class="fas fa-fw fa-cog align-middle"></i>
         </div>
     </a>
 
