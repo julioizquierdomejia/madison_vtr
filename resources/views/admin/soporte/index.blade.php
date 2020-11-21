@@ -54,35 +54,42 @@
                 </div>
             </div>
             <div class="card-body">
-                <p><strong>Estamos para servirte</strong></p>
-                <ul class="list-unstyled">
-                    <li class="item my-3 d-flex justify-content-between">
-                        <label for="cambiarplan">Quiero cambiar el plan que tengo</label>
-                        <input type="radio" name="soporte" id="cambiarplan" value="1">
-                    </li>
-                    <li class="item my-3 d-flex justify-content-between">
-                        <label for="dudas">Tengo dudas sobre los rituales</label>
-                        <input type="radio" name="soporte" id="dudas" value="2">
-                    </li>
-                    <li class="item my-3 d-flex justify-content-between">
-                        <label for="solicitarvideo">No entiendo muy bien como subir o solicitar un video</label>
-                        <input type="radio" name="soporte" id="solicitarvideo" value="3">
-                    </li>
-                    <li class="item my-3 d-flex justify-content-between">
-                        <label for="tngoproblema">Tengo un problema</label>
-                        <input type="radio" name="soporte" id="tngoproblema" value="4">
-                    </li>
-                    <li class="item my-3 d-flex justify-content-between">
-                        <label for="otrotema">Otro tema</label>
-                        <input type="radio" name="soporte" id="otrotema" value="5">
-                    </li>
-                </ul>
-                <div class="form-group">
-                    <textarea class="form-control" rows="5" name="mensaje" placeholder="Mensaje"></textarea>
+                <div class="row">
+                    <div class="col">
+                        <p><strong>Estamos para servirte</strong></p>
+                            <ul class="list-unstyled">
+                                <li class="item my-3 d-flex justify-content-between">
+                                    <label for="cambiarplan">Quiero cambiar el plan que tengo</label>
+                                    <input type="radio" name="soporte" id="cambiarplan" value="1">
+                                </li>
+                                <li class="item my-3 d-flex justify-content-between">
+                                    <label for="dudas">Tengo dudas sobre los rituales</label>
+                                    <input type="radio" name="soporte" id="dudas" value="2">
+                                </li>
+                                <li class="item my-3 d-flex justify-content-between">
+                                    <label for="solicitarvideo">No entiendo muy bien como subir o solicitar un video</label>
+                                    <input type="radio" name="soporte" id="solicitarvideo" value="3">
+                                </li>
+                                <li class="item my-3 d-flex justify-content-between">
+                                    <label for="tngoproblema">Tengo un problema</label>
+                                    <input type="radio" name="soporte" id="tngoproblema" value="4">
+                                </li>
+                                <li class="item my-3 d-flex justify-content-between">
+                                    <label for="otrotema">Otro tema</label>
+                                    <input type="radio" name="soporte" id="otrotema" value="5">
+                                </li>
+                            </ul>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <textarea class="form-control" rows="5" name="mensaje" placeholder="Mensaje"></textarea>
+                        </div>
+                        <div class="buttons text-right">
+                            <button class="btn btn-dark btn-sm px-5">Enviar</button>
+                        </div>                        
+                    </div>
                 </div>
-                <div class="buttons text-right">
-                    <button class="btn btn-dark btn-sm px-5">Enviar</button>
-                </div>
+
             </div>
         </div>
     </div>
