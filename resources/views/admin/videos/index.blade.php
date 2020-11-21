@@ -3,7 +3,7 @@
 <div class="row">
     <div class="col-12 col-md-6">
         <div class="card shadow card-steps mb-4">
-            <nav class="card-header py-3 d-flex align-items-center">
+            <nav class="card-header py-3 d-flex align-items-center" style="background-color: #E72F77;">
                 <h6 class="m-0 font-weight-bold"><span>Subir un vídeo</span></h6>
                 <div class="input-group ml-auto col-6 col-md-7">
                     <div class="input-group-prepend">
@@ -49,7 +49,7 @@
             </div>
         </div>
         <div class="card shadow card-steps mb-4">
-            <div class="card-header py-3 d-flex align-items-center justify-content-between">
+            <div class="card-header py-3 d-flex align-items-center justify-content-between" style="background-color: #E72F77;">
                 <h6 class="m-0 font-weight-bold"><span>Solicitar un vídeo</span></h6>
                 <div class="dropdown no-arrow ml-2">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuSVideo" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -112,7 +112,7 @@
     </div>
     <div class="col-12 col-md-6 mb-4">
         <div class="card shadow h-100">
-            <div class="card-header py-3 d-flex align-items-center">
+            <div class="card-header py-3 d-flex align-items-center" style="background-color: #E72F77;">
                 <h6 class="m-0 font-weight-bold">Estado de Vídeos</h6>
                 <div class="text-right ml-auto">
                     <select class="form-control" name="filter">

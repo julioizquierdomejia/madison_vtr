@@ -3,7 +3,7 @@
 <div class="row">
     <div class="col-12 col-md-6">
         <div class="card shadow mb-4">
-            <div class="card-header py-3 d-flex align-items-center justify-content-between">
+            <div class="card-header py-3 d-flex align-items-center justify-content-between" style="background-color: #44BBC7;">
                 <h6 class="m-0 font-weight-bold"><span>Tutoriales</span></h6>
                 <div class="dropdown no-arrow">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuTutorial"
@@ -30,7 +30,7 @@
     </div>
     <div class="col-12 col-md-6 mb-4">
         <div class="card shadow h-100">
-            <div class="card-header py-3 d-flex align-items-center justify-content-between">
+            <div class="card-header py-3 d-flex align-items-center justify-content-between" style="background-color: #44BBC7;">
                 <h6 class="m-0 font-weight-bold">Contáctanos</h6>
                 <div class="dropdown no-arrow">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuContacto"

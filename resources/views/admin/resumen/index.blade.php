@@ -53,7 +53,7 @@
 <div class="row">
     <div class="col-12 col-md-6 mb-4">
         <div class="card shadow h-100">
-            <div class="card-header py-3 d-flex align-items-center">
+            <div class="card-header py-3 d-flex align-items-center" style="background-color: #E94D20;">
                 <h6 class="m-0 font-weight-bold">Historial de Rituales</h6>
                 <div class="text-right ml-auto">
                     <select class="form-control" name="filter">
@@ -182,7 +182,7 @@
     </div>
     <div class="col-12 col-md-6 mb-4">
         <div class="card shadow h-100">
-            <div class="card-header py-3 d-flex align-items-center">
+            <div class="card-header py-3 d-flex align-items-center" style="background-color: #E94D20;">
                 <h6 class="m-0 font-weight-bold">Historia de Vídeos</h6>
                 <div class="text-right ml-auto">
                     <select class="form-control" name="filter">
