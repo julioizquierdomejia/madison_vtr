@@ -1,7 +1,7 @@
 @extends('admin.layouts.app', ['title' => 'Soporte'])
 @section('content')
 <div class="row">
-    <div class="col-12 col-md-6">
+    <div class="col-12">
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex align-items-center justify-content-between" style="background-color: #44BBC7;">
                 <h6 class="m-0 font-weight-bold"><span>Tutoriales</span></h6>
@@ -19,16 +19,25 @@
             </div>
             <div class="card-body">
                 <p><strong>A continuación,te explicamos con unos breves videos todas las funcionalidades disponibles.</strong></p>
-                <div class="embed-responsive embed-responsive-16by9 bg-dark form-group">
-                  <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/ZMo29EKgeQg" allowfullscreen></iframe>
+                <div class="row">
+                    <div class="col">
+                        <div class="embed-responsive embed-responsive-16by9 bg-dark form-group">
+                          <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/ZMo29EKgeQg" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="embed-responsive embed-responsive-16by9 bg-dark">
+                          <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/ZMo29EKgeQg" allowfullscreen></iframe>
+                        </div>
+                    </div>
                 </div>
-                <div class="embed-responsive embed-responsive-16by9 bg-dark">
-                  <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/ZMo29EKgeQg" allowfullscreen></iframe>
-                </div>
+                
             </div>
         </div>
     </div>
-    <div class="col-12 col-md-6 mb-4">
+</div>
+<div class="row">
+    <div class="col-12 mb-4">
         <div class="card shadow h-100">
             <div class="card-header py-3 d-flex align-items-center justify-content-between" style="background-color: #44BBC7;">
                 <h6 class="m-0 font-weight-bold">Contáctanos</h6>
