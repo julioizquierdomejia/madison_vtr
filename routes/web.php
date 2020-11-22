@@ -23,7 +23,8 @@ Auth::routes();
 
 //Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(function () {
-	Route::get('/home', [App\Http\Controllers\RitualController::class, 'index'])->name('ritual');
+	Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+	Route::get('/rituales', [App\Http\Controllers\RitualController::class, 'index'])->name('ritual');
 
 	Route::get('/videos', [App\Http\Controllers\VideoController::class, 'index'])->name('video');
 	Route::get('/resumen', [App\Http\Controllers\ResumenController::class, 'index'])->name('resumen');

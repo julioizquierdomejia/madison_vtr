@@ -11738,7 +11738,7 @@ a:focus {
     display: block;
     width: 100%;
     text-align: left;
-    padding: 2rem;
+    padding: 1.5rem 2rem;
     width: 14rem;
   }
 
@@ -11939,6 +11939,7 @@ a:focus {
 }
 
 .sidebar-dark .nav-item.active .nav-link {
+  background-color: #333;
   color: #fff;
 }
 

@@ -20,7 +20,7 @@
     </li> --}}
 
     <!-- Divider -->
-    <hr class="sidebar-divider my-0">
+    <hr class="sidebar-divider mt-0">
 
     <li class="nav-item{{request()->segment(1) == 'rituales' ? ' active' : '' }}">
         <a class="nav-link" href="/rituales">
