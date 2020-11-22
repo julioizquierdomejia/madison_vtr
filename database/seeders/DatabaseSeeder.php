@@ -17,5 +17,6 @@ class DatabaseSeeder extends Seeder
         $this->call(VideoSeeder::class);
         $this->call(RitualSeeder::class);
         $this->call(PlanSeeder::class);
+        $this->call(UserSeeder::class);
     }
 }
