@@ -2,7 +2,7 @@
 @section('content')
 <div class="row">
     <div class="col-12 col-md-6 mb-4">
-        <div class="card shadow card-steps h-100">
+        <form class="card shadow card-steps h-100" action="/" method="POST">
             <nav class="card-header py-3 d-flex align-items-center">
                 <h6 class="m-0 font-weight-bold text-white"><span>Crea un ritual</span></h6>
                 <div class="nav nav-tabs ml-auto" id="nav-tab" role="tablist">
@@ -26,9 +26,9 @@
                     <p>Es un gusto acompañarte en alcanzar tus  metas, recuerda es mmuy importante que .... Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at porttitor sem.  Aliquam erat volutpat. Donec placerat nisl magna, et faucibus arcu condimentum sed.</p>
                     <div class="form-group">
                         <label class="mb-4" for="objetivo">Empieza escogiendo un objetivo</label>
-                        <select class="form-control" name="objetivo" id="objetivo">
+                        <select class="form-control @error('objetivo') is-invalid @enderror" name="objetivo" id="objetivo">
                             @foreach($objectives as $objective)
-                            <option value="{{$objective->id}}">{{$objective->name}}</option>
+                            <option value="{{$objective->id}}" {{old('objetivo') == $objective->id ? 'checked' : ''}}>{{$objective->name}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -37,8 +37,8 @@
                         <br>
                         @foreach($ritual_types as $key => $type)
                         <div class="form-check form-check-inline">
-                            <input type="radio" class="form-check-input" id="ritual_type_id{{$key}}" value="{{$type->id}}" name="ritual_type_id">
-                            <label class="form-check-label" for="ritual_type_id{{$key}}"><span class="align-middle">{{$type->name}}</span></label>
+                            <input type="radio" class="form-check-input" id="tipo_ritual{{$key}}" value="{{$type->id}}" name="tipo_ritual">
+                            <label class="form-check-label" for="tipo_ritual{{$key}}"><span class="align-middle">{{$type->name}}</span></label>
                         </div>
                         @endforeach
                     </div>
@@ -57,9 +57,10 @@
                         <li>Objetivo: Incentivar colaboraración</li>
                         <li>fecha de publicación: ss/mm/aaaa</li>
                     </ul>
+                    <p class="text-center"><strong>Selecciona 3 vídeos</strong></p>
                     <div class="video-list form-group">
                         <button class="btn btn-block btn-secondary" type="button" data-toggle="collapse" data-target="#vlist1" aria-expanded="false" aria-controls="vlist1">Primera parte</button>
-                        <div class="collapse" id="vlist1">
+                        <div class="collapse show" id="vlist1">
                           <div class="card card-body">
                             <ul class="list list-unstyled mb-0">
                                 <li class="item my-1">
@@ -86,7 +87,7 @@
                         </div>
                     </div>
                     <div class="video-list form-group">
-                        <button class="btn btn-block btn-secondary" type="button" data-toggle="collapse" data-target="#vlist2" aria-expanded="false" aria-controls="vlist2">Primera parte</button>
+                        <button class="btn btn-block btn-secondary" type="button" data-toggle="collapse" data-target="#vlist2" aria-expanded="false" aria-controls="vlist2">Segunda parte</button>
                         <div class="collapse" id="vlist2">
                           <div class="card card-body">
                             <ul class="list list-unstyled mb-0">
@@ -114,7 +115,7 @@
                         </div>
                     </div>
                     <div class="video-list form-group">
-                        <button class="btn btn-block btn-secondary" type="button" data-toggle="collapse" data-target="#vlist3" aria-expanded="false" aria-controls="vlist3">Primera parte</button>
+                        <button class="btn btn-block btn-secondary" type="button" data-toggle="collapse" data-target="#vlist3" aria-expanded="false" aria-controls="vlist3">Tercera parte</button>
                         <div class="collapse" id="vlist3">
                           <div class="card card-body">
                             <ul class="list list-unstyled mb-0">
@@ -305,7 +306,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
     <div class="col-12 col-md-6 mb-4">
         <div class="card shadow h-100">
