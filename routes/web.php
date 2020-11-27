@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::get('/rituales', [App\Http\Controllers\RitualController::class, 'index'])->name('ritual');
 Route::get('/', [App\Http\Controllers\RitualController::class, 'index'])->name('ritual');
 
