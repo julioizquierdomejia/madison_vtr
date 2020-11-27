@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 use App\Models\Ritual;
 use App\Models\RitualObjective;
 use App\Models\RitualStatus;
