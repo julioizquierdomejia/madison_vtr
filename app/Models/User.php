@@ -44,4 +44,12 @@ class User extends Authenticatable
     public function roles(){
         return $this->belongsToMany(Role::class);
     }
+
+    public function info(){
+        return $this->oneToOne(InfoUser::class);
+    }
+
+    public function plans(){
+        return $this->belongsToMany(Plan::class);
+    }
 }
