@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Video;
 use App\Models\VideoStatus;
+use App\Models\RitualObjective;
 
 class VideoController extends Controller
 {
@@ -21,9 +22,12 @@ class VideoController extends Controller
             ->join('video_status', 'video_status.id', '=', 'videos.video_status_id')
             ->select('videos.*', 'video_types.name as video_type', 'video_status.name as status', 'videos.video_status_id')
             ->get();
+
+        $objectives = RitualObjective::where('enabled', 1)->get();
+
         $status = VideoStatus::all();
 
-        return view('admin.videos.index', compact('videos', 'status'));
+        return view('admin.videos.index', compact('videos', 'status', 'objectives'));
     }
 
     /**

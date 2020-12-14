@@ -1,6 +1,3 @@
-
-
-
 <!-- Sidebar -->
 <ul class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion" id="accordionSidebar">
     <!-- Sidebar - Brand -->
@@ -9,22 +6,28 @@
             <img class="img-profile rounded-circle" src="/online/img/undraw_profile.svg" width="50">
         </div>
         <div class="sidebar-brand-text mx-3 pt-3">
-            <span class="mr-2 d-inline-block small align-middle">{{auth()->user()->name}} <br>{{auth()->user()->email}}</span>
+            <span class="mr-2 d-inline-block small align-middle" title="{{auth()->user()->email}}">{{auth()->user()->name}} <br>{{auth()->user()->email}}</span>
             <i class="fas fa-fw fa-cog align-middle"></i>
         </div>
     </a>
 
-    @if(Auth::user()->roles->first()->name == 'admin')
+    @if(Auth::user()->roles->first()->name == 'superadmin')
         <li class="nav-item{{request()->segment(1) == 'clientes' ? ' active' : '' }}">
             <a class="nav-link" href="/clientes">
                 <i class="fas fa-user-friends"style="color: #FBB911" ></i>
                 <span>CLIENTES</span>
             </a>
         </li>
-        <li class="nav-item{{request()->segment(1) == 'planes' ? ' active' : '' }}">
+        {{-- <li class="nav-item{{request()->segment(1) == 'planes' ? ' active' : '' }}">
             <a class="nav-link" href="/planes">
                 <i class="fas fa-tags" style="color: #E72E7A"></i>
                 <span>PLANES</span>
+            </a>
+        </li> --}}
+        <li class="nav-item{{request()->segment(1) == 'videos' ? ' active' : '' }}">
+            <a class="nav-link" href="/videos">
+                <i class="fas fa-fw fa-play" style="color: #E72E7A"></i>
+                <span>VÍDEOS</span>
             </a>
         </li>
     @endif
@@ -45,13 +48,6 @@
             <a class="nav-link" href="/rituales">
                 <i class="fas fa-fw fa-check-circle" style="color: #FBB911"></i>
                 <span>RITUALES</span>
-            </a>
-        </li>
-
-        <li class="nav-item{{request()->segment(1) == 'videos' ? ' active' : '' }}">
-            <a class="nav-link" href="/videos">
-                <i class="fas fa-fw fa-play" style="color: #E72E7A"></i>
-                <span>VÍDEOS</span>
             </a>
         </li>
 

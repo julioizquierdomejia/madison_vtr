@@ -31,6 +31,7 @@
                             <option value="{{$objective->id}}">{{$objective->name}}</option>
                             @endforeach
                         </select>
+                        <p class="error object-error" style="display: none;">Escoge un objetivo</p>
                     </div>
                     <div class="form-group">
                         <label class="mb-4" for="modo">¿Cómo Quieres armar el ritual?</label>
@@ -41,14 +42,17 @@
                             <label class="form-check-label" for="ritual_type_id{{$key}}"><span class="align-middle">{{$type->name}}</span></label>
                         </div>
                         @endforeach
+                        <p class="error ritual_types-error" style="display: none;">Escoge una opción</p>
                     </div>
                     <div class="form-group">
-                        <label class="mb-4" for="modo">Tercera parte</label>
-                        <input class="form-control" type="date" name="fecha" min="{{date('Y-m-d')}}" value="{{date('Y-m-d')}}">
-                        <i class="fa fa-date"></i>
+                        <div class="f-g">
+                            <label class="mb-4" for="modo">Tercera parte</label>
+                            <input class="form-control" type="date" name="fecha" min="{{date('Y-m-d')}}" value="{{date('Y-m-d')}}">
+                        </div>
+                        <p class="error date-error" style="display: none;">Escoge una fecha</p>
                     </div>
                     <div class="buttons text-right" role="tablist">
-                        <a class="btn btn-sm px-5 btn-primary shadow-sm" data-toggle="tab" href="#nav-armando1" role="tab">Siguiente <i class="fas fa-angle-right fa-sm"></i></a>
+                        <button class="btn btn-primary" type="button" data-step="1">Siguiente <i class="fas fa-angle-right fa-sm"></i></button>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="nav-armando1" role="tabpanel" aria-labelledby="nav-armando1-tab">
@@ -446,6 +450,31 @@
     $('#nav-tab').on('show.bs.tab', function (event) {
         var element = $(event.target);
         $('.card-steps .card-header h6 span').text(element.data('text'));
+    })
+
+    $('[data-step="1"]').on('click', function (event) {
+        if($('#objetivo').val().length == 0) {
+            console.log('object')
+            $('.object-error').show();
+            return;
+        } else {
+            $('.object-error').hide();
+        }
+        if($('[name=ritual_type_id]:checked').length == 0) {
+            console.log('ritual_types')
+            $('.ritual_types-error').show();
+            return;
+        } else {
+            $('.ritual_types-error').hide();
+        }
+        if($('[name=fecha]').val().length == 0) {
+            console.log('fecha')
+            $('.date-error').show();
+            return;
+        } else {
+            $('.date-error').hide();
+        }
+        $('#nav-armando1-tab').trigger('click')
     })
 </script>
 @endsection

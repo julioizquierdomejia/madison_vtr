@@ -22,6 +22,7 @@
         <div class="card-body">
           <h5 class="card-title">{{$cliente->name}}</h5>
           <p class="card-text">{{$cliente->email}}</p>
+          <p class="card-text"><span class="badge badge-primary">{{$cliente->plans->first()->name}}</span></p>
         </div>
       </div>
     </div>

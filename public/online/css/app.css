@@ -5045,18 +5045,18 @@ input[type=button].btn-block {
   border-bottom: 1px solid #e3e6f0;
 }
 
-.card-header h6 {
-  color: white;
-}
-
 .card-header:first-child {
   border-radius: calc(0.35rem - 1px) calc(0.35rem - 1px) 0 0;
 }
 
+.card-header h6 {
+  color: white;
+}
+
 .card-header .form-control {
   background: transparent;
-  border-color: #c29415;
-  color: #9f7912;
+  border-color: #fff;
+  color: #fff;
   font-size: 13px;
   font-weight: 700;
   line-height: 1.2;
@@ -5066,8 +5066,8 @@ input[type=button].btn-block {
 
 .card-header .custom-file-label {
   background-color: transparent;
-  border-color: #c29415;
-  color: #9f7912;
+  border-color: #fff;
+  color: #fff;
 }
 
 .card-footer {
@@ -11705,6 +11705,12 @@ a:focus {
   color: rgba(255, 255, 255, 0.5);
 }
 
+.sidebar .sidebar-brand-text .small {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 @media (min-width: 768px) {
   .sidebar {
     width: 14rem !important;
@@ -12212,11 +12218,10 @@ form.user .btn-user {
 }
 
 .error {
-  color: #5a5c69;
-  font-size: 7rem;
+  color: #e3342f;
+  font-size: 12px;
   position: relative;
   line-height: 1;
-  width: 12.5rem;
 }
 
 @-webkit-keyframes noise-anim {

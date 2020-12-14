@@ -2,7 +2,7 @@
 @section('content')
 <div class="row">
     <div class="col-12 col-md-6">
-        <div class="card shadow card-steps mb-4">
+        <form class="card shadow card-steps mb-4" action="/videos" method="POST">
             <nav class="card-header py-3 d-flex align-items-center" style="background-color: #E72F77;">
                 <h6 class="m-0 font-weight-bold"><span>Subir un vídeo</span></h6>
                 <div class="input-group ml-auto col-6 col-md-7">
@@ -10,7 +10,7 @@
                         <span class="input-group-text"><i class="fas fa-upload"></i></span>
                     </div>
                     <div class="custom-file">
-                        <input type="file" accept="application/pdf" class="custom-file-input" id="inputGroupFile"
+                        <input type="file" accept="video/mp4,video/x-m4v,video/*" class="custom-file-input" id="inputGroupFile"
                         aria-describedby="inputGroupFile" name="upload_file">
                         <label class="custom-file-label" for="inputGroupFile">Seleccionar archivo</label>
                     </div>
@@ -28,6 +28,15 @@
                 </div>
             </nav>
             <div class="card-body">
+                {{-- <div class="form-group">
+                    <label class="mb-4" for="objetivo">Empieza escogiendo un objetivo</label>
+                    <select class="form-control" name="objetivo" id="objetivo">
+                        @foreach($objectives as $objective)
+                        <option value="{{$objective->id}}">{{$objective->name}}</option>
+                        @endforeach
+                    </select>
+                    <p class="error object-error" style="display: none;">Escoge un objetivo</p>
+                </div> --}}
                 <p><strong>Revisa las especificaciones</strong></p>
                 <ul class="list list-unstyled">
                     <li class="item my-3 d-flex justify-content-between">
@@ -47,7 +56,7 @@
                     <button class="btn btn-dark btn-sm px-5 btn-upload"><span class="px-md-4">Subir</span></button>
                 </div>
             </div>
-        </div>
+        </form>
         <div class="card shadow card-steps mb-4">
             <div class="card-header py-3 d-flex align-items-center justify-content-between" style="background-color: #E72F77;">
                 <h6 class="m-0 font-weight-bold"><span>Solicitar un vídeo</span></h6>

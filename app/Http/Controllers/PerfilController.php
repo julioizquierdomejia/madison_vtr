@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\PlanUser;
+use App\Models\InfoUser;
 
 class PerfilController extends Controller
 {
@@ -23,6 +26,7 @@ class PerfilController extends Controller
      */
     public function index()
     {
+        $user = \Auth::user();
         return view('admin.perfil.index');
     }
 }
