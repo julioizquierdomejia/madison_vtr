@@ -32,7 +32,7 @@
         </li>
     @endif
 
-    @if(Auth::user()->roles->first()->name == 'superadmin')
+    @if(Auth::user()->roles->first()->name == 'admin')
         <!-- Nav Item - Dashboard -->
         {{-- <li class="nav-item active">
             <a class="nav-link" href="/">
