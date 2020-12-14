@@ -14,7 +14,7 @@
         </div>
     </a>
 
-    @if(Auth::user()->roles->first()->name == 'admin')
+    @if(Auth::user()->roles->first()->name == 'superadmin')
         <li class="nav-item{{request()->segment(1) == 'clientes' ? ' active' : '' }}">
             <a class="nav-link" href="/clientes">
                 <i class="fas fa-user-friends"style="color: #FBB911" ></i>
@@ -29,7 +29,7 @@
         </li>
     @endif
 
-    @if(Auth::user()->roles->first()->name == 'superadmin')
+    @if(Auth::user()->roles->first()->name == 'admin')
         <!-- Nav Item - Dashboard -->
         {{-- <li class="nav-item active">
             <a class="nav-link" href="/">
