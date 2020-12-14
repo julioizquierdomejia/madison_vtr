@@ -11,7 +11,14 @@ class Video extends Model
 
     protected $fillable = [
         'name',
-        'enabled'
+        'file',
+        'description',
+        'video_type_id',
+        'video_status_id',
+        'format',
+        //'quality',
+        //'audio',
+        'enabled',
     ];
 
     protected $dates = [
