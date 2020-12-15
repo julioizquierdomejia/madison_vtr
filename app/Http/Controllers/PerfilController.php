@@ -55,6 +55,7 @@ class PerfilController extends Controller
         $user_info = InfoUser::where('user_id', $user->id)->first();
         if ($user_info == null) {
             $user_info = new InfoUser();
+            $user_info->user_id = $user->id;
         }
         $user_info->empresa = $request->get('empresa');
         $user_info->cargo = $request->get('cargo');
