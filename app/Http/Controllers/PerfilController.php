@@ -40,7 +40,7 @@ class PerfilController extends Controller
             'empresa' => 'required|min:3',
             'cargo' => 'required|min:3',
             'name' => 'required|min:3',
-            'email' => 'required|email|max:255|unique:users,email,'.$id,
+            //'email' => 'required|email|max:255|unique:users,email,'.$id,
         );
         $this->validate($request, $rules);
 
@@ -48,7 +48,7 @@ class PerfilController extends Controller
 
         $user = User::findOrFail($id);
         $user->name = $request->get('name');
-        $user->email = $request->get('email');
+        //$user->email = $request->get('email');
         //$user->password = bcrypt('12345678');
         $user->save();
         
@@ -72,6 +72,26 @@ class PerfilController extends Controller
 
         //return redirect()->back()->with('success', 'Profile updated.');
         return response()->json(['status'=>"success", 'user_id'=>$user_id]);
+    }
+
+    public function update_password(Request $request)
+    {
+        $id = \Auth::user()->id;
+
+        $rules = array(
+            'email' => 'required|email|max:255|unique:users,email,'.$id,
+            'password' => 'required|min:6',
+        );
+        $this->validate($request, $rules);
+
+        //$roles = $request->get('roles');
+
+        $user = User::findOrFail($id);
+        $user->email = $request->get('email');
+        $user->password = bcrypt($request->get('password'));
+        $user->save();
+
+        return response()->json(['status'=>"success", 'user'=>$user]);
     }
 
     public function upload_photo(Request $request)

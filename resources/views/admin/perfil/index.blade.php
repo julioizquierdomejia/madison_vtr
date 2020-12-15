@@ -23,13 +23,13 @@
                 </div>
             </div>
             <div class="card-body">
-                <p><strong>Utiliza el correo del trabajo</strong></p>
+                <p><strong>Actualiza tus datos de perfil.</strong></p>
                 <div class="form-group">
                 	<input class="form-control @error('name') is-invalid @enderror" type="text" name="name" placeholder="Nombre Administrador de la cuenta" value="{{$user->name}}">
                 </div>
-                <div class="form-group">
+                {{-- <div class="form-group">
                 	<input class="form-control @error('email') is-invalid @enderror" type="email" name="email" placeholder="Correo electrónico registrado" value="{{$user->email}}">
-                </div>
+                </div> --}}
                 <div class="form-group">
                 	<input class="form-control @error('cargo') is-invalid @enderror" type="text" name="cargo" placeholder="Cargo de la compañia" value="{{$user->info ? $user->info->cargo : ''}}">
                 </div>
@@ -38,7 +38,7 @@
                 </div>
                 <div class="form-group">
                     <div id="dzPhoto" class="dropzone">
-                        <div class="dz-default dz-message">Sube aquí tus imágenes</div>
+                        <div class="dz-default dz-message">Sube aquí tu foto.</div>
                     </div>
                 </div>
                 <div class="form-group">
@@ -73,7 +73,7 @@
         </form>
     </div>
     <div class="col-12 col-md-7 col-xl-8">
-    	<form class="card shadow mb-4" id="perfil_password" action="{{route('perfil.segurity')}}" enctype="multipart/form-data" method="POST">
+    	<form class="card shadow mb-4" id="frmSecurity" action="{{route('perfil.password')}}" enctype="multipart/form-data" method="POST">
             @csrf
     		<div class="card-header py-3 d-flex align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold"><span>Seguridad</span></h6>
@@ -90,11 +90,11 @@
                 </div>
             </div>
             <div class="card-body">
-                <p><strong>Actualiza o cambia los datos de tu acceso.</strong></p>
+                <p><strong>Actualiza tus datos de acceso.</strong></p>
                 <div class="row mb-2 align-items-center">
-                	<label class="col-12 col-md-6 mb-md-0" for="change_email">Cambiar correo registrado</label>
+                	<label class="col-12 col-md-6 mb-md-0" for="change_email">Correo</label>
                 	<div class="col-12 col-md-6 form-group">
-                		<input class="form-control" id="change_email" type="email" name="change_email" placeholder="Ingrese el nuevo correo">
+                		<input class="form-control" id="change_email" type="email" name="email" placeholder="Ingrese el correo">
                 	</div>
                 </div>
                 <div class="row mb-2 align-items-center">
@@ -104,9 +104,9 @@
                 	</div>
                 </div>
                 <div class="row mb-2 align-items-center">
-                	<label class="col-12 col-md-6 mb-md-0" for="new_password">Cambiar o actualizar contraseña</label>
+                	<label class="col-12 col-md-6 mb-md-0" for="new_password">Cambiar contraseña</label>
                 	<div class="col-12 col-md-6 form-group">
-                		<input class="form-control" id="new_password" type="password" name="new_password" placeholder="Nueva contraseña" value="123456">
+                		<input class="form-control" id="new_password" type="password" name="password" placeholder="Nueva contraseña" value="">
                 	</div>
                 </div>
                 <div class="form-group row text-right">
@@ -203,7 +203,7 @@ $(document).ready(function () {
                 },
                 error: function (data) {
                     var errors = data.responseJSON;
-                    errorsHtml = '<div class="alert alert-danger mb-0"><ul>';
+                    errorsHtml = '<div class="alert alert-danger mb-0"><ul class="mb-0">';
 
                     $.each( errors.errors, function( key, value ) {
                         errorsHtml += '<li>'+ value + '</li>'; //showing only the first error.
@@ -253,6 +253,44 @@ $(document).ready(function () {
           // Maybe show form again, and notify user of error
         });
     }
+    });
+
+    $("#frmSecurity").submit(function(event) {
+        event.preventDefault();
+        URL = $("#frmSecurity").attr('action');
+        formData = $('#frmSecurity').serialize();
+        $.ajax({
+            type: 'POST',
+            url: URL,
+            data: formData,
+            success: function(result) {
+                if(result.status == "success"){
+                    Swal.fire(
+                      'Seguridad',
+                      'Se actualizaron los datos de acceso',
+                      'success'
+                    ).then((result) => {
+                      $('#new_password').val('');
+                    })
+                } else {
+                    console.log("error");
+                }
+            },
+            error: function (data) {
+                var errors = data.responseJSON;
+                errorsHtml = '<div class="alert alert-danger"><ul class="mb-0">';
+
+                $.each( errors.errors, function( key, value ) {
+                    errorsHtml += '<li>'+ value + '</li>'; //showing only the first error.
+                });
+                errorsHtml += '</ul></div>';
+                Swal.fire(
+                  'Seguridad',
+                  errorsHtml,
+                  'error'
+                )
+            }
+        });
     });
 });
 </script>
