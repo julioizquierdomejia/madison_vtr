@@ -74,22 +74,27 @@ class PerfilController extends Controller
         return response()->json(['status'=>"success", 'user_id'=>$user_id]);
     }
 
-    public function update_password(Request $request)
+    public function security(Request $request)
     {
         $id = \Auth::user()->id;
 
         $rules = array(
-            'email' => 'required|email|max:255|unique:users,email,'.$id,
-            'password' => 'required|min:6',
+            'email' => 'nullable|email|max:255|unique:users,email,'.$id,
+            'password' => 'nullable|min:6',
         );
         $this->validate($request, $rules);
 
         //$roles = $request->get('roles');
 
         $user = User::findOrFail($id);
-        $user->email = $request->get('email');
-        $user->password = bcrypt($request->get('password'));
-        $user->save();
+        if ($request->get('email')) {
+            $user->email = $request->get('email');
+            $user->save();
+        }
+        if ($request->get('password')) {
+            $user->password = bcrypt($request->get('password'));
+            $user->save();
+        }
 
         return response()->json(['status'=>"success", 'user'=>$user]);
     }

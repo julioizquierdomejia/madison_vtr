@@ -73,7 +73,7 @@
         </form>
     </div>
     <div class="col-12 col-md-7 col-xl-8">
-    	<form class="card shadow mb-4" id="frmSecurity" action="{{route('perfil.password')}}" enctype="multipart/form-data" method="POST">
+    	<form class="card shadow mb-4" id="frmSecurity" action="{{route('perfil.security')}}" enctype="multipart/form-data" method="POST">
             @csrf
     		<div class="card-header py-3 d-flex align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold"><span>Seguridad</span></h6>
@@ -92,17 +92,23 @@
             <div class="card-body">
                 <p><strong>Actualiza tus datos de acceso.</strong></p>
                 <div class="row mb-2 align-items-center">
-                	<label class="col-12 col-md-6 mb-md-0" for="change_email">Correo</label>
+                    <label class="col-12 col-md-6 mb-md-0" for="actual_pass">Correo actual</label>
+                    <div class="col-12 col-md-6 form-group">
+                        <span class="current-email">{{Auth::user()->email}}</span>
+                    </div>
+                </div>
+                <div class="row mb-2 align-items-center">
+                	<label class="col-12 col-md-6 mb-md-0" for="change_email">Cambiar correo</label>
                 	<div class="col-12 col-md-6 form-group">
                 		<input class="form-control" id="change_email" type="email" name="email" placeholder="Ingrese el correo">
                 	</div>
                 </div>
-                <div class="row mb-2 align-items-center">
+                {{-- <div class="row mb-2 align-items-center">
                 	<label class="col-12 col-md-6 mb-md-0" for="actual_pass">Contraseña actual</label>
                 	<div class="col-12 col-md-6 form-group">
                 		<span>*********</span>
                 	</div>
-                </div>
+                </div> --}}
                 <div class="row mb-2 align-items-center">
                 	<label class="col-12 col-md-6 mb-md-0" for="new_password">Cambiar contraseña</label>
                 	<div class="col-12 col-md-6 form-group">
@@ -259,6 +265,9 @@ $(document).ready(function () {
         event.preventDefault();
         URL = $("#frmSecurity").attr('action');
         formData = $('#frmSecurity').serialize();
+        if($('#change_email').val().length == 0 && $('#new_password').val().length == 0) {
+            return;
+        }
         $.ajax({
             type: 'POST',
             url: URL,
@@ -269,8 +278,10 @@ $(document).ready(function () {
                       'Seguridad',
                       'Se actualizaron los datos de acceso',
                       'success'
-                    ).then((result) => {
+                    ).then((after) => {
                       $('#new_password').val('');
+                      $('#change_email').val('');
+                      $('.current-email').text(result.user.email);
                     })
                 } else {
                     console.log("error");
