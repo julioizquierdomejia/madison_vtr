@@ -6691,6 +6691,10 @@ input[type=button].btn-block {
   padding: 2px 10px;
 }
 
+.card-header .form-control option {
+  color: #000;
+}
+
 .card-header .custom-file-label {
   background-color: transparent;
   border-color: #fff;

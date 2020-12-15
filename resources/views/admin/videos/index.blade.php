@@ -1,4 +1,11 @@
 @extends('admin.layouts.app', ['title' => 'Vídeos'])
+@php
+    $roles = Auth::user()->roles->first();
+    $role = '';
+    if($roles) {
+        $role = $roles->name;
+    }
+@endphp
 @section('content')
 <div class="row">
     <div class="col-12 col-md-6">
@@ -26,9 +33,6 @@
                         <div class="dropdown-header">Información:</div>
                         <a class="dropdown-item" href="#">Action</a>
                     </div>
-                </div>
-                <div class="col-12 text-right">
-                    <p class="video-error pr-4 text-white mb-0 pt-2" style="display: none;">Mostrar vídeo</p>
                 </div>
             </nav>
             <div class="card-body">
@@ -61,7 +65,7 @@
                 </div>
             </div>
         </form>
-        <div class="card shadow card-steps mb-4">
+        {{-- <div class="card shadow card-steps mb-4">
             <div class="card-header py-3 d-flex align-items-center justify-content-between" style="background-color: #E72F77;">
                 <h6 class="m-0 font-weight-bold"><span>Solicitar un vídeo</span></h6>
                 <div class="dropdown no-arrow ml-2">
@@ -121,12 +125,12 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
     <div class="col-12 col-md-6 mb-4">
         <div class="card shadow h-100">
             <div class="card-header py-3 d-flex align-items-center" style="background-color: #E72F77;">
-                <h6 class="m-0 font-weight-bold">Estado de Vídeos</h6>
+                <h6 class="m-0 font-weight-bold">Listado de Vídeos</h6>
                 <div class="text-right ml-auto">
                     <select class="form-control" name="filter">
                         <option value="">Ver todos</option>
@@ -146,7 +150,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card-body" style="max-height: 600px;overflow-y: auto;">
+            <div class="card-body" style="max-height: 380px;overflow-y: auto;">
                 <ul class="list videos-list list-unstyled mb-0">
                     @if($videos->count())
                     @foreach($videos as $video)
@@ -168,7 +172,7 @@
                                 <p class="mb-0">{{$video->name}}</p>
                             </div>
                             <div class="col-4 btn-group">
-                                @if($video->video_status_id == 1)
+                                {{-- @if($video->video_status_id == 1)
                                 <button class="btn btn-sm btn-success shadow-sm h-100"><i class="fas fa-check d-block"></i> aprobar</button>
                                 <button class="btn btn-sm btn-danger shadow-sm h-100">hacer <br>cambios</button>
                                 @elseif($video->video_status_id == 2)
@@ -179,6 +183,10 @@
                                 <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-eye fa-2x text-danger d-block"></i> En revisión</button>
                                 @elseif($video->video_status_id == 5)
                                 <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-play fa-2x text-warning d-block"></i> En producción</button>
+                                @endif --}}
+                                @if ($role == 'superadmin')
+                                    <button class="btn btn-sm btn-success w-50 shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="{{ asset('uploads/videos/'.$video->file) }}"><i class="fas fa-eye d-block"></i> Ver</button>
+                                    <button class="btn btn-sm btn-danger w-50 shadow-sm h-100 btn-delete" data-id="{{$video->id}}"><i class="fas fa-trash d-block"></i> Eliminar</button>
                                 @endif
                             </div>
                         </div>
@@ -278,9 +286,63 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modalVideo" tabindex="-1" role="dialog" aria-labelledby="modalVideoLbl" aria-hidden="true">
+    <div class="modal-dialog modal-lg h-100" role="document" style="max-height: calc(100% - 63px)">
+        <div class="modal-content h-100">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalVideoLbl">Vídeo</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="embed-responsive embed-responsive-16by9 h-100 bg-dark"></div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @section('script')
 <script>
+    $('#modalVideo').on('show.bs.modal', function (event) {
+      $('#modalVideo .embed-responsive').html(
+        `<video controls class="embed-responsive-item item-video">
+            <source src="`+$(event.relatedTarget).data('video')+`" type="">
+        </video>`
+        )
+    })
+
+    $(document).on('click', '.btn-delete', function (event) {
+        var delete_id = $(this).data('id');
+        Swal.fire({
+            title: "Eliminar vídeo",
+            text: "¿Seguro de eliminar el vídeo?",
+            showCancelButton: true,
+            confirmButtonText: "Eliminar",
+            cancelButtonText: "Cancelar",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "POST",
+                    url: '/videos/' + delete_id + '/delete',
+                    data: {
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function (data) {
+                        if (data.status == 'success'){
+                            Swal.fire(
+                                '¡Vídeo Eliminado!',
+                                '',
+                                "success"
+                            );
+                            $(".videos-list #video-"+delete_id+"").remove();
+                        }
+                    }
+                });
+            }
+        });;
+    })
+
     $('#nav-tab').on('show.bs.tab', function (event) {
         var element = $(event.target);
         $('.card-steps .card-header h6 span').text(element.data('text'));
@@ -297,7 +359,11 @@
     $('.form-uploadvideo').submit(function (event) {
         event.preventDefault();
         if($('#videoUpload').val().length == 0) {
-            $('.video-error').show();
+            Swal.fire(
+              'Selecione un vídeo',
+              '',
+              'error'
+            )
             return;
         } else {
             $('.video-error').hide();
@@ -311,15 +377,17 @@
             processData: false,
             contentType: false,
             beforeSend: function (data) {
-                
+                $('.btn-upload').attr('disabled', true);
             },
             success: function (response) {
                 if(response.success) {
                     $('.videos-list').empty();
+                    $('#videoUpload').val('').change();
                     var videos = $.parseJSON(response.data);
                     $.each(videos, function (id, item) {
                         $('.videos-list').append(getList(item));
                     })
+                    $('.btn-upload').attr('disabled', false);
                 }
             },
             error: function (request, status, error) {
@@ -348,7 +416,7 @@
                                 <p class="mb-0">`+video.name+`</p>
                             </div>
                             <div class="col-4 btn-group">`;
-                            if(video.video_status_id == 1) {
+                            /*if(video.video_status_id == 1) {
                                 html += `<button class="btn btn-sm btn-success shadow-sm h-100"><i class="fas fa-check d-block"></i> aprobar</button>
                                 <button class="btn btn-sm btn-danger shadow-sm h-100">hacer <br>cambios</button>`;
                             } else if (video.video_status_id == 2) {
@@ -359,7 +427,11 @@
                                 html += `<button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-eye fa-2x text-danger d-block"></i> En revisión</button>`;
                             } else if(video.video_status_id == 5) {
                                 html += `<button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-play fa-2x text-warning d-block"></i> En producción</button>`;
-                            }
+                            }*/
+                            @if ($role == 'superadmin')
+                            html += `<button class="btn btn-sm btn-success w-50 shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="/uploads/videos/`+video.file+`"><i class="fas fa-eye d-block"></i> Ver</button>
+                            <button class="btn btn-sm btn-danger w-50 shadow-sm h-100 btn-delete" data-id="`+video.id+`"><i class="fas fa-trash d-block"></i> Eliminar</button>`;
+                            @endif
                             html += `</div>
                         </div>
                     </li>`;

@@ -119,30 +119,28 @@ class VideoController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Video  $area
+     * @param  \App\Models\Video  $video
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
         //
-        $area = Client::findOrFail($id);
+        $video = Video::findOrFail($id);
 
-        return view('videos.show', compact('area'));
+        return view('videos.show', compact('video'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Video  $area
+     * @param  \App\Models\Video  $video
      * @return \Illuminate\Http\Response
      */
     public function edit(Request $request, $id)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin']);
-        $videos = Video::where('enabled', 1)->get();
-        $services = Service::where('enabled', 1)->where('area_id', $id)->get();
-        $area = Video::findOrFail($id);
-        return view('videos.edit', compact('area', 'videos', 'services'));
+        $video = Video::findOrFail($id);
+        return view('videos.edit', compact('video'));
     }
 
     /**
@@ -165,28 +163,33 @@ class VideoController extends Controller
         $this->validate($request, $rules);
 
         // update
-        $area = Video::findOrFail($id);
-        $original_data = $area->toArray();
+        $video = Video::findOrFail($id);
+        $original_data = $video->toArray();
 
-        $area->name       = $request->get('name');
-        $area->enabled    = $request->get('enabled');
-        $area->save();
+        $video->name       = $request->get('name');
+        $video->enabled    = $request->get('enabled');
+        $video->save();
 
-        activitylog('videos', 'update', $original_data, $area->toArray());
+        activitylog('videos', 'update', $original_data, $video->toArray());
 
         // redirect
-        \Session::flash('message', 'Successfully updated area!');
+        \Session::flash('message', 'Successfully updated video!');
         return redirect('videos');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Video  $area
+     * @param  \App\Models\Video  $video
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Video $area)
+    public function destroy(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        //$request->user()->authorizeRoles(['superadmin', 'admin']);
+        $video = Video::findOrFail($id);
+        $video->enabled = 0;
+        $video->save();
+
+        return response()->json(['status'=>"success", 'data'=>$video]);
     }
 }

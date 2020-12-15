@@ -4578,6 +4578,9 @@ input[type="button"].btn-block {
     line-height: 1.2;
     height: 30px;
     padding: 2px 10px;
+    option {
+      color: $black;
+    }
   }
 
   .custom-file-label {
