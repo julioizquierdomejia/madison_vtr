@@ -99,23 +99,24 @@ class PerfilController extends Controller
         $photo = $request->file('file');
         if($photo) {
             //here we are geeting userid alogn with an image
-            $userid = $request->get('userid');
+            $userid = \Auth::user()->id;
 
             $imageName = strtotime(now()).rand(11111,99999).'.'.$photo->getClientOriginalExtension();
-            $user_image = new InfoUser();
             $original_name = $photo->getClientOriginalName();
-            $user_image->photo = $imageName;
 
             if(!is_dir(public_path() . '/uploads/photos/'.$userid.'/')){
                 mkdir(public_path() . '/uploads/photos/'.$userid.'/', 0777, true);
             }
-        $new_path = '/uploads/photos/'.$userid.'/';
-        $photo->move(public_path() . $new_path, $imageName);
+            $new_path = '/uploads/photos/'.$userid.'/';
+            $photo->move(public_path() . $new_path, $imageName);
 
-        // we are updating our image column with the help of user id
-        $user_image->where('user_id', $userid)->update(['photo'=>$imageName]);
+            // we are updating our image column with the help of user id
+            InfoUser::where('user_id', $userid)
+                    ->update(['photo'=>$imageName]);
 
-        return response()->json(['status'=>"success",'photo'=>$new_path.$imageName,'userid'=>$userid]);
+            $user_info = InfoUser::where('user_id', $userid)->first();
+
+            return response()->json(['status'=>"success",'photo'=>$new_path.$user_info->photo,'userid'=>$userid]);
         }
     }
 }

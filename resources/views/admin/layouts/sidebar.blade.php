@@ -1,5 +1,5 @@
 @php
-    $photo = Auth::user()->info ? Auth::user()->info->first()->photo : ''
+    $photo = Auth::user()->info ? Auth::user()->info->photo : '';
 @endphp
 <!-- Sidebar -->
 <ul class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion" id="accordionSidebar">
@@ -7,7 +7,7 @@
     <a class="sidebar-brand pt-0" href="/perfil">
         <div class="sidebar-brand-icon rotate-n-15">
             @if ($photo)
-                <img class="img-profile rounded-circle" src="/uploads/photos/{{Auth::user()->id.'/'.$photo}}" width="50">
+                <img class="img-profile rounded-circle" src="{{ asset('uploads/photos') }}/{{Auth::user()->id.'/'.$photo}}" width="50">
             @else
             <img class="img-profile rounded-circle" src="/online/img/undraw_profile.svg" width="50">
             @endif
