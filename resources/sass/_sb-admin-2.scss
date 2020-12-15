@@ -212,6 +212,7 @@ figure {
 img {
   vertical-align: middle;
   border-style: none;
+  height: auto;
 }
 
 svg {
@@ -1845,7 +1846,7 @@ pre code {
   font-size: 0.825rem;
   font-weight: 400;
   line-height: 1.5;
-  color: #6e707e;
+  color: $black;
   background-color: #fff;
   background-clip: padding-box;
   border: 2px solid #d1d3e2;
@@ -4513,14 +4514,14 @@ input[type="button"].btn-block {
 
 .card > .list-group:first-child {
   border-top-width: 0;
-  border-top-left-radius: calc(0.35rem - 1px);
-  border-top-right-radius: calc(0.35rem - 1px);
+  border-top-left-radius: 0.8rem;
+  border-top-right-radius: 0.8rem;
 }
 
 .card > .list-group:last-child {
   border-bottom-width: 0;
-  border-bottom-right-radius: calc(0.35rem - 1px);
-  border-bottom-left-radius: calc(0.35rem - 1px);
+  border-bottom-right-radius: 0.8rem;
+  border-bottom-left-radius: 0.8rem;
 }
 
 .card > .card-header + .list-group,
@@ -4561,7 +4562,7 @@ input[type="button"].btn-block {
   background-color: #FCBD0B;
   border-bottom: 1px solid #e3e6f0;
   &:first-child {
-    border-radius: calc(0.35rem - 1px) calc(0.35rem - 1px) 0 0;
+    border-radius: 0.8rem 0.8rem 0 0;
   }
 
   h6{
@@ -4593,7 +4594,7 @@ input[type="button"].btn-block {
 }
 
 .card-footer:last-child {
-  border-radius: 0 0 calc(0.35rem - 1px) calc(0.35rem - 1px);
+  border-radius: 0 0 0.8rem 0.8rem;
 }
 
 .card-header-tabs {
@@ -4615,7 +4616,7 @@ input[type="button"].btn-block {
   bottom: 0;
   left: 0;
   padding: 1.25rem;
-  border-radius: calc(0.35rem - 1px);
+  border-radius: 0.8rem;
 }
 
 .card-img,
@@ -4627,14 +4628,14 @@ input[type="button"].btn-block {
 
 .card-img,
 .card-img-top {
-  border-top-left-radius: calc(0.35rem - 1px);
-  border-top-right-radius: calc(0.35rem - 1px);
+  border-top-left-radius: 0.8rem;
+  border-top-right-radius: 0.8rem;
 }
 
 .card-img,
 .card-img-bottom {
-  border-bottom-right-radius: calc(0.35rem - 1px);
-  border-bottom-left-radius: calc(0.35rem - 1px);
+  border-bottom-right-radius: 0.8rem;
+  border-bottom-left-radius: 0.8rem;
 }
 
 .card-deck .card {

@@ -14,6 +14,7 @@ class InfoUser extends Model
         'user_id',
         'empresa',
         'cargo',
+        'photo',
     ];
 
 

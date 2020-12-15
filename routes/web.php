@@ -36,6 +36,9 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::get('/soporte', [App\Http\Controllers\SupportController::class, 'index'])->name('soporte');
 
 	Route::get('/perfil', [App\Http\Controllers\PerfilController::class, 'index'])->name('perfil');
+	Route::post('/perfil', [App\Http\Controllers\PerfilController::class, 'update'])->name('perfil.update');
+	Route::post('/segurity', [App\Http\Controllers\PerfilController::class, 'segurity'])->name('perfil.segurity');
+	Route::post('/foto', [App\Http\Controllers\PerfilController::class, 'upload_photo'])->name('perfil.photo');
 
 	Route::get('/planes', [App\Http\Controllers\PlanController::class, 'index'])->name('planes');
 	//Route::get('/clientes', [App\Http\Controllers\ClientController::class, 'index'])->name('clientes');

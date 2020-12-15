@@ -16,9 +16,20 @@
 
 <div class="row row-cols-1 row-cols-md-4 mt-4">
   @foreach($clientes as $cliente)
+  @if ($cliente->id == 1)
+    @continue
+  @endif
     <div class="col mb-4">
       <div class="card">
-        <img src="..." class="card-img-top" alt="...">
+        <div class="card-image text-center bg-light card-img-top d-table w-100">
+          <div class="d-table-cell align-middle" style="height: 150px">
+          @if ($cliente->photo)
+          <img src="{{$cliente->photo}}" class="card-img-top" alt="{{$cliente->name}}">
+          @else
+          <i class="fas fa-play fa-2x py-3"></i>
+          @endif
+          </div>
+        </div>
         <div class="card-body">
           <h5 class="card-title">{{$cliente->name}}</h5>
           <p class="card-text">{{$cliente->email}}</p>
