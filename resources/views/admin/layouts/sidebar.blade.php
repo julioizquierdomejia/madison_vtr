@@ -1,9 +1,12 @@
+@php
+    $photo = Auth::user()->info ? Auth::user()->info->first()->photo : ''
+@endphp
 <!-- Sidebar -->
 <ul class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion" id="accordionSidebar">
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand pt-0" href="/perfil">
         <div class="sidebar-brand-icon rotate-n-15">
-            @if ($photo = Auth::user()->info->first()->photo)
+            @if ($photo)
                 <img class="img-profile rounded-circle" src="/uploads/photos/{{Auth::user()->id.'/'.$photo}}" width="50">
             @else
             <img class="img-profile rounded-circle" src="/online/img/undraw_profile.svg" width="50">

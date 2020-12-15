@@ -185,7 +185,7 @@ $(document).ready(function () {
                 type: 'POST',
                 url: URL,
                 data: formData,
-                success: function(result){
+                success: function(result) {
                     if(result.status == "success"){
                         // fetch the useid 
                         userid = result.user_id;
@@ -200,6 +200,20 @@ $(document).ready(function () {
                     } else {
                         console.log("error");
                     }
+                },
+                error: function (data) {
+                    var errors = data.responseJSON;
+                    errorsHtml = '<div class="alert alert-danger mb-0"><ul>';
+
+                    $.each( errors.errors, function( key, value ) {
+                        errorsHtml += '<li>'+ value + '</li>'; //showing only the first error.
+                    });
+                    errorsHtml += '</ul></div>';
+                    Swal.fire(
+                      'Mi Perfil',
+                      errorsHtml,
+                      'error'
+                    )
                 }
             });
         });

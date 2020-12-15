@@ -34,15 +34,15 @@ class PerfilController extends Controller
 
     public function update(Request $request)
     {
-        try {
         $id = \Auth::user()->id;
-        $request->validate([
+
+        $rules = array(
             'empresa' => 'required|min:3',
             'cargo' => 'required|min:3',
             'name' => 'required|min:3',
             'email' => 'required|email|max:255|unique:users,email,'.$id,
-            //'roles' => 'required|array',
-        ]);
+        );
+        $this->validate($request, $rules);
 
         //$roles = $request->get('roles');
 
@@ -53,6 +53,9 @@ class PerfilController extends Controller
         $user->save();
         
         $user_info = InfoUser::where('user_id', $user->id)->first();
+        if ($user_info == null) {
+            $user_info = new InfoUser();
+        }
         $user_info->empresa = $request->get('empresa');
         $user_info->cargo = $request->get('cargo');
         $user_info->save();
@@ -67,9 +70,6 @@ class PerfilController extends Controller
         }*/
 
         //return redirect()->back()->with('success', 'Profile updated.');
-        } catch (\Exception $e) {
-            return response()->json(['status'=>'exception', 'msg'=>$e->getMessage()]);
-        }
         return response()->json(['status'=>"success", 'user_id'=>$user_id]);
     }
 
