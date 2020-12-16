@@ -95,7 +95,7 @@
         </li>
     @endif
 
-    @if(Auth::user()->roles->first()->name == 'editor')
+    @if(Auth::user()->roles->first()->name == 'user')
     @endif
 
 
