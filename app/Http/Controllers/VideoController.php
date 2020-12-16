@@ -52,6 +52,8 @@ class VideoController extends Controller
     {
        $rules = array(
             'video'       => 'required|mimes:mp4,mov,ogg,qt | max:1000000',
+            'part'      => 'required|integer|in:1,2,3,4',
+            'objective'      => 'required|integer',
             //'enabled'      => 'boolean|required',
         );
         $this->validate($request, $rules);
@@ -64,10 +66,12 @@ class VideoController extends Controller
         $video->name = str_replace('.'.$ext, "", $uniqueFileName);
         $video->file = $uniqueFileName;
         $video->description = $uniqueFileName;
-        $video->enabled = 1;
+        $video->part = $request->get('part');
+        $video->objective_id = $request->get('objective');
         $video->format = $file->getMimeType();
         $video->video_type_id = 1; //Subido
         $video->video_status_id = 1; //Subido
+        $video->enabled = 1;
         $video->save();
 
         $file->move(public_path('uploads/videos'), $uniqueFileName);

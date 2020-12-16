@@ -36,7 +36,7 @@
                 </div>
             </nav>
             <div class="card-body">
-                {{-- <div class="form-group">
+                <div class="form-group">
                     <label class="mb-4" for="objetivo">Empieza escogiendo un objetivo</label>
                     <select class="form-control" name="objetivo" id="objetivo">
                         @foreach($objectives as $objective)
@@ -44,7 +44,17 @@
                         @endforeach
                     </select>
                     <p class="error object-error" style="display: none;">Escoge un objetivo</p>
-                </div> --}}
+                </div>
+                <div class="form-group">
+                    <label class="mb-4" for="parte">Parte</label>
+                    <select class="form-control" name="parte" id="parte">
+                        <option value="1">Parte 1</option>
+                        <option value="2">Parte 2</option>
+                        <option value="3">Parte 3</option>
+                        <option value="4">Parte 4</option>
+                    </select>
+                    <p class="error part-error" style="display: none;">Escoge la parte a la que pertenece el vídeo</p>
+                </div>
                 <p><strong>Revisa las especificaciones</strong></p>
                 <ul class="list list-unstyled">
                     <li class="item my-3 d-flex justify-content-between">

@@ -26,6 +26,7 @@ class CreateVideosTable extends Migration
             $table->foreign('video_status_id')->references('id')->on('video_status');
 
             $table->string('format');
+            $table->integer('part');
             //$table->string('quality');
             //$table->string('audio');
 

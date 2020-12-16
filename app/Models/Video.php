@@ -18,6 +18,7 @@ class Video extends Model
         'format',
         //'quality',
         //'audio',
+        'part',
         'enabled',
     ];
 
