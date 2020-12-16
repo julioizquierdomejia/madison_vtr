@@ -1,5 +1,10 @@
 @extends('admin.layouts.app', ['title' => 'Home'])
 @section('content')
+@php
+  $role = \Auth::user()->roles->first()->name;
+  $empresa = $role == 'admin' ? \Auth::user()->info->empresa : '';
+  $plan_id = $role == 'admin' ? \Auth::user()->plans->first()->id : '';
+@endphp
 
 <h1>Clientes</h1>
 
@@ -19,9 +24,9 @@
         @csrf
 
         <div class="form-row">
-          <div class="form-group col-md-6">
+          <div class="form-group col-md-6 @if ($role == 'admin') d-none @endif">
             <label for="empresa">Razon Social</label>
-            <input type="text" class="form-control" id="empresa" name='empresa' placeholder="Nombre de la empresa" value="{{old('empresa')}}" 
+            <input type="text" class="form-control" id="empresa" name='empresa' placeholder="Nombre de la empresa" value="{{old('empresa', $empresa)}}" 
             @error('empresa') style="border:1px solid red"@enderror>
             @error('empresa')
               <span class="text-danger"><i class="fas fa-exclamation-circle mr-1 mt-2"></i>{{$message}}</span>
@@ -30,7 +35,7 @@
           
           <div class="form-group col-md-6">
             <label for="cargo">Cargo</label>
-            <input type="text" class="form-control" id="cargo" name='cargo' placeholder="Nombre de usuario" value="{{old('cargo')}}"
+            <input type="text" class="form-control" id="cargo" name='cargo' placeholder="Cargo" value="{{old('cargo')}}"
             @error('cargo') style="border:1px solid red"@enderror>
             @error('cargo')
               <span class="text-danger"><i class="fas fa-exclamation-circle mr-1 mt-2"></i>{{$message}}</span>
@@ -71,18 +76,20 @@
         @endforeach
         </div>
         @endif
-
+        
+        @if ($role == 'admin')
         <div class="f-c-list form-group" @error('plan_id') style="border:1px solid red;padding: 0 10px"@enderror>
         <h4 class="h6">Plan</h4>
         @foreach($planes as $key => $plan)
         <div class="form-check form-check-inline mt-2 mb-4">
-          <input class="form-check-input" type="radio" name="plan_id" id="plan{{$plan->id}}" value="{{$plan->id}}" {{old('plan_id') == $plan->id ? 'checked' : ''}}>
+          <input class="form-check-input" type="radio" name="plan_id" id="plan{{$plan->id}}" value="{{$plan->id}}" {{old('plan_id', $plan_id) == $plan->id ? 'checked' : ''}}>
           <label class="form-check-label" for="plan{{$plan->id}}">
             {{$plan->name}}
           </label>
         </div>
         @endforeach
       </div>
+      @endif
         
 
         <button type="submit" class="btn btn-primary">Registrar</button>

@@ -57,7 +57,7 @@ class ClientController extends Controller
 
         $request->validate([
             'empresa' => 'required|min:3',
-            'cargo' => 'required|min:3',
+            'cargo' => 'nullable|min:3',
             'name' => 'required|min:3',
             'email' => 'required|email|max:255|unique:users',
             'plan_id' => 'required|exists:plans,id',
