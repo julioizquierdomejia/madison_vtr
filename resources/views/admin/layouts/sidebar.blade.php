@@ -1,5 +1,6 @@
 @php
     $photo = Auth::user()->info ? Auth::user()->info->photo : '';
+    $role = Auth::user()->roles->first()->name;
 @endphp
 <!-- Sidebar -->
 <ul class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion" id="accordionSidebar">
@@ -18,11 +19,11 @@
         </div>
     </a>
 
-    @if(Auth::user()->roles->first()->name == 'superadmin')
+    @if($role == 'admin' || $role == 'superadmin')
         <li class="nav-item{{request()->segment(1) == 'clientes' ? ' active' : '' }}">
             <a class="nav-link" href="/clientes">
                 <i class="fas fa-user-friends"style="color: #FBB911" ></i>
-                <span>CLIENTES</span>
+                <span>{{$role == 'admin' ? 'USUARIOS' : 'CLIENTES'}}</span>
             </a>
         </li>
         {{-- <li class="nav-item{{request()->segment(1) == 'planes' ? ' active' : '' }}">
@@ -39,7 +40,7 @@
         </li>
     @endif
 
-    @if(Auth::user()->roles->first()->name == 'admin')
+    @if($role == 'admin')
         <!-- Nav Item - Dashboard -->
         {{-- <li class="nav-item active">
             <a class="nav-link" href="/">
@@ -71,7 +72,7 @@
         </li>
     @endif
 
-    @if(Auth::user()->roles->first()->name == 'editor')
+    @if($role == 'editor')
         <!-- Nav Item - Dashboard -->
         {{-- <li class="nav-item active">
             <a class="nav-link" href="/">
@@ -98,7 +99,7 @@
         </li>
     @endif
 
-    @if(Auth::user()->roles->first()->name == 'editor')
+    @if($role == 'editor')
     @endif
 
 

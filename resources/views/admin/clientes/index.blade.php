@@ -26,14 +26,14 @@
           @if ($cliente->photo)
           <img src="{{$cliente->photo}}" class="card-img-top" alt="{{$cliente->name}}">
           @else
-          <i class="fas fa-play fa-2x py-3"></i>
+          <i class="far fa-user fa-3x py-3"></i>
           @endif
           </div>
         </div>
         <div class="card-body">
           <h5 class="card-title">{{$cliente->name}}</h5>
           <p class="card-text">{{$cliente->email}}</p>
-          <p class="card-text"><span class="badge badge-primary">{{$cliente->plans->first()->name}}</span></p>
+          <p class="card-text"><span class="badge badge-primary">{{$cliente->plans->count() ? $cliente->plans->first()->name : ''}}</span></p>
         </div>
       </div>
     </div>

@@ -5,8 +5,8 @@
 @section('content')
 <link rel="stylesheet" href="{{ asset('online/dropzone/dropzone.min.css') }}" />
 <div class="row">
-	<div class="col-12 col-md-5 col-xl-4">
-        <form class="card shadow mb-4 h-100" id="frmPerfil" action="{{route('perfil.update')}}" method="POST" enctype="multipart/form-data">
+	<div class="col-12 col-md-5 col-xl-4 mb-4">
+        <form class="card shadow h-100" id="frmPerfil" action="{{route('perfil.update')}}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="card-header py-3 d-flex align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold"><span>Perfil</span></h6>
@@ -41,7 +41,7 @@
                         <div class="dz-default dz-message">Sube aquí tu foto.</div>
                     </div>
                 </div>
-                <div class="form-group">
+                {{-- <div class="form-group">
                 	<label>
                 		delegar rol de aministrador
                 		<input type="checkbox" name="rol" value="1">
@@ -63,7 +63,7 @@
                 		<label for="date_from">Hasta</label>
                 		<input class="form-control" id="date_to" type="date" name="date_from" placeholder="DD/MM/AA">
                 	</div>
-                </div>
+                </div> --}}
                 <div class="form-group row text-right">
                 	<div class="col-12 col-md-6 ml-md-auto">
                 		<button class="btn btn-primary btn-block" id="btnPerfil" type="submit">Guardar</button>
@@ -72,7 +72,7 @@
             </div>
         </form>
     </div>
-    <div class="col-12 col-md-7 col-xl-8">
+    <div class="col-12 col-md-7 col-xl-8 mb-4">
     	<form class="card shadow mb-4" id="frmSecurity" action="{{route('perfil.security')}}" enctype="multipart/form-data" method="POST">
             @csrf
     		<div class="card-header py-3 d-flex align-items-center justify-content-between">

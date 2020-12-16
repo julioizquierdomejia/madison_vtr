@@ -45,6 +45,8 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	//Route::get('/clientes', [App\Http\Controllers\ClientController::class, 'index'])->name('clientes');
 
 
-	Route::resource('clientes', App\Http\Controllers\ClientController::class);
+	Route::get('clientes', [App\Http\Controllers\ClientController::class, 'index'])->name('clientes.index');
+	Route::get('clientes/crear', [App\Http\Controllers\ClientController::class, 'create'])->name('clientes.create');
+	Route::post('clientes/store', [App\Http\Controllers\ClientController::class, 'store'])->name('clientes.store');
 
 });

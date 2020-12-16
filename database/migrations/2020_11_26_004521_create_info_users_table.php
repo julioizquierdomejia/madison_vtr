@@ -23,6 +23,7 @@ class CreateInfoUsersTable extends Migration
             $table->string('empresa')->nullable();
             $table->string('cargo')->nullable();
             $table->string('photo')->nullable();
+            $table->string('parent_id')->nullable();
 
             $table->timestamps();
 

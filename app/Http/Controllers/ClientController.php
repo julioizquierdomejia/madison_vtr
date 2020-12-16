@@ -19,8 +19,13 @@ class ClientController extends Controller
      */
     public function index()
     {
-        //
-        $clientes = User::all();
+        if (\Auth::user()->roles->first()->name == 'admin') {
+            $clientes = User::join('info_users', 'info_users.user_id', 'users.id')
+                        ->where('info_users.parent_id', \Auth::user()->id)
+                        ->get();
+        } else {
+            $clientes = User::all();
+        }
 
         return view('admin.clientes.index', compact('clientes'));
     }
@@ -34,7 +39,7 @@ class ClientController extends Controller
     {
         //
         $planes = Plan::all();
-        $roles = Role::all();
+        $roles = Role::where('id', '>', 2)->get(); //obviar superadmin y admin
 
         return view('admin.clientes.create', compact('planes', 'roles'));
     }
@@ -47,14 +52,16 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $superadmin = \Auth::user()->roles->first()->name == 'superadmin';
+        $admin = \Auth::user()->roles->first()->name == 'admin';
+
         $request->validate([
             'empresa' => 'required|min:3',
             'cargo' => 'required|min:3',
             'name' => 'required|min:3',
             'email' => 'required|email|max:255|unique:users',
             'plan_id' => 'required|exists:plans,id',
-            'roles' => 'required|array',
+            'roles' => 'sometimes|integer',
         ]);
 
         $roles = $request->get('roles');
@@ -69,6 +76,9 @@ class ClientController extends Controller
         $user_info->user_id = $user->id;
         $user_info->empresa = $request->get('empresa');
         $user_info->cargo = $request->get('cargo');
+        if ($admin) {
+            $user_info->parent_id = \Auth::user()->id;
+        }
         $user_info->save();
 
         $plan_user = new PlanUser;
@@ -76,10 +86,15 @@ class ClientController extends Controller
         $plan_user->plan_id = $request->get('plan_id');
         $plan_user->save();
 
-        foreach ($roles as $key => $item) {
+        if ($superadmin) {
             $role_user = new RoleUser();
             $role_user->user_id = $user->id;
-            $role_user->role_id = $item;
+            $role_user->role_id = 2;
+            $role_user->save();
+        } else {
+            $role_user = new RoleUser();
+            $role_user->user_id = $user->id;
+            $role_user->role_id = $roles;
             $role_user->save();
         }
 
