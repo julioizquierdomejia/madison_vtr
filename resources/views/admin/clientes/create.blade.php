@@ -2,17 +2,24 @@
 @section('content')
 @php
   $role = \Auth::user()->roles->first()->name;
-  $empresa = $role == 'admin' ? \Auth::user()->info->empresa : '';
-  $plan_id = $role == 'admin' ? \Auth::user()->plans->first()->id : '';
+  if($role == 'admin') {
+    $title = 'Usuarios';
+    $empresa = \Auth::user()->info->empresa;
+    $plan_id = \Auth::user()->plans->first()->id;
+  } else {
+    $title = 'Clientes';
+    $empresa = '';
+    $plan_id = '';
+  }
 @endphp
 
-<h1>Clientes</h1>
+<h1>{{$title}}</h1>
 
 <div class="row">
   <div class="col">
     <a class="btn btn-success" href="{{ route('clientes.index') }}" title="Create a project">
       <i class="far fa-address-card mr-2"></i>
-      Ver lista de Clientes
+      Ver lista de {{$title}}
     </a>    
   </div>
 </div>
@@ -55,7 +62,7 @@
           </div>
           
           <div class="form-group col-md-6">
-            <label for="email">Nombre de usuario <span class="text-info"> | Correl electrónico</span></label>
+            <label for="email">Nombre de usuario <span class="text-info"> | Correo electrónico</span></label>
             <input type="text" class="form-control" id="email" name='email' placeholder="Email" value="{{old('email')}}"
             @error('email') style="border:1px solid red"@enderror>
             @error('email')
