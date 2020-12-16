@@ -8,10 +8,14 @@
     <div class="d-flex align-items-center">
         <!--i class="fas fa-fw fa-industry fa-2x"></i-->
         <div class="brand-name pl-3">
+            @if (Auth::user())
             @if (Auth::user()->roles->first()->name == 'superadmin')
             <span class="text-bigger mb-0 h4 d-block name_client">MADISON</span>
             @else
             <span class="text-bigger mb-0 h4 d-block name_client">{{Auth::user()->info->empresa}}</span>
+            @endif
+            @else
+            <span class="text-bigger mb-0 h4 d-block name_client">MADISON</span>
             @endif
             <!--span class="text">{{date('d-m-Y')}}</span-->
         </div>
