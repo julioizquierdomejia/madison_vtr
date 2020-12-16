@@ -10,7 +10,7 @@
       
       <div class="card-body text-secondary">
         <h5 class="card-title">{{$plan->name}}</h5>
-        <p class="card-text">{{ $plan->description }}</p>
+        <div class="card-text">{!! $plan->description !!}</div>
       </div>
     </div>
   </div>

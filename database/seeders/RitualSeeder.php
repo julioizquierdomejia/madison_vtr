@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\RitualObjective;
+use App\Models\Objective;
 use App\Models\RitualType;
 use App\Models\RitualStatus;
 
@@ -17,32 +17,32 @@ class RitualSeeder extends Seeder
     public function run()
     {
         //Tipos de rituales
-        $ritual_objective = new RitualObjective();
+        $ritual_objective = new Objective();
         $ritual_objective->name = "Incentivar la colaboración";
         $ritual_objective->enabled = 1;
         $ritual_objective->save();
 
-        $ritual_objective = new RitualObjective();
+        $ritual_objective = new Objective();
         $ritual_objective->name = "Empatía";
         $ritual_objective->enabled = 1;
         $ritual_objective->save();
 
-        $ritual_objective = new RitualObjective();
+        $ritual_objective = new Objective();
         $ritual_objective->name = "Co-creación";
         $ritual_objective->enabled = 1;
         $ritual_objective->save();
 
-        $ritual_objective = new RitualObjective();
+        $ritual_objective = new Objective();
         $ritual_objective->name = "Liderazgo";
         $ritual_objective->enabled = 1;
         $ritual_objective->save();
 
-        $ritual_objective = new RitualObjective();
+        $ritual_objective = new Objective();
         $ritual_objective->name = "Batimovil";
         $ritual_objective->enabled = 1;
         $ritual_objective->save();
 
-        $ritual_objective = new RitualObjective();
+        $ritual_objective = new Objective();
         $ritual_objective->name = "Coaching";
         $ritual_objective->enabled = 1;
         $ritual_objective->save();

@@ -20,16 +20,29 @@ class CreateVideosTable extends Migration
             $table->text('description')->nullable();
 
             $table->bigInteger('video_type_id')->unsigned();
-            $table->foreign('video_type_id')->references('id')->on('videos');
+            $table->foreign('video_type_id')->references('id')->on('video_types');
 
             $table->bigInteger('video_status_id')->unsigned();
             $table->foreign('video_status_id')->references('id')->on('video_status');
 
             $table->string('format');
-            $table->string('quality');
-            $table->string('audio');
+            $table->integer('part');
+            //$table->string('quality');
+            //$table->string('audio');
 
             $table->boolean('enabled');
+
+            $table->timestamps();
+        });
+
+        Schema::create('video_objetives', function (Blueprint $table) {
+            $table->id();
+            
+            $table->bigInteger('video_id')->unsigned();
+            $table->foreign('video_id')->references('id')->on('videos');
+
+            $table->bigInteger('objective_id')->unsigned();
+            $table->foreign('objective_id')->references('id')->on('objectives');
 
             $table->timestamps();
         });
@@ -46,7 +59,12 @@ class CreateVideosTable extends Migration
             $table->dropForeign('videos_video_type_id_foreign');
             $table->dropForeign('videos_video_status_id_foreign');
         });
+        Schema::table('video_objetives', function (Blueprint $table) {
+            $table->dropForeign('video_objetives_video_id_foreign');
+            $table->dropForeign('video_objetives_objective_id_foreign');
+        });
 
         Schema::dropIfExists('videos');
+        Schema::dropIfExists('video_objetives');
     }
 }

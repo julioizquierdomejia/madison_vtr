@@ -46,7 +46,7 @@ class User extends Authenticatable
     }
 
     public function info(){
-        return $this->oneToOne(InfoUser::class);
+        return $this->hasOne(InfoUser::class);
     }
 
     public function plans(){

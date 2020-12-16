@@ -31,15 +31,22 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::get('/', [App\Http\Controllers\RitualController::class, 'index'])->name('ritual');
 
 	Route::get('/videos', [App\Http\Controllers\VideoController::class, 'index'])->name('video');
+	Route::post('/videos', [App\Http\Controllers\VideoController::class, 'ajaxstore'])->name('videos.upload');
+	Route::post('/videos/{id}/delete', [App\Http\Controllers\VideoController::class, 'destroy'])->name('videos.delete');
 	Route::get('/resumen', [App\Http\Controllers\ResumenController::class, 'index'])->name('resumen');
 	Route::get('/soporte', [App\Http\Controllers\SupportController::class, 'index'])->name('soporte');
 
 	Route::get('/perfil', [App\Http\Controllers\PerfilController::class, 'index'])->name('perfil');
+	Route::post('/perfil', [App\Http\Controllers\PerfilController::class, 'update'])->name('perfil.update');
+	Route::post('/seguridad', [App\Http\Controllers\PerfilController::class, 'security'])->name('perfil.security');
+	Route::post('/foto', [App\Http\Controllers\PerfilController::class, 'upload_photo'])->name('perfil.photo');
 
 	Route::get('/planes', [App\Http\Controllers\PlanController::class, 'index'])->name('planes');
 	//Route::get('/clientes', [App\Http\Controllers\ClientController::class, 'index'])->name('clientes');
 
 
-	Route::resource('clientes', App\Http\Controllers\ClientController::class);
+	Route::get('clientes', [App\Http\Controllers\ClientController::class, 'index'])->name('clientes.index');
+	Route::get('clientes/crear', [App\Http\Controllers\ClientController::class, 'create'])->name('clientes.create');
+	Route::post('clientes/store', [App\Http\Controllers\ClientController::class, 'store'])->name('clientes.store');
 
 });

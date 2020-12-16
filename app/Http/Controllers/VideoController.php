@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Video;
 use App\Models\VideoStatus;
+use App\Models\Objective;
 
 class VideoController extends Controller
 {
@@ -15,15 +16,18 @@ class VideoController extends Controller
      */
     public function index(Request $request)
     {
-        //$request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        //$request->user()->authorizeRoles(['superadmin', 'admin']);
         
         $videos = Video::join('video_types', 'video_types.id', '=', 'videos.video_type_id')
             ->join('video_status', 'video_status.id', '=', 'videos.video_status_id')
             ->select('videos.*', 'video_types.name as video_type', 'video_status.name as status', 'videos.video_status_id')
             ->get();
+
+        $objectives = Objective::where('enabled', 1)->get();
+
         $status = VideoStatus::all();
 
-        return view('admin.videos.index', compact('videos', 'status'));
+        return view('admin.videos.index', compact('videos', 'status', 'objectives'));
     }
 
     /**
@@ -33,7 +37,7 @@ class VideoController extends Controller
      */
     public function create(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
 
         return view('videos.create');
     }
@@ -46,54 +50,105 @@ class VideoController extends Controller
      */
     public function store(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
-
-        $rules = array(
-            'name'       => 'string|required|unique:videos',
-            'enabled'      => 'boolean|required',
+       $rules = array(
+            'video'       => 'required|mimes:mp4,mov,ogg,qt | max:1000000',
+            'part'      => 'required|integer|in:1,2,3,4',
+            'objective'      => 'required|integer',
+            //'enabled'      => 'boolean|required',
         );
         $this->validate($request, $rules);
 
-        $area = new Video();
-        
-        $area->name = $request->input('name');
-        $area->enabled = $request->input('enabled');
+        $file = $request->file('video');
+        $ext = $file->extension();
+        $uniqueFileName = preg_replace('/\s+/', "-", uniqid().'_'.$file->getClientOriginalName());
 
-        $area->save();
+        $video = new Video();
+        $video->name = str_replace('.'.$ext, "", $uniqueFileName);
+        $video->file = $uniqueFileName;
+        $video->description = $uniqueFileName;
+        $video->part = $request->get('part');
+        $video->objective_id = $request->get('objective');
+        $video->format = $file->getMimeType();
+        $video->video_type_id = 1; //Subido
+        $video->video_status_id = 1; //Subido
+        $video->enabled = 1;
+        $video->save();
 
-        activitylog('videos', 'store', null, $area->toArray());
+        $file->move(public_path('uploads/videos'), $uniqueFileName);
 
-        $videos = Video::where('enabled', 1)->get();
+        $videos = Video::join('video_types', 'video_types.id', '=', 'videos.video_type_id')
+            ->join('video_status', 'video_status.id', '=', 'videos.video_status_id')
+            ->select('videos.*', 'video_types.name as video_type', 'video_status.name as status', 'videos.video_status_id')
+            ->where('enabled', 1)
+            ->orderBy('id', 'desc')
+            ->get();
+
         return redirect('videos')->with('videos');
+    }
+
+    public function ajaxstore(Request $request)
+    {
+        $rules = array(
+            'video'       => 'required|mimes:mp4,mov,ogg,qt | max:1000000',
+            'part'      => 'required|integer|in:1,2,3,4',
+            'objective'      => 'required|integer',
+            //'enabled'      => 'boolean|required',
+        );
+        $this->validate($request, $rules);
+
+        $file = $request->file('video');
+        $ext = $file->extension();
+        $uniqueFileName = preg_replace('/\s+/', "-", uniqid().'_'.$file->getClientOriginalName());
+
+        $video = new Video();
+        $video->name = str_replace('.'.$ext, "", $uniqueFileName);
+        $video->file = $uniqueFileName;
+        $video->description = $uniqueFileName;
+        $video->part = $request->get('part');
+        $video->objective_id = $request->get('objective');
+        $video->enabled = 1;
+        $video->format = $file->getMimeType();
+        $video->video_type_id = 1; //Subido
+        $video->video_status_id = 1; //Subido
+        $video->save();
+
+        $file->move(public_path('uploads/videos'), $uniqueFileName);
+
+        $videos = Video::join('video_types', 'video_types.id', '=', 'videos.video_type_id')
+            ->join('video_status', 'video_status.id', '=', 'videos.video_status_id')
+            ->select('videos.*', 'video_types.name as video_type', 'video_status.name as status', 'videos.video_status_id')
+            ->where('enabled', 1)
+            ->orderBy('id', 'desc')
+            ->get();
+        
+        return response()->json(['data'=>json_encode($videos),'success'=>true]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Video  $area
+     * @param  \App\Models\Video  $video
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
         //
-        $area = Client::findOrFail($id);
+        $video = Video::findOrFail($id);
 
-        return view('videos.show', compact('area'));
+        return view('videos.show', compact('video'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Video  $area
+     * @param  \App\Models\Video  $video
      * @return \Illuminate\Http\Response
      */
     public function edit(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
-        $videos = Video::where('enabled', 1)->get();
-        $services = Service::where('enabled', 1)->where('area_id', $id)->get();
-        $area = Video::findOrFail($id);
-        return view('videos.edit', compact('area', 'videos', 'services'));
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $video = Video::findOrFail($id);
+        return view('videos.edit', compact('video'));
     }
 
     /**
@@ -105,7 +160,7 @@ class VideoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
         
         // validate
         // read more on validation at http://laravel.com/docs/validation
@@ -116,28 +171,33 @@ class VideoController extends Controller
         $this->validate($request, $rules);
 
         // update
-        $area = Video::findOrFail($id);
-        $original_data = $area->toArray();
+        $video = Video::findOrFail($id);
+        $original_data = $video->toArray();
 
-        $area->name       = $request->get('name');
-        $area->enabled    = $request->get('enabled');
-        $area->save();
+        $video->name       = $request->get('name');
+        $video->enabled    = $request->get('enabled');
+        $video->save();
 
-        activitylog('videos', 'update', $original_data, $area->toArray());
+        activitylog('videos', 'update', $original_data, $video->toArray());
 
         // redirect
-        \Session::flash('message', 'Successfully updated area!');
+        \Session::flash('message', 'Successfully updated video!');
         return redirect('videos');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Video  $area
+     * @param  \App\Models\Video  $video
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Video $area)
+    public function destroy(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        //$request->user()->authorizeRoles(['superadmin', 'admin']);
+        $video = Video::findOrFail($id);
+        $video->enabled = 0;
+        $video->save();
+
+        return response()->json(['status'=>"success", 'data'=>$video]);
     }
 }

@@ -5,20 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Video extends Model
+class Objective extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'name',
-        'file',
-        'description',
-        'video_type_id',
-        'video_status_id',
-        'format',
-        //'quality',
-        //'audio',
-        'part',
         'enabled',
     ];
 
