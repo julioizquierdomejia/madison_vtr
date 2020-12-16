@@ -3,10 +3,12 @@
 @php
   $role = \Auth::user()->roles->first()->name;
   if($role == 'admin') {
+    $class = 'd-none';
     $title = 'Usuarios';
     $empresa = \Auth::user()->info->empresa;
     $plan_id = \Auth::user()->plans->first()->id;
   } else {
+    $class = '';
     $title = 'Clientes';
     $empresa = '';
     $plan_id = '';
@@ -84,8 +86,7 @@
         </div>
         @endif
         
-        @if ($role == 'admin')
-        <div class="f-c-list form-group" @error('plan_id') style="border:1px solid red;padding: 0 10px"@enderror>
+        <div class="f-c-list form-group {{$class}}" @error('plan_id') style="border:1px solid red;padding: 0 10px"@enderror>
         <h4 class="h6">Plan</h4>
         @foreach($planes as $key => $plan)
         <div class="form-check form-check-inline mt-2 mb-4">
@@ -96,8 +97,6 @@
         </div>
         @endforeach
       </div>
-      @endif
-        
 
         <button type="submit" class="btn btn-primary">Registrar</button>
       </form>
