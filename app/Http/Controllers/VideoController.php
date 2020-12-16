@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Video;
 use App\Models\VideoStatus;
-use App\Models\RitualObjective;
+use App\Models\Objective;
 
 class VideoController extends Controller
 {
@@ -23,7 +23,7 @@ class VideoController extends Controller
             ->select('videos.*', 'video_types.name as video_type', 'video_status.name as status', 'videos.video_status_id')
             ->get();
 
-        $objectives = RitualObjective::where('enabled', 1)->get();
+        $objectives = Objective::where('enabled', 1)->get();
 
         $status = VideoStatus::all();
 
@@ -90,6 +90,8 @@ class VideoController extends Controller
     {
         $rules = array(
             'video'       => 'required|mimes:mp4,mov,ogg,qt | max:1000000',
+            'part'      => 'required|integer|in:1,2,3,4',
+            'objective'      => 'required|integer',
             //'enabled'      => 'boolean|required',
         );
         $this->validate($request, $rules);
@@ -102,6 +104,8 @@ class VideoController extends Controller
         $video->name = str_replace('.'.$ext, "", $uniqueFileName);
         $video->file = $uniqueFileName;
         $video->description = $uniqueFileName;
+        $video->part = $request->get('part');
+        $video->objective_id = $request->get('objective');
         $video->enabled = 1;
         $video->format = $file->getMimeType();
         $video->video_type_id = 1; //Subido

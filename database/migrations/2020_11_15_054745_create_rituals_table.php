@@ -17,9 +17,6 @@ class CreateRitualsTable extends Migration
             $table->id();
             $table->string('name');
 
-            $table->bigInteger('ritual_objective_id')->unsigned();
-            $table->foreign('ritual_objective_id')->references('id')->on('ritual_objectives');
-
             $table->bigInteger('ritual_status_id')->unsigned();
             $table->foreign('ritual_status_id')->references('id')->on('ritual_status');
 
@@ -32,7 +29,19 @@ class CreateRitualsTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('ritual_parts', function (Blueprint $table) {
+        Schema::create('ritual_objectives', function (Blueprint $table) {
+            $table->id();
+
+            $table->bigInteger('ritual_id')->unsigned();
+            $table->foreign('ritual_id')->references('id')->on('rituals');
+            
+            $table->bigInteger('ritual_objective_id')->unsigned();
+            $table->foreign('ritual_objective_id')->references('id')->on('objectives');
+
+            $table->timestamps();
+        });
+
+        Schema::create('ritual_videos', function (Blueprint $table) {
             $table->id();
 
             $table->bigInteger('ritual_id')->unsigned();
@@ -53,9 +62,12 @@ class CreateRitualsTable extends Migration
     public function down()
     {
         Schema::table('rituals', function (Blueprint $table) {
-            $table->dropForeign('ritual_objective_id_foreign');
             $table->dropForeign('ritual_status_id_foreign');
             $table->dropForeign('ritual_type_id_foreign');
+        });
+        Schema::table('ritual_objectives', function (Blueprint $table) {
+            $table->dropForeign('ritual_objective_id_foreign');
+            $table->dropForeign('ritual_id_foreign');
         });
 
         Schema::table('ritual_parts', function (Blueprint $table) {
