@@ -72,8 +72,7 @@
             @enderror
           </div>
         </div>
-        @if (Auth::user()->roles->first()->name != 'superadmin')
-        <div class="f-c-list form-group" @error('roles') style="border:1px solid red;padding: 0 10px"@enderror>
+        <div class="f-c-list form-group @if ($role == 'superadmin') d-none @endif" @error('roles') style="border:1px solid red;padding: 0 10px"@enderror>
         <h4 class="h6">Roles</h4>
         @foreach($roles as $key => $role)
         <div class="form-check form-check-inline mt-2 mb-4">
@@ -84,7 +83,6 @@
         </div>
         @endforeach
         </div>
-        @endif
         
         <div class="f-c-list form-group {{$class}}" @error('plan_id') style="border:1px solid red;padding: 0 10px"@enderror>
         <h4 class="h6">Plan</h4>

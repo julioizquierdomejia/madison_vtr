@@ -61,7 +61,7 @@ class ClientController extends Controller
             'name' => 'required|min:3',
             'email' => 'required|email|max:255|unique:users',
             'plan_id' => 'required|exists:plans,id',
-            'roles' => 'sometimes|integer',
+            'roles' => 'required|integer',
         ]);
 
         $roles = $request->get('roles');
