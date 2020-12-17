@@ -370,7 +370,7 @@
                     </div>
                     <div class="col-4 my-auto">
                         <div class="form-check">
-                            <input type="radio" class="form-check-input align-middle" id="video`+video.id+`p`+part+`" value="`+video.id+`" name="video`+video.id+`">
+                            <input type="radio" class="form-check-input align-middle" id="video`+video.id+`p`+part+`" value="`+video.id+`" name="video`+part+`">
                             <label class="form-check-label align-middle" for="video`+video.id+`p`+part+`">Seleccionar</label>
                         </div>
                     </div>

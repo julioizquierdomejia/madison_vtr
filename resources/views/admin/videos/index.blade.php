@@ -86,7 +86,8 @@
                 </div>
             </div>
         </form>
-        {{-- <div class="card shadow card-steps mb-4">
+        @if ($role == 'admin')
+        <div class="card shadow card-steps mb-4">
             <div class="card-header py-3 d-flex align-items-center justify-content-between" style="background-color: #E72F77;">
                 <h6 class="m-0 font-weight-bold"><span>Solicitar un vídeo</span></h6>
                 <div class="dropdown no-arrow ml-2">
@@ -146,7 +147,8 @@
                     </div>
                 </div>
             </div>
-        </div> --}}
+        </div>
+        @endif
     </div>
     <div class="col-12 col-md-6 mb-4">
         <div class="card shadow h-100">
