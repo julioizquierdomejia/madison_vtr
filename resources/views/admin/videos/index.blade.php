@@ -10,7 +10,7 @@
 <div class="row">
     <div class="col-12 col-md-6">
         <form class="card shadow form-uploadvideo mb-4" action="{{route('videos.upload')}}" method="POST" enctype="multipart/form-data">
-            <nav class="card-header py-3 row mx-0 align-items-center" style="background-color: #E72F77;">
+            <nav class="card-header py-3 row mx-0 align-items-center" style="background-color: #E72F77;position: relative;">
                 <h6 class="m-0 font-weight-bold"><span>Subir un vídeo</span></h6>
                 <div class="input-group ml-auto col-6 col-md-7">
                     <div class="input-group-prepend">
@@ -18,7 +18,7 @@
                     </div>
                     @csrf
                     <div class="custom-file">
-                        <input type="file" accept="video/mp4,video/x-m4v,video/*" class="custom-file-input" id="videoUpload"
+                        <input type="file" accept="video/mp4,video/x-msvideo,video/*" class="custom-file-input" id="videoUpload"
                         aria-describedby="videoUpload" name="video">
                         <label class="custom-file-label text-nowrap" for="videoUpload" style="overflow: hidden;">Seleccionar el vídeo</label>
                     </div>
@@ -34,10 +34,20 @@
                         <a class="dropdown-item" href="#">Action</a>
                     </div>
                 </div>
+                <progress value="0" max="100" class="w-100" hidden=""></progress>
+                <div class="progress w-100" style="border-radius: 0;height: 10px;position: absolute;bottom: 0;left: 0;right: 0;">
+                <div class="progress-bar progress-bar-success active" role="progressbar"
+                aria-valuemin="0" aria-valuemax="100" style="width: 0">0%</div>
+                </div>
             </nav>
             <div class="card-body">
-                <div class="form-group">
-                    <label class="mb-4" for="objetivo">Empieza escogiendo un objetivo</label>
+                <div class="row">
+                <div class="form-group col-12">
+                    <label class="mb-1" for="vname">Nombre de vídeo</label>
+                    <input class="form-control" type="text" name="name" id="vname">
+                </div>
+                <div class="form-group col-12 col-md-6">
+                    <label class="mb-1" for="objetivo">Empieza escogiendo un objetivo</label>
                     <select class="form-control" name="objetivo" id="objetivo">
                         @foreach($objectives as $objective)
                         <option value="{{$objective->id}}">{{$objective->name}}</option>
@@ -45,8 +55,8 @@
                     </select>
                     <p class="error object-error" style="display: none;">Escoge un objetivo</p>
                 </div>
-                <div class="form-group">
-                    <label class="mb-4" for="parte">Parte</label>
+                <div class="form-group col-12 col-md-6">
+                    <label class="mb-1" for="parte">Parte</label>
                     <select class="form-control" name="parte" id="parte">
                         <option value="1">Parte 1</option>
                         <option value="2">Parte 2</option>
@@ -54,6 +64,7 @@
                         <option value="4">Parte 4</option>
                     </select>
                     <p class="error part-error" style="display: none;">Escoge la parte a la que pertenece el vídeo</p>
+                </div>
                 </div>
                 <p><strong>Revisa las especificaciones</strong></p>
                 <ul class="list list-unstyled">
@@ -142,10 +153,10 @@
             <div class="card-header py-3 d-flex align-items-center" style="background-color: #E72F77;">
                 <h6 class="m-0 font-weight-bold">Listado de Vídeos</h6>
                 <div class="text-right ml-auto">
-                    <select class="form-control" name="filter">
+                    <select class="form-control select-objectives" name="filter">
                         <option value="">Ver todos</option>
-                        @foreach($status as $item)
-                        <option value="{{$item->id}}">{{$item->name}}</option>
+                        @foreach($objectives as $objective)
+                        <option value="{{$objective->id}}">{{$objective->name}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -164,7 +175,7 @@
                 <ul class="list videos-list list-unstyled mb-0">
                     @if($videos->count())
                     @foreach($videos as $video)
-                    <li class="item my-1" id="video-{{$video->id}}">
+                    <li class="item my-1" id="video-{{$video->id}}" data-objective="{{$video->objective[0]->id}}">
                         <div class="row py-2 bg-light">
                             <div class="col-2 text-center">
                                 <div class="video h-100 w-100 bg-dark">
@@ -176,10 +187,9 @@
                                 </div>
                             </div>
                             <div class="col-6 my-auto">
-                                <h6 class="mb-1">{{date('d-m-Y', strtotime($video->created_at))}} 
-                                    <span class="badge badge-dark">{{$video->video_type}}</span>
+                                <h6 class="mb-1 video-title">{{$video->name}} 
                                 </h6>
-                                <p class="mb-0">{{$video->name}}</p>
+                                <p class="mb-0"><span class="align-middle">{{date('d-m-Y', strtotime($video->created_at))}}</span> <span class="badge badge-primary align-middle px-2">{{$video->objective[0]->name .' - Parte '.$video->part}}</span></p>
                             </div>
                             <div class="col-4 btn-group">
                                 {{-- @if($video->video_status_id == 1)
@@ -314,6 +324,7 @@
 @endsection
 @section('script')
 <script>
+$(document).ready(function (event) {
     $('#modalVideo').on('show.bs.modal', function (event) {
       $('#modalVideo .embed-responsive').html(
         `<video controls class="embed-responsive-item item-video">
@@ -359,25 +370,21 @@
     })
     $('#videoUpload').on('change', function (event) {
         var filename = $(this).val().split('\\').pop();
+        //$('.progress-bar').text('0%').css('width', 0);
         if(filename) {
             $(this).parent().find('.custom-file-label').text(filename);
         } else {
             $(this).parent().find('.custom-file-label').text('Seleccionar el vídeo');
         }
     })
+    function progressFunction(e){
+        if(e.lengthComputable){
+            $('progress').attr({value:e.loaded,max:e.total});
+        }
+    }
 
     $('.form-uploadvideo').submit(function (event) {
         event.preventDefault();
-        if($('#videoUpload').val().length == 0) {
-            Swal.fire(
-              'Selecione un vídeo',
-              '',
-              'error'
-            )
-            return;
-        } else {
-            $('.video-error').hide();
-        }
         var form = $(this);
         var url = form.attr('action');
         $.ajax({
@@ -386,6 +393,20 @@
             data: new FormData(this),
             processData: false,
             contentType: false,
+            xhr: function() {
+                var xhr = new window.XMLHttpRequest();
+                xhr.upload.addEventListener("progress", function(evt) {
+                  if (evt.lengthComputable) {
+                    var percentComplete = evt.loaded / evt.total;
+                    percentComplete = parseInt(percentComplete * 100);
+
+                    $('.progress-bar').width(percentComplete+'%');
+                    $('.progress-bar').html(percentComplete+'%');
+
+                  }
+                }, false);
+                return xhr;
+            },
             beforeSend: function (data) {
                 $('.btn-upload').attr('disabled', true);
             },
@@ -398,17 +419,37 @@
                         $('.videos-list').append(getList(item));
                     })
                     $('.btn-upload').attr('disabled', false);
+                    Swal.fire(
+                      'Vídeo',
+                      'Vídeo subido',
+                      'success'
+                    ).then(function () {
+                        $('.progress-bar').text('0%').css('width', 0);
+                    })
                 }
             },
-            error: function (request, status, error) {
-              var data = jQuery.parseJSON(request.responseText);
-              console.log(data);
+            error: function (data) {
+                var errors = data.responseJSON;
+                errorsHtml = '<div class="alert alert-danger mb-0"><ul class="mb-0">';
+
+                $.each( errors.errors, function( key, value ) {
+                    errorsHtml += '<li>'+ value + '</li>'; //showing only the first error.
+                });
+                errorsHtml += '</ul></div>';
+                Swal.fire(
+                  'Vídeo',
+                  errorsHtml,
+                  'error'
+                ).then(function (event) {
+                    $('.progress-bar').text('0%').css('width', 0);
+                })
+                $('.btn-upload').attr('disabled', false);
             }
         });
     })
 
     function getList(video) {
-        var html = `<li class="item my-1" id="video-`+video.id+`">
+        var html = `<li class="item my-1" id="video-`+video.id+`" data-objective="`+video.objective_id+`">
                         <div class="row py-2 bg-light">
                             <div class="col-2 text-center">
                                 <div class="video h-100 w-100 bg-dark">
@@ -420,10 +461,9 @@
                                 </div>
                             </div>
                             <div class="col-6 my-auto">
-                                <h6 class="mb-1">`+dateFormatter(video.created_at)+` 
-                                    <span class="badge badge-dark">`+video.video_type+`</span>
+                                <h6 class="mb-1 video-title">`+video.name+`
                                 </h6>
-                                <p class="mb-0">`+video.name+`</p>
+                                <p class="mb-0"><span class="align-middle">`+dateFormatter(video.created_at)+`</span> <span class="badge badge-primary align-middle px-2">`+video.objective +` - Parte `+video.part+`</span></p>
                             </div>
                             <div class="col-4 btn-group">`;
                             /*if(video.video_status_id == 1) {
@@ -463,5 +503,17 @@
 
       return (d + "-" + m + "-" + y /*+ " " + hours + ":" + min + " "+ symbol*/);
     }
+
+    $('.select-objectives').on('change', function() {
+        var filter = jQuery(this).val();
+        jQuery(".videos-list .item").each(function () {
+            if (filter.length < 1) {
+              $(this).show();
+            } else {
+              $(this).toggle($(this).filter('[data-objective="' + filter + '"]').length > 0);
+            }
+        });
+    })
+})
 </script>
 @endsection

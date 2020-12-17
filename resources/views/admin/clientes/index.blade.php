@@ -40,7 +40,15 @@
         <div class="card-body">
           <h5 class="card-title">{{$cliente->name}}</h5>
           <p class="card-text">{{$cliente->email}}</p>
-          <p class="card-text"><span class="badge badge-primary">{{$cliente->plans->count() ? $cliente->plans->first()->name : ''}}</span></p>
+          <p class="card-text">
+          @if ($cliente->roles->count())
+            @if ($cliente->roles->first()->id == 2)
+              <span class="badge badge-primary px-3 py-1">{{$cliente->roles->first()->name}}</span>
+            @else
+              <span class="badge badge-success px-3 py-1">{{$cliente->roles->first()->name}}</span>
+            @endif
+          @endif
+          </p>
         </div>
       </div>
     </div>

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Video;
 use App\Models\VideoStatus;
 use App\Models\Objective;
+use App\Models\VideoObjective;
 
 class VideoController extends Controller
 {
@@ -21,6 +22,8 @@ class VideoController extends Controller
         $videos = Video::join('video_types', 'video_types.id', '=', 'videos.video_type_id')
             ->join('video_status', 'video_status.id', '=', 'videos.video_status_id')
             ->select('videos.*', 'video_types.name as video_type', 'video_status.name as status', 'videos.video_status_id')
+            //->where('enabled', 1)
+            ->orderBy('id', 'desc')
             ->get();
 
         $objectives = Objective::where('enabled', 1)->get();
@@ -52,6 +55,7 @@ class VideoController extends Controller
     {
        $rules = array(
             'video'       => 'required|mimes:mp4,mov,ogg,qt | max:1000000',
+            'name'      => 'required|string',
             'part'      => 'required|integer|in:1,2,3,4',
             'objective'      => 'required|integer',
             //'enabled'      => 'boolean|required',
@@ -63,7 +67,7 @@ class VideoController extends Controller
         $uniqueFileName = preg_replace('/\s+/', "-", uniqid().'_'.$file->getClientOriginalName());
 
         $video = new Video();
-        $video->name = str_replace('.'.$ext, "", $uniqueFileName);
+        $video->name = $request->get('name');
         $video->file = $uniqueFileName;
         $video->description = $uniqueFileName;
         $video->part = $request->get('part');
@@ -89,35 +93,48 @@ class VideoController extends Controller
     public function ajaxstore(Request $request)
     {
         $rules = array(
-            'video'       => 'required|mimes:mp4,mov,ogg,qt | max:1000000',
-            'part'      => 'required|integer|in:1,2,3,4',
-            'objective'      => 'required|integer',
+            'video'       => 'required|mimes:mp4,avi,qt | max:1000000',
+            'name'      => 'required|string',
+            'parte'      => 'required|integer|in:1,2,3,4',
+            'objetivo'      => 'required|integer',
             //'enabled'      => 'boolean|required',
         );
-        $this->validate($request, $rules);
+        $messages = array(
+            'video.required'       => 'El vídeo es requerido',
+            'parte.required'      => 'La parte del vídeo es requerida',
+            'objetivo.required'      => 'El objetivo es requerido',
+            'name.required'      => 'El nombre es requerido',
+        );
+        $this->validate($request, $rules, $messages);
 
         $file = $request->file('video');
         $ext = $file->extension();
         $uniqueFileName = preg_replace('/\s+/', "-", uniqid().'_'.$file->getClientOriginalName());
 
         $video = new Video();
-        $video->name = str_replace('.'.$ext, "", $uniqueFileName);
+        $video->name = $request->get('name');
         $video->file = $uniqueFileName;
         $video->description = $uniqueFileName;
-        $video->part = $request->get('part');
-        $video->objective_id = $request->get('objective');
+        $video->part = $request->get('parte');
         $video->enabled = 1;
         $video->format = $file->getMimeType();
         $video->video_type_id = 1; //Subido
         $video->video_status_id = 1; //Subido
         $video->save();
 
+        $video_objective = new VideoObjective();
+        $video_objective->objective_id = $request->get('objetivo');
+        $video_objective->video_id = $video->id;
+        $video_objective->save();
+
         $file->move(public_path('uploads/videos'), $uniqueFileName);
 
         $videos = Video::join('video_types', 'video_types.id', '=', 'videos.video_type_id')
             ->join('video_status', 'video_status.id', '=', 'videos.video_status_id')
-            ->select('videos.*', 'video_types.name as video_type', 'video_status.name as status', 'videos.video_status_id')
-            ->where('enabled', 1)
+            ->join('video_objectives', 'video_objectives.video_id', '=', 'videos.id')
+            ->join('objectives', 'objectives.id', '=', 'video_objectives.objective_id')
+            ->select('videos.*', 'video_types.name as video_type', 'video_status.name as status', 'videos.video_status_id', 'objectives.id as objective_id', 'objectives.name as objective')
+            //->where('enabled', 1)
             ->orderBy('id', 'desc')
             ->get();
         
