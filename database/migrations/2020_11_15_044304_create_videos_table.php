@@ -35,7 +35,7 @@ class CreateVideosTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('video_objetives', function (Blueprint $table) {
+        Schema::create('video_objectives', function (Blueprint $table) {
             $table->id();
             
             $table->bigInteger('video_id')->unsigned();
@@ -59,12 +59,12 @@ class CreateVideosTable extends Migration
             $table->dropForeign('videos_video_type_id_foreign');
             $table->dropForeign('videos_video_status_id_foreign');
         });
-        Schema::table('video_objetives', function (Blueprint $table) {
-            $table->dropForeign('video_objetives_video_id_foreign');
-            $table->dropForeign('video_objetives_objective_id_foreign');
+        Schema::table('video_objectives', function (Blueprint $table) {
+            $table->dropForeign('video_objectives_video_id_foreign');
+            $table->dropForeign('video_objectives_objective_id_foreign');
         });
 
         Schema::dropIfExists('videos');
-        Schema::dropIfExists('video_objetives');
+        Schema::dropIfExists('video_objectives');
     }
 }

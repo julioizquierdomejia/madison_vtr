@@ -26,4 +26,8 @@ class Video extends Model
         'created_at',
         'updated_at'
     ];
+
+    public function objective(){
+        return $this->hasOne(VideoObjective::class);
+    }
 }

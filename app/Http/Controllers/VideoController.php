@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Video;
 use App\Models\VideoStatus;
 use App\Models\Objective;
+use App\Models\VideoObjective;
 
 class VideoController extends Controller
 {
@@ -90,11 +91,16 @@ class VideoController extends Controller
     {
         $rules = array(
             'video'       => 'required|mimes:mp4,mov,ogg,qt | max:1000000',
-            'part'      => 'required|integer|in:1,2,3,4',
-            'objective'      => 'required|integer',
+            'parte'      => 'required|integer|in:1,2,3,4',
+            'objetivo'      => 'required|integer',
             //'enabled'      => 'boolean|required',
         );
-        $this->validate($request, $rules);
+        $messages = array(
+            'video.required'       => 'El vídeo es requerido',
+            'parte.required'      => 'La parte del vídeo es requerida',
+            'objetivo.required'      => 'El objetivo es requerido',
+        );
+        $this->validate($request, $rules, $messages);
 
         $file = $request->file('video');
         $ext = $file->extension();
@@ -104,13 +110,17 @@ class VideoController extends Controller
         $video->name = str_replace('.'.$ext, "", $uniqueFileName);
         $video->file = $uniqueFileName;
         $video->description = $uniqueFileName;
-        $video->part = $request->get('part');
-        $video->objective_id = $request->get('objective');
+        $video->part = $request->get('parte');
         $video->enabled = 1;
         $video->format = $file->getMimeType();
         $video->video_type_id = 1; //Subido
         $video->video_status_id = 1; //Subido
         $video->save();
+
+        $video_objective = new VideoObjective();
+        $video_objective->objective_id = $request->get('objetivo');
+        $video_objective->video_id = $video->id;
+        $video_objective->save();
 
         $file->move(public_path('uploads/videos'), $uniqueFileName);
 

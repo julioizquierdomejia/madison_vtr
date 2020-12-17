@@ -368,16 +368,6 @@
 
     $('.form-uploadvideo').submit(function (event) {
         event.preventDefault();
-        if($('#videoUpload').val().length == 0) {
-            Swal.fire(
-              'Selecione un vídeo',
-              '',
-              'error'
-            )
-            return;
-        } else {
-            $('.video-error').hide();
-        }
         var form = $(this);
         var url = form.attr('action');
         $.ajax({
@@ -400,9 +390,20 @@
                     $('.btn-upload').attr('disabled', false);
                 }
             },
-            error: function (request, status, error) {
-              var data = jQuery.parseJSON(request.responseText);
-              console.log(data);
+            error: function (data) {
+                var errors = data.responseJSON;
+                errorsHtml = '<div class="alert alert-danger mb-0"><ul class="mb-0">';
+
+                $.each( errors.errors, function( key, value ) {
+                    errorsHtml += '<li>'+ value + '</li>'; //showing only the first error.
+                });
+                errorsHtml += '</ul></div>';
+                Swal.fire(
+                  'Vídeo',
+                  errorsHtml,
+                  'error'
+                )
+                $('.btn-upload').attr('disabled', false);
             }
         });
     })
