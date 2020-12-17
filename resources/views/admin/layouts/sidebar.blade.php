@@ -111,10 +111,6 @@
         </li>
     @endif
 
-    @if($role == 'user')
-
-    @endif
-
 
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">
