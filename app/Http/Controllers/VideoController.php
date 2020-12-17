@@ -93,7 +93,7 @@ class VideoController extends Controller
     public function ajaxstore(Request $request)
     {
         $rules = array(
-            'video'       => 'required|mimes:mp4,mov,ogg,qt | max:1000000',
+            'video'       => 'required|mimes:mp4,avi,qt | max:1000000',
             'name'      => 'required|string',
             'parte'      => 'required|integer|in:1,2,3,4',
             'objetivo'      => 'required|integer',

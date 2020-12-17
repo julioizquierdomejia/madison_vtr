@@ -18,7 +18,7 @@
                     </div>
                     @csrf
                     <div class="custom-file">
-                        <input type="file" accept="video/mp4,video/x-m4v,video/*" class="custom-file-input" id="videoUpload"
+                        <input type="file" accept="video/mp4,video/x-msvideo,video/*" class="custom-file-input" id="videoUpload"
                         aria-describedby="videoUpload" name="video">
                         <label class="custom-file-label text-nowrap" for="videoUpload" style="overflow: hidden;">Seleccionar el vídeo</label>
                     </div>
@@ -461,10 +461,6 @@ $(document).ready(function (event) {
                                 </div>
                             </div>
                             <div class="col-6 my-auto">
-                                <h6 class="mb-1">`+dateFormatter(video.created_at)+` 
-                                    <span class="badge badge-dark">`+video.video_type+`</span>
-                                </h6>
-                                <p class="mb-0">`+video.name+`</p>
                                 <h6 class="mb-1 video-title">`+video.name+`
                                 </h6>
                                 <p class="mb-0"><span class="align-middle">`+dateFormatter(video.created_at)+`</span> <span class="badge badge-primary align-middle px-2">`+video.objective +` - Parte `+video.part+`</span></p>
