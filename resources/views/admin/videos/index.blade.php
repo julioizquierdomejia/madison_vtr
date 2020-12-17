@@ -390,7 +390,6 @@ $(document).ready(function (event) {
             contentType: false,
             xhr: function() {
                 var xhr = new window.XMLHttpRequest();
-
                 xhr.upload.addEventListener("progress", function(evt) {
                   if (evt.lengthComputable) {
                     var percentComplete = evt.loaded / evt.total;
@@ -401,7 +400,6 @@ $(document).ready(function (event) {
 
                   }
                 }, false);
-
                 return xhr;
             },
             beforeSend: function (data) {
@@ -416,9 +414,13 @@ $(document).ready(function (event) {
                         $('.videos-list').append(getList(item));
                     })
                     $('.btn-upload').attr('disabled', false);
-                    setTimeout(function (event) {
+                    Swal.fire(
+                      'Vídeo',
+                      'Vídeo subido',
+                      'success'
+                    ).then(function () {
                         $('.progress-bar').text('0%').css('width', 0);
-                    }, 1000)
+                    })
                 }
             },
             error: function (data) {
@@ -433,11 +435,10 @@ $(document).ready(function (event) {
                   'Vídeo',
                   errorsHtml,
                   'error'
-                )
-                $('.btn-upload').attr('disabled', false);
-                setTimeout(function (event) {
+                ).then(function (event) {
                     $('.progress-bar').text('0%').css('width', 0);
-                }, 1000)
+                })
+                $('.btn-upload').attr('disabled', false);
             }
         });
     })
