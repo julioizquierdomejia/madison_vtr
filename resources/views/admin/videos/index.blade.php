@@ -41,8 +41,13 @@
                 </div>
             </nav>
             <div class="card-body">
-                <div class="form-group">
-                    <label class="mb-4" for="objetivo">Empieza escogiendo un objetivo</label>
+                <div class="row">
+                <div class="form-group col-12">
+                    <label class="mb-1" for="vname">Nombre de vídeo</label>
+                    <input class="form-control" type="text" name="name" id="vname">
+                </div>
+                <div class="form-group col-12 col-md-6">
+                    <label class="mb-1" for="objetivo">Empieza escogiendo un objetivo</label>
                     <select class="form-control" name="objetivo" id="objetivo">
                         @foreach($objectives as $objective)
                         <option value="{{$objective->id}}">{{$objective->name}}</option>
@@ -50,8 +55,8 @@
                     </select>
                     <p class="error object-error" style="display: none;">Escoge un objetivo</p>
                 </div>
-                <div class="form-group">
-                    <label class="mb-4" for="parte">Parte</label>
+                <div class="form-group col-12 col-md-6">
+                    <label class="mb-1" for="parte">Parte</label>
                     <select class="form-control" name="parte" id="parte">
                         <option value="1">Parte 1</option>
                         <option value="2">Parte 2</option>
@@ -59,6 +64,7 @@
                         <option value="4">Parte 4</option>
                     </select>
                     <p class="error part-error" style="display: none;">Escoge la parte a la que pertenece el vídeo</p>
+                </div>
                 </div>
                 <p><strong>Revisa las especificaciones</strong></p>
                 <ul class="list list-unstyled">
@@ -181,10 +187,9 @@
                                 </div>
                             </div>
                             <div class="col-6 my-auto">
-                                <h6 class="mb-1">{{date('d-m-Y', strtotime($video->created_at))}} 
-                                    <span class="badge badge-dark">{{$video->video_type}}</span>
+                                <h6 class="mb-1 video-title">{{$video->name}} 
                                 </h6>
-                                <p class="mb-0">{{$video->name}}</p>
+                                <p class="mb-0"><span class="align-middle">{{date('d-m-Y', strtotime($video->created_at))}}</span> <span class="badge badge-primary align-middle px-2">{{$video->objective[0]->name .' - Parte '.$video->part}}</span></p>
                             </div>
                             <div class="col-4 btn-group">
                                 {{-- @if($video->video_status_id == 1)

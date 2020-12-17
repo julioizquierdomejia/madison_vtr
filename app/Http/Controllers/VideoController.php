@@ -53,6 +53,7 @@ class VideoController extends Controller
     {
        $rules = array(
             'video'       => 'required|mimes:mp4,mov,ogg,qt | max:1000000',
+            'name'      => 'required|string',
             'part'      => 'required|integer|in:1,2,3,4',
             'objective'      => 'required|integer',
             //'enabled'      => 'boolean|required',
@@ -64,7 +65,7 @@ class VideoController extends Controller
         $uniqueFileName = preg_replace('/\s+/', "-", uniqid().'_'.$file->getClientOriginalName());
 
         $video = new Video();
-        $video->name = str_replace('.'.$ext, "", $uniqueFileName);
+        $video->name = $request->get('name');
         $video->file = $uniqueFileName;
         $video->description = $uniqueFileName;
         $video->part = $request->get('part');
@@ -91,6 +92,7 @@ class VideoController extends Controller
     {
         $rules = array(
             'video'       => 'required|mimes:mp4,mov,ogg,qt | max:1000000',
+            'name'      => 'required|string',
             'parte'      => 'required|integer|in:1,2,3,4',
             'objetivo'      => 'required|integer',
             //'enabled'      => 'boolean|required',
@@ -99,6 +101,7 @@ class VideoController extends Controller
             'video.required'       => 'El vídeo es requerido',
             'parte.required'      => 'La parte del vídeo es requerida',
             'objetivo.required'      => 'El objetivo es requerido',
+            'name.required'      => 'El nombre es requerido',
         );
         $this->validate($request, $rules, $messages);
 
@@ -107,7 +110,7 @@ class VideoController extends Controller
         $uniqueFileName = preg_replace('/\s+/', "-", uniqid().'_'.$file->getClientOriginalName());
 
         $video = new Video();
-        $video->name = str_replace('.'.$ext, "", $uniqueFileName);
+        $video->name = $request->get('name');
         $video->file = $uniqueFileName;
         $video->description = $uniqueFileName;
         $video->part = $request->get('parte');
