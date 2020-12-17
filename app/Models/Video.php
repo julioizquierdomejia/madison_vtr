@@ -28,6 +28,7 @@ class Video extends Model
     ];
 
     public function objective(){
-        return $this->hasOne(VideoObjective::class);
+        //return $this->hasOne(VideoObjective::class);
+        return $this->belongsToMany(Objective::class, 'video_objectives')->withPivot('video_id');
     }
 }

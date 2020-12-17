@@ -147,10 +147,10 @@
             <div class="card-header py-3 d-flex align-items-center" style="background-color: #E72F77;">
                 <h6 class="m-0 font-weight-bold">Listado de Vídeos</h6>
                 <div class="text-right ml-auto">
-                    <select class="form-control" name="filter">
+                    <select class="form-control select-objectives" name="filter">
                         <option value="">Ver todos</option>
-                        @foreach($status as $item)
-                        <option value="{{$item->id}}">{{$item->name}}</option>
+                        @foreach($objectives as $objective)
+                        <option value="{{$objective->id}}">{{$objective->name}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -169,7 +169,7 @@
                 <ul class="list videos-list list-unstyled mb-0">
                     @if($videos->count())
                     @foreach($videos as $video)
-                    <li class="item my-1" id="video-{{$video->id}}">
+                    <li class="item my-1" id="video-{{$video->id}}" data-objective="{{$video->objective[0]->id}}">
                         <div class="row py-2 bg-light">
                             <div class="col-2 text-center">
                                 <div class="video h-100 w-100 bg-dark">
@@ -499,6 +499,17 @@ $(document).ready(function (event) {
 
       return (d + "-" + m + "-" + y /*+ " " + hours + ":" + min + " "+ symbol*/);
     }
+
+    $('.select-objectives').on('change', function() {
+        var filter = jQuery(this).val();
+        jQuery(".videos-list .item").each(function () {
+            if (filter.length < 1) {
+              $(this).show();
+            } else {
+              $(this).toggle($(this).filter('[data-objective="' + filter + '"]').length > 0);
+            }
+        });
+    })
 })
 </script>
 @endsection
