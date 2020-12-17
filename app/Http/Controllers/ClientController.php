@@ -55,14 +55,20 @@ class ClientController extends Controller
         $superadmin = \Auth::user()->roles->first()->name == 'superadmin';
         $admin = \Auth::user()->roles->first()->name == 'admin';
 
-        $request->validate([
+        $rules = array(
             'empresa' => 'required|min:3',
             'cargo' => 'nullable|min:3',
             'name' => 'required|min:3',
             'email' => 'required|email|max:255|unique:users',
             'plan_id' => 'required|exists:plans,id',
-            'roles' => 'required|integer',
-        ]);
+        );
+        if ($superadmin) {
+            $rules['roles'] = 'sometimes|integer';
+        } else {
+            $rules['roles'] = 'required|integer';
+        }
+
+        $this->validate($request, $rules);
 
         $roles = $request->get('roles');
 
