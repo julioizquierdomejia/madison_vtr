@@ -435,6 +435,9 @@ $(document).ready(function (event) {
                   'error'
                 )
                 $('.btn-upload').attr('disabled', false);
+                setTimeout(function (event) {
+                    $('.progress-bar').text('0%').css('width', 0);
+                }, 1000)
             }
         });
     })
