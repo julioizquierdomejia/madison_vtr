@@ -10,7 +10,7 @@
 <div class="row">
     <div class="col-12 col-md-6">
         <form class="card shadow form-uploadvideo mb-4" action="{{route('videos.upload')}}" method="POST" enctype="multipart/form-data">
-            <nav class="card-header py-3 row mx-0 align-items-center" style="background-color: #E72F77;">
+            <nav class="card-header py-3 row mx-0 align-items-center" style="background-color: #E72F77;position: relative;">
                 <h6 class="m-0 font-weight-bold"><span>Subir un vídeo</span></h6>
                 <div class="input-group ml-auto col-6 col-md-7">
                     <div class="input-group-prepend">
@@ -33,6 +33,11 @@
                         <div class="dropdown-header">Información:</div>
                         <a class="dropdown-item" href="#">Action</a>
                     </div>
+                </div>
+                <progress value="0" max="100" class="w-100" hidden=""></progress>
+                <div class="progress w-100" style="border-radius: 0;height: 10px;position: absolute;bottom: 0;left: 0;right: 0;">
+                <div class="progress-bar progress-bar-success active" role="progressbar"
+                aria-valuemin="0" aria-valuemax="100" style="width: 0">0%</div>
                 </div>
             </nav>
             <div class="card-body">
@@ -314,6 +319,7 @@
 @endsection
 @section('script')
 <script>
+$(document).ready(function (event) {
     $('#modalVideo').on('show.bs.modal', function (event) {
       $('#modalVideo .embed-responsive').html(
         `<video controls class="embed-responsive-item item-video">
@@ -359,12 +365,18 @@
     })
     $('#videoUpload').on('change', function (event) {
         var filename = $(this).val().split('\\').pop();
+        //$('.progress-bar').text('0%').css('width', 0);
         if(filename) {
             $(this).parent().find('.custom-file-label').text(filename);
         } else {
             $(this).parent().find('.custom-file-label').text('Seleccionar el vídeo');
         }
     })
+    function progressFunction(e){
+        if(e.lengthComputable){
+            $('progress').attr({value:e.loaded,max:e.total});
+        }
+    }
 
     $('.form-uploadvideo').submit(function (event) {
         event.preventDefault();
@@ -376,6 +388,22 @@
             data: new FormData(this),
             processData: false,
             contentType: false,
+            xhr: function() {
+                var xhr = new window.XMLHttpRequest();
+
+                xhr.upload.addEventListener("progress", function(evt) {
+                  if (evt.lengthComputable) {
+                    var percentComplete = evt.loaded / evt.total;
+                    percentComplete = parseInt(percentComplete * 100);
+
+                    $('.progress-bar').width(percentComplete+'%');
+                    $('.progress-bar').html(percentComplete+'%');
+
+                  }
+                }, false);
+
+                return xhr;
+            },
             beforeSend: function (data) {
                 $('.btn-upload').attr('disabled', true);
             },
@@ -388,6 +416,9 @@
                         $('.videos-list').append(getList(item));
                     })
                     $('.btn-upload').attr('disabled', false);
+                    setTimeout(function (event) {
+                        $('.progress-bar').text('0%').css('width', 0);
+                    }, 1000)
                 }
             },
             error: function (data) {
@@ -464,5 +495,6 @@
 
       return (d + "-" + m + "-" + y /*+ " " + hours + ":" + min + " "+ symbol*/);
     }
+})
 </script>
 @endsection
