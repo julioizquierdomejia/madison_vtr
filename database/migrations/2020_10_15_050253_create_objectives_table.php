@@ -16,6 +16,7 @@ class CreateObjectivesTable extends Migration
         Schema::create('objectives', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->longText('description')->nullable();
             $table->boolean('enabled');
             $table->timestamps();
         });
