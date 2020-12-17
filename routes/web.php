@@ -49,4 +49,7 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::get('clientes/crear', [App\Http\Controllers\ClientController::class, 'create'])->name('clientes.create');
 	Route::post('clientes/store', [App\Http\Controllers\ClientController::class, 'store'])->name('clientes.store');
 
+	Route::resource('/objetivos', App\Http\Controllers\ObjetiveController::class);
+
+
 });

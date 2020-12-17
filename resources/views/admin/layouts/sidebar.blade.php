@@ -38,6 +38,12 @@
                 <span>VÍDEOS</span>
             </a>
         </li>
+        <li class="nav-item{{request()->segment(1) == 'objetivos' ? ' active' : '' }}">
+            <a class="nav-link" href="/objetivos">
+                <i class="fas fa-bullseye" style="color: #6666FF"></i>
+                <span>OBJETIVOS</span>
+            </a>
+        </li>
     @endif
 
     @if($role == 'admin')
