@@ -32,85 +32,35 @@
                 <span>PLANES</span>
             </a>
         </li> --}}
-        <li class="nav-item{{request()->segment(1) == 'videos' ? ' active' : '' }}">
-            <a class="nav-link" href="/videos">
-                <i class="fas fa-fw fa-play" style="color: #E72E7A"></i>
-                <span>VÍDEOS</span>
-            </a>
-        </li>
     @endif
 
-    @if($role == 'admin')
-        <!-- Nav Item - Dashboard -->
-        {{-- <li class="nav-item active">
-            <a class="nav-link" href="/">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Rituales</span>
-            </a>
-        </li> --}}
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
 
-        <!-- Divider -->
-        <hr class="sidebar-divider my-0">
+    <li class="nav-item{{request()->segment(1) == 'rituales' ? ' active' : '' }}">
+        <a class="nav-link" href="/rituales">
+            <i class="fas fa-fw fa-check-circle" style="color: #FBB911"></i>
+            <span>RITUALES</span>
+        </a>
+    </li>
 
-        <li class="nav-item{{request()->segment(1) == 'rituales' ? ' active' : '' }}">
-            <a class="nav-link" href="/rituales">
-                <i class="fas fa-fw fa-check-circle" style="color: #FBB911"></i>
-                <span>RITUALES</span>
-            </a>
-        </li>
+    <li class="nav-item{{request()->segment(1) == 'videos' ? ' active' : '' }}">
+        <a class="nav-link" href="/videos">
+            <i class="fas fa-fw fa-play" style="color: #E72E7A"></i>
+            <span>VÍDEOS</span>
+        </a>
+    </li>
+    <li class="nav-item{{request()->segment(1) == 'resumen' ? ' active' : '' }}">
+        <a class="nav-link" href="/resumen">
+            <i class="fas fa-fw fa-chart-area" style="color: #E54C16"></i>
+            <span>RESUMEN</span></a>
+    </li>
 
-        <li class="nav-item{{request()->segment(1) == 'resumen' ? ' active' : '' }}">
-            <a class="nav-link" href="/resumen">
-                <i class="fas fa-fw fa-chart-area" style="color: #E54C16"></i>
-                <span>RESUMEN</span></a>
-        </li>
-
-        <li class="nav-item{{request()->segment(1) == 'soporte' ? ' active' : '' }}">
-            <a class="nav-link" href="soporte">
-                <i class="fas fa-fw fa-question-circle" style="color: #39B8BC"></i>
-                <span>SOPORTE</span></a>
-        </li>
-    @endif
-
-    @if($role == 'editor')
-        <!-- Nav Item - Dashboard -->
-        {{-- <li class="nav-item active">
-            <a class="nav-link" href="/">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Rituales</span>
-            </a>
-        </li> --}}
-
-        <!-- Divider -->
-        <hr class="sidebar-divider my-0">
-
-        <li class="nav-item{{request()->segment(1) == 'rituales' ? ' active' : '' }}">
-            <a class="nav-link" href="/rituales">
-                <i class="fas fa-fw fa-check-circle" style="color: #FBB911"></i>
-                <span>RITUALES</span>
-            </a>
-        </li>
-
-        <li class="nav-item{{request()->segment(1) == 'videos' ? ' active' : '' }}">
-            <a class="nav-link" href="/videos">
-                <i class="fas fa-fw fa-play" style="color: #E72E7A"></i>
-                <span>VÍDEOS</span>
-            </a>
-        </li>
-
-        <li class="nav-item{{request()->segment(1) == 'resumen' ? ' active' : '' }}">
-            <a class="nav-link" href="/resumen">
-                <i class="fas fa-fw fa-chart-area" style="color: #E54C16"></i>
-                <span>RESUMEN</span></a>
-        </li>
-
-        <li class="nav-item{{request()->segment(1) == 'soporte' ? ' active' : '' }}">
-            <a class="nav-link" href="soporte">
-                <i class="fas fa-fw fa-question-circle" style="color: #39B8BC"></i>
-                <span>SOPORTE</span></a>
-        </li>
-    @endif
-
+    <li class="nav-item{{request()->segment(1) == 'soporte' ? ' active' : '' }}">
+        <a class="nav-link" href="soporte">
+            <i class="fas fa-fw fa-question-circle" style="color: #39B8BC"></i>
+            <span>SOPORTE</span></a>
+    </li>
 
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">
