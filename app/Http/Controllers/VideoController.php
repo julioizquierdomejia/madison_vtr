@@ -22,6 +22,8 @@ class VideoController extends Controller
         $videos = Video::join('video_types', 'video_types.id', '=', 'videos.video_type_id')
             ->join('video_status', 'video_status.id', '=', 'videos.video_status_id')
             ->select('videos.*', 'video_types.name as video_type', 'video_status.name as status', 'videos.video_status_id')
+            //->where('enabled', 1)
+            ->orderBy('id', 'desc')
             ->get();
 
         $objectives = Objective::where('enabled', 1)->get();
@@ -129,8 +131,10 @@ class VideoController extends Controller
 
         $videos = Video::join('video_types', 'video_types.id', '=', 'videos.video_type_id')
             ->join('video_status', 'video_status.id', '=', 'videos.video_status_id')
-            ->select('videos.*', 'video_types.name as video_type', 'video_status.name as status', 'videos.video_status_id')
-            ->where('enabled', 1)
+            ->join('video_objectives', 'video_objectives.video_id', '=', 'videos.id')
+            ->join('objectives', 'objectives.id', '=', 'video_objectives.objective_id')
+            ->select('videos.*', 'video_types.name as video_type', 'video_status.name as status', 'videos.video_status_id', 'objectives.id as objective_id', 'objectives.name as objective')
+            //->where('enabled', 1)
             ->orderBy('id', 'desc')
             ->get();
         

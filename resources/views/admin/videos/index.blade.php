@@ -449,7 +449,7 @@ $(document).ready(function (event) {
     })
 
     function getList(video) {
-        var html = `<li class="item my-1" id="video-`+video.id+`">
+        var html = `<li class="item my-1" id="video-`+video.id+`" data-objective="`+video.objective_id+`">
                         <div class="row py-2 bg-light">
                             <div class="col-2 text-center">
                                 <div class="video h-100 w-100 bg-dark">
@@ -465,6 +465,9 @@ $(document).ready(function (event) {
                                     <span class="badge badge-dark">`+video.video_type+`</span>
                                 </h6>
                                 <p class="mb-0">`+video.name+`</p>
+                                <h6 class="mb-1 video-title">`+video.name+`
+                                </h6>
+                                <p class="mb-0"><span class="align-middle">`+dateFormatter(video.created_at)+`</span> <span class="badge badge-primary align-middle px-2">`+video.objective +` - Parte `+video.part+`</span></p>
                             </div>
                             <div class="col-4 btn-group">`;
                             /*if(video.video_status_id == 1) {
