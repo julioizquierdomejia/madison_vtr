@@ -5,7 +5,7 @@
         <div class="card shadow card-steps h-100">
             <nav class="card-header py-3 d-flex align-items-center">
                 <h6 class="m-0 font-weight-bold text-white"><span>Crea un ritual</span></h6>
-                <div class="nav nav-tabs ml-auto user-no-select" id="nav-tab" role="tablist">
+                <div class="nav nav-tabs ml-auto" id="nav-tab" role="tablist">
                     <a class="nav-item nav-link active" id="nav-home-tab" data-text="Crea un ritual" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true"><i class="fas fa-dot-circle"></i></a>
                     <a class="nav-item nav-link" id="nav-armando1-tab" data-text="Armando ritual" data-toggle="tab" href="#nav-armando1" role="tab" aria-controls="nav-armando1" aria-selected="false"><i class="fas fa-dot-circle"></i></a>
                     <a class="nav-item nav-link" id="nav-armando2-tab" data-text="Armando ritual" data-toggle="tab" href="#nav-armando2" role="tab" aria-controls="nav-armando2" aria-selected="false"><i class="fas fa-dot-circle"></i></a>
@@ -63,10 +63,28 @@
                     </ul>
                     <div class="video-list form-group">
                         <button class="btn btn-block btn-secondary" type="button" data-toggle="collapse" data-target="#vlist1" aria-expanded="false" aria-controls="vlist1">Primera parte</button>
-                        <div class="collapse show" id="vlist1">
+                        <div class="collapse" id="vlist1">
                           <div class="card card-body" style="max-height: 133px;overflow-y: auto;">
                             <ul class="list list-first-part list-unstyled mb-0">
-                                <li class="item my-1">...</li>
+                                <li class="item my-1">
+                                    <div class="row py-2 bg-light">
+                                        <div class="col-2 text-center">
+                                            <div class="video h-100 p-2 d-table w-100 bg-dark">
+                                                <span class="d-table-cell align-middle"><i class="fa fa-play text-white-50"></i></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 my-auto">
+                                            <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-dark">Armado</span></h6>
+                                            <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
+                                        </div>
+                                        <div class="col-4 my-auto">
+                                            <div class="form-check">
+                                                <input type="radio" class="form-check-input align-middle" id="video1p1" value="1" name="video1">
+                                                <label class="form-check-label align-middle" for="video1p1">Seleccionar</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
                             </ul>
                           </div>
                         </div>
@@ -76,7 +94,25 @@
                         <div class="collapse" id="vlist2">
                           <div class="card card-body" style="max-height: 133px;overflow-y: auto;">
                             <ul class="list list-second-part list-unstyled mb-0">
-                                <li class="item my-1">...</li>
+                                <li class="item my-1">
+                                    <div class="row py-2 bg-light">
+                                        <div class="col-2 text-center">
+                                            <div class="video h-100 p-2 d-table w-100 bg-dark">
+                                                <span class="d-table-cell align-middle"><i class="fa fa-play text-white-50"></i></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 my-auto">
+                                            <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-dark">Armado</span></h6>
+                                            <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
+                                        </div>
+                                        <div class="col-4 my-auto">
+                                            <div class="form-check">
+                                                <input type="radio" class="form-check-input" id="video1p2" value="1" name="video2">
+                                                <label class="form-check-label" for="video1p2">Seleccionar</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
                             </ul>
                           </div>
                         </div>
@@ -86,7 +122,25 @@
                         <div class="collapse" id="vlist3">
                           <div class="card card-body" style="max-height: 133px;overflow-y: auto;">
                             <ul class="list list-third-part list-unstyled mb-0">
-                                <li class="item my-1">...</li>
+                                <li class="item my-1">
+                                    <div class="row py-2 bg-light">
+                                        <div class="col-2 text-center">
+                                            <div class="video h-100 p-2 d-table w-100 bg-dark">
+                                                <span class="d-table-cell align-middle"><i class="fa fa-play text-white-50"></i></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 my-auto">
+                                            <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-dark">Armado</span></h6>
+                                            <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
+                                        </div>
+                                        <div class="col-4 my-auto">
+                                            <div class="form-check">
+                                                <input type="radio" class="form-check-input" id="video1p3" value="1" name="video3">
+                                                <label class="form-check-label" for="video1p3">Seleccionar</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
                             </ul>
                           </div>
                         </div>
@@ -102,7 +156,25 @@
                         <div class="collapse" id="vlistsolicitados">
                           <div class="card card-body" style="max-height: 133px;overflow-y: auto;">
                             <ul class="list list-unstyled mb-0">
-                                <li class="item my-1">...</li>
+                                <li class="item my-1">
+                                    <div class="row py-2 bg-light">
+                                        <div class="col-2 text-center">
+                                            <div class="video h-100 p-2 d-table w-100 bg-dark">
+                                                <span class="d-table-cell align-middle"><i class="fa fa-play text-white-50"></i></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 my-auto">
+                                            <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-dark">Armado</span></h6>
+                                            <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
+                                        </div>
+                                        <div class="col-4 my-auto">
+                                            <div class="form-check">
+                                                <input type="radio" class="form-check-input" id="checkarmandop1" value="1" name="armandovideo1">
+                                                <label class="form-check-label" for="checkarmandop1">Seleccionar</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
                             </ul>
                           </div>
                         </div>
@@ -112,7 +184,25 @@
                         <div class="collapse" id="vlistsubidos">
                           <div class="card card-body" style="max-height: 133px;overflow-y: auto;">
                             <ul class="list list-unstyled mb-0">
-                                <li class="item my-1">...</li>
+                                <li class="item my-1">
+                                    <div class="row py-2 bg-light">
+                                        <div class="col-2 text-center">
+                                            <div class="video h-100 p-2 d-table w-100 bg-dark">
+                                                <span class="d-table-cell align-middle"><i class="fa fa-play text-white-50"></i></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 my-auto">
+                                            <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-dark">Armado</span></h6>
+                                            <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
+                                        </div>
+                                        <div class="col-4 my-auto">
+                                            <div class="form-check">
+                                                <input type="radio" class="form-check-input" id="checkarmandop2" value="1" name="armandovideo2">
+                                                <label class="form-check-label" for="checkarmandop2">Seleccionar</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
                             </ul>
                           </div>
                         </div>
@@ -284,6 +374,71 @@
                         <p>Cree un ritual de acuerdo a la selección de vídeos que tenemos.</p>
                     </li>
                     @endif
+                    {{-- <li class="item my-1">
+                        <div class="row py-2 bg-light">
+                            <div class="col-2 text-center">
+                                <div class="ritual h-100 p-2 d-table w-100 bg-dark">
+                                    <span class="d-table-cell align-middle"><i class="fa fa-play text-white-50"></i></span>
+                                </div>
+                            </div>
+                            <div class="col-6 my-auto">
+                                <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-danger">Armado</span></h6>
+                                <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
+                            </div>
+                            <div class="col-4 btn-group">
+                                <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-eye fa-2x text-danger d-block"></i> En revisión</button>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item my-1">
+                        <div class="row py-2 bg-light">
+                            <div class="col-2 text-center">
+                                <div class="ritual h-100 p-2 d-table w-100 bg-dark">
+                                    <span class="d-table-cell align-middle"><i class="fa fa-play text-white-50"></i></span>
+                                </div>
+                            </div>
+                            <div class="col-6 my-auto">
+                                <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-warning">Armado</span></h6>
+                                <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
+                            </div>
+                            <div class="col-4 btn-group">
+                                <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-play fa-2x text-warning d-block"></i> En producción</button>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item my-1">
+                        <div class="row py-2 bg-light">
+                            <div class="col-2 text-center">
+                                <div class="ritual h-100 p-2 d-table w-100 bg-dark">
+                                    <span class="d-table-cell align-middle"><i class="fa fa-play text-white-50"></i></span>
+                                </div>
+                            </div>
+                            <div class="col-6 my-auto">
+                                <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-success">Armado</span></h6>
+                                <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
+                            </div>
+                            <div class="col-4 btn-group">
+                                <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-check fa-2x text-success d-block"></i> Aprobado</button>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item my-1">
+                        <div class="row py-2 bg-light">
+                            <div class="col-2 text-center">
+                                <div class="ritual h-100 p-2 d-table w-100 bg-dark">
+                                    <span class="d-table-cell align-middle"><i class="fa fa-play text-white-50"></i></span>
+                                </div>
+                            </div>
+                            <div class="col-6 my-auto">
+                                <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-primary">Sugerido</span></h6>
+                                <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
+                            </div>
+                            <div class="col-4 btn-group">
+                                <button class="btn btn-sm btn-primary shadow-sm h-100"><i class="fas fa-check d-block"></i> publicar</button>
+                                <button class="btn btn-sm btn-danger shadow-sm h-100"><i class="fas fa-trash d-block"></i> borrar</button>
+                            </div>
+                        </div>
+                    </li> --}}
                 </ul>
             </div>
         </div>
@@ -298,8 +453,8 @@
     })
 
     $('[data-step="1"]').on('click', function (event) {
-        var objective = $('#objetivo').val();
-        if(objective.length == 0) {
+        if($('#objetivo').val().length == 0) {
+            console.log('object')
             $('.object-error').show();
             return;
         } else {
@@ -319,64 +474,7 @@
         } else {
             $('.date-error').hide();
         }
-        $('#nav-armando1-tab').trigger('click');
-
-        ajaxList(objective, 1, 'first');
-        ajaxList(objective, 2, 'second');
-        ajaxList(objective, 3, 'third');
+        $('#nav-armando1-tab').trigger('click')
     })
-
-    function ajaxList(objective, part, element) {
-        $.ajax({
-            type: 'GET',
-            url: '/videos/'+objective+'/'+part+'/list',
-            data: {},
-            dataType: 'json',
-            success: function(result) {
-                var list = $('.list-'+element+'-part');
-                list.empty();
-                if(result.status == "success") {
-                    var data = result.data;
-                    if(data.length) {
-                        $.each(data, function (id, item) {
-                            list.append(getItem(item, part))
-                        })
-                    } else {
-                        list.append('<li class="item my-1">No hay vídeos</li>')
-                    }
-                }
-            },
-            error: function (data) {
-                var errors = data.responseJSON;
-                console.log(errors)
-            }
-        });
-    }
-
-    function getItem(video, part) {
-        html = `
-            <li class="item my-1">
-                <div class="row py-2 bg-light">
-                    <div class="col-2 text-center">
-                        <div class="embed-responsive embed-responsive-16by9 h-100 bg-dark">
-                        <video class="embed-responsive-item item-video">
-                            <source src="uploads/videos/`+video.file+`" type="">
-                        </video>
-                        </div>
-                    </div>
-                    <div class="col-6 my-auto">
-                        <h6 class="mb-1">`+dateFormatter(video.created_at)+` <span class="badge badge-dark">`+video.video_type+`</span></h6>
-                        <p class="mb-0">`+video.description+`</p>
-                    </div>
-                    <div class="col-4 my-auto">
-                        <div class="form-check">
-                            <input type="radio" class="form-check-input align-middle" id="video`+video.id+`p`+part+`" value="`+video.id+`" name="video`+video.id+`">
-                            <label class="form-check-label align-middle" for="video`+video.id+`p`+part+`">Seleccionar</label>
-                        </div>
-                    </div>
-                </div>
-            </li>`;
-        return html;
-    }
 </script>
 @endsection

@@ -9822,17 +9822,17 @@ a:focus {
   outline: none;
 }
 
-#wrapper {
+#app {
   display: flex;
 }
 
-#wrapper #content-wrapper {
+#app #content-wrapper {
   background-color: #f8f9fc;
   width: 100%;
   overflow-x: hidden;
 }
 
-#wrapper #content-wrapper #content {
+#app #content-wrapper #content {
   flex: 1 0 auto;
 }
 

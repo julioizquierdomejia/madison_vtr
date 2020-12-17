@@ -217,4 +217,19 @@ class VideoController extends Controller
 
         return response()->json(['status'=>"success", 'data'=>$video]);
     }
+
+    public function getVideoList(Request $request, $objective, $part)
+    {
+        $videos = Video::join('video_types', 'video_types.id', '=', 'videos.video_type_id')
+            ->join('video_status', 'video_status.id', '=', 'videos.video_status_id')
+            ->select('videos.*', 'video_types.name as video_type', 'video_status.name as status', 'videos.video_status_id')
+            ->where('videos.part', $part)
+            ->whereHas('objective', function ($query) use ($objective) {
+                $query->where("video_objectives.id", "=", $objective);
+            })
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return response()->json(['status'=>"success", 'data'=>$videos]);
+    }
 }

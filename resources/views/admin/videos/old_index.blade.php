@@ -174,7 +174,6 @@
             <div class="card-body" style="max-height: 380px;overflow-y: auto;">
                 <ul class="list videos-list list-unstyled mb-0">
                     @if($videos->count())
-                    @if ($role == 'superadmin')
                     @foreach($videos as $video)
                     <li class="item my-1" id="video-{{$video->id}}" data-objective="{{$video->objective[0]->id}}">
                         <div class="row py-2 bg-light">
@@ -193,6 +192,18 @@
                                 <p class="mb-0"><span class="align-middle">{{date('d-m-Y', strtotime($video->created_at))}}</span> <span class="badge badge-primary align-middle px-2">{{$video->objective[0]->name .' - Parte '.$video->part}}</span></p>
                             </div>
                             <div class="col-4 btn-group">
+                                {{-- @if($video->video_status_id == 1)
+                                <button class="btn btn-sm btn-success shadow-sm h-100"><i class="fas fa-check d-block"></i> aprobar</button>
+                                <button class="btn btn-sm btn-danger shadow-sm h-100">hacer <br>cambios</button>
+                                @elseif($video->video_status_id == 2)
+                                <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-eye fa-2x text-danger d-block"></i> En revisión</button>
+                                @elseif($video->video_status_id == 3)
+                                <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-check fa-2x text-success d-block"></i> Aprobado</button>
+                                @elseif($video->video_status_id == 4)
+                                <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-eye fa-2x text-danger d-block"></i> En revisión</button>
+                                @elseif($video->video_status_id == 5)
+                                <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-play fa-2x text-warning d-block"></i> En producción</button>
+                                @endif --}}
                                 @if ($role == 'superadmin')
                                     <button class="btn btn-sm btn-success w-50 shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="{{ asset('uploads/videos/'.$video->file) }}"><i class="fas fa-eye d-block"></i> Ver</button>
                                     <button class="btn btn-sm btn-danger w-50 shadow-sm h-100 btn-delete" data-id="{{$video->id}}"><i class="fas fa-trash d-block"></i> Eliminar</button>
@@ -201,36 +212,6 @@
                         </div>
                     </li>
                     @endforeach
-                    @else
-                    @foreach($videos as $video)
-                    <li class="item my-1" id="video-{{$video->id}}" data-objective="{{$video->objective[0]->id}}">
-                        <div class="row py-2 bg-light">
-                            <div class="col-2 text-center">
-                                <div class="video h-100 w-100 bg-dark">
-                                    <div class="embed-responsive embed-responsive-16by9 h-100">
-                                        <video class="embed-responsive-item item-video">
-                                            <source src="{{ asset('uploads/videos/'.$video->file) }}">
-                                        </video>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 my-auto">
-                                <h6 class="mb-1">{{date('d-m-Y', strtotime($video->created_at))}} <span class="badge badge-secondary align-middle px-2">{{$video->status}}</span>
-                                </h6>
-                                <p class="mb-0"><span class="align-middle">{{$video->name}} </span></p>
-                            </div>
-                            <div class="col-4 btn-group">
-                                @if ($role == 'superadmin')
-                                    <button class="btn btn-sm btn-success w-50 shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="{{ asset('uploads/videos/'.$video->file) }}"><i class="fas fa-eye d-block"></i> Ver</button>
-                                    <button class="btn btn-sm btn-danger w-50 shadow-sm h-100 btn-delete" data-id="{{$video->id}}"><i class="fas fa-trash d-block"></i> Eliminar</button>
-                                @else
-                                <button class="btn btn-sm btn-success w-50 shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="{{ asset('uploads/videos/'.$video->file) }}"><i class="fas fa-eye d-block"></i> Ver</button>
-                                @endif
-                            </div>
-                        </div>
-                    </li>
-                    @endforeach
-                    @endif
                     @else
                     <li class="item my-1 text-center py-3">
                         <i class="fa fa-play text-dark fa-2x mb-4"></i>
@@ -238,6 +219,88 @@
                         <p>Sube o solicita un vídeo para empezar.</p>
                     </li>
                     @endif
+                    {{-- <li class="item my-1">
+                        <div class="row py-2 bg-light">
+                            <div class="col-2 text-center">
+                                <div class="video h-100 p-2 d-table w-100 bg-dark">
+                                    <span class="d-table-cell align-middle"><i class="fa fa-play text-white-50"></i></span>
+                                </div>
+                            </div>
+                            <div class="col-6 my-auto">
+                                <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-dark">Armado</span></h6>
+                                <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
+                            </div>
+                            <div class="col-4 btn-group">
+                                <button class="btn btn-sm btn-success shadow-sm h-100"><i class="fas fa-check d-block"></i> aprobar</button>
+                                <button class="btn btn-sm btn-danger shadow-sm h-100">hacer <br>cambios</button>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item my-1">
+                        <div class="row py-2 bg-light">
+                            <div class="col-2 text-center">
+                                <div class="video h-100 p-2 d-table w-100 bg-dark">
+                                    <span class="d-table-cell align-middle"><i class="fa fa-play text-white-50"></i></span>
+                                </div>
+                            </div>
+                            <div class="col-6 my-auto">
+                                <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-danger">Armado</span></h6>
+                                <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
+                            </div>
+                            <div class="col-4 btn-group">
+                                <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-eye fa-2x text-danger d-block"></i> En revisión</button>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item my-1">
+                        <div class="row py-2 bg-light">
+                            <div class="col-2 text-center">
+                                <div class="video h-100 p-2 d-table w-100 bg-dark">
+                                    <span class="d-table-cell align-middle"><i class="fa fa-play text-white-50"></i></span>
+                                </div>
+                            </div>
+                            <div class="col-6 my-auto">
+                                <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-warning">Armado</span></h6>
+                                <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
+                            </div>
+                            <div class="col-4 btn-group">
+                                <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-play fa-2x text-warning d-block"></i> En producción</button>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item my-1">
+                        <div class="row py-2 bg-light">
+                            <div class="col-2 text-center">
+                                <div class="video h-100 p-2 d-table w-100 bg-dark">
+                                    <span class="d-table-cell align-middle"><i class="fa fa-play text-white-50"></i></span>
+                                </div>
+                            </div>
+                            <div class="col-6 my-auto">
+                                <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-success">Armado</span></h6>
+                                <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
+                            </div>
+                            <div class="col-4 btn-group">
+                                <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-check fa-2x text-success d-block"></i> Aprobado</button>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item my-1">
+                        <div class="row py-2 bg-light">
+                            <div class="col-2 text-center">
+                                <div class="video h-100 p-2 d-table w-100 bg-dark">
+                                    <span class="d-table-cell align-middle"><i class="fa fa-play text-white-50"></i></span>
+                                </div>
+                            </div>
+                            <div class="col-6 my-auto">
+                                <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-primary">Sugerido</span></h6>
+                                <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
+                            </div>
+                            <div class="col-4 btn-group">
+                                <button class="btn btn-sm btn-primary shadow-sm h-100"><i class="fas fa-check d-block"></i> publicar</button>
+                                <button class="btn btn-sm btn-danger shadow-sm h-100"><i class="fas fa-trash d-block"></i> borrar</button>
+                            </div>
+                        </div>
+                    </li> --}}
                 </ul>
             </div>
         </div>
@@ -387,30 +450,58 @@ $(document).ready(function (event) {
 
     function getList(video) {
         var html = `<li class="item my-1" id="video-`+video.id+`" data-objective="`+video.objective_id+`">
-            <div class="row py-2 bg-light">
-                <div class="col-2 text-center">
-                    <div class="video h-100 w-100 bg-dark">
-                        <div class="embed-responsive embed-responsive-16by9 h-100">
-                            <video class="embed-responsive-item item-video">
-                                <source src="uploads/videos/`+video.file+`">
-                            </video>
+                        <div class="row py-2 bg-light">
+                            <div class="col-2 text-center">
+                                <div class="video h-100 w-100 bg-dark">
+                                    <div class="embed-responsive embed-responsive-16by9 h-100">
+                                        <video class="embed-responsive-item item-video">
+                                            <source src="uploads/videos/`+video.file+`">
+                                        </video>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 my-auto">
+                                <h6 class="mb-1 video-title">`+video.name+`
+                                </h6>
+                                <p class="mb-0"><span class="align-middle">`+dateFormatter(video.created_at)+`</span> <span class="badge badge-primary align-middle px-2">`+video.objective +` - Parte `+video.part+`</span></p>
+                            </div>
+                            <div class="col-4 btn-group">`;
+                            /*if(video.video_status_id == 1) {
+                                html += `<button class="btn btn-sm btn-success shadow-sm h-100"><i class="fas fa-check d-block"></i> aprobar</button>
+                                <button class="btn btn-sm btn-danger shadow-sm h-100">hacer <br>cambios</button>`;
+                            } else if (video.video_status_id == 2) {
+                                html += `<button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-eye fa-2x text-danger d-block"></i> En revisión</button>`;
+                            } else if (video.video_status_id == 3) {
+                                html += `<button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-check fa-2x text-success d-block"></i> Aprobado</button>`;
+                            } else if(video.video_status_id == 4) {
+                                html += `<button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-eye fa-2x text-danger d-block"></i> En revisión</button>`;
+                            } else if(video.video_status_id == 5) {
+                                html += `<button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-play fa-2x text-warning d-block"></i> En producción</button>`;
+                            }*/
+                            @if ($role == 'superadmin')
+                            html += `<button class="btn btn-sm btn-success w-50 shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="/uploads/videos/`+video.file+`"><i class="fas fa-eye d-block"></i> Ver</button>
+                            <button class="btn btn-sm btn-danger w-50 shadow-sm h-100 btn-delete" data-id="`+video.id+`"><i class="fas fa-trash d-block"></i> Eliminar</button>`;
+                            @endif
+                            html += `</div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-6 my-auto">
-                    <h6 class="mb-1 video-title">`+video.name+`
-                    </h6>
-                    <p class="mb-0"><span class="align-middle">`+dateFormatter(video.created_at)+`</span> <span class="badge badge-primary align-middle px-2">`+video.objective +` - Parte `+video.part+`</span></p>
-                </div>
-                <div class="col-4 btn-group">`;
-                @if ($role == 'superadmin')
-                html += `<button class="btn btn-sm btn-success w-50 shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="/uploads/videos/`+video.file+`"><i class="fas fa-eye d-block"></i> Ver</button>
-                <button class="btn btn-sm btn-danger w-50 shadow-sm h-100 btn-delete" data-id="`+video.id+`"><i class="fas fa-trash d-block"></i> Eliminar</button>`;
-                @endif
-                html += `</div>
-            </div>
-        </li>`;
+                    </li>`;
         return html;
+    }
+    function dateFormatter(date) {
+      var formattedDate = new Date(date);
+
+      var d = formattedDate.getDate();
+      var m =  formattedDate.getMonth();
+      m += 1;  // JavaScript months are 0-11
+      var y = formattedDate.getFullYear();
+      /*var hours = formattedDate.getHours();
+      var symbol = hours >= 12 ? 'pm' : 'am';
+      hours = hours % 12;
+      hours = hours ? hours : 12;
+      var min = formattedDate.getMinutes();
+      min = min < 10 ? '0'+min : min;*/
+
+      return (d + "-" + m + "-" + y /*+ " " + hours + ":" + min + " "+ symbol*/);
     }
 
     $('.select-objectives').on('change', function() {
