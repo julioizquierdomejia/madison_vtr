@@ -225,7 +225,7 @@ class VideoController extends Controller
             ->select('videos.*', 'video_types.name as video_type', 'video_status.name as status', 'videos.video_status_id')
             ->where('videos.part', $part)
             ->whereHas('objective', function ($query) use ($objective) {
-                $query->where("video_objectives.id", "=", $objective);
+                $query->where("video_objectives.objective_id", "=", $objective);
             })
             ->orderBy('id', 'desc')
             ->get();
