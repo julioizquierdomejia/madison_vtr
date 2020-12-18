@@ -7,6 +7,8 @@ use App\Models\Video;
 use App\Models\VideoStatus;
 use App\Models\Objective;
 use App\Models\VideoObjective;
+use App\Models\RequestService;
+use App\Models\VideoRequest;
 
 class VideoController extends Controller
 {
@@ -27,10 +29,13 @@ class VideoController extends Controller
             ->get();
 
         $objectives = Objective::where('enabled', 1)->get();
+        $request_services = RequestService::all();
+        $video_requests = VideoRequest::orderBy('id', 'desc')
+            ->get();
 
         $status = VideoStatus::all();
 
-        return view('admin.videos.index', compact('videos', 'status', 'objectives'));
+        return view('admin.videos.index', compact('videos', 'status', 'objectives', 'request_services', 'video_requests'));
     }
 
     /**
@@ -149,7 +154,6 @@ class VideoController extends Controller
      */
     public function show($id)
     {
-        //
         $video = Video::findOrFail($id);
 
         return view('videos.show', compact('video'));
@@ -216,5 +220,20 @@ class VideoController extends Controller
         $video->save();
 
         return response()->json(['status'=>"success", 'data'=>$video]);
+    }
+
+    public function getVideoList(Request $request, $objective, $part)
+    {
+        $videos = Video::join('video_types', 'video_types.id', '=', 'videos.video_type_id')
+            ->join('video_status', 'video_status.id', '=', 'videos.video_status_id')
+            ->select('videos.*', 'video_types.name as video_type', 'video_status.name as status', 'videos.video_status_id')
+            ->where('videos.part', $part)
+            ->whereHas('objective', function ($query) use ($objective) {
+                $query->where("video_objectives.objective_id", "=", $objective);
+            })
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return response()->json(['status'=>"success", 'data'=>$videos]);
     }
 }

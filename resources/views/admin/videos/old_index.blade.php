@@ -86,8 +86,7 @@
                 </div>
             </div>
         </form>
-        @if ($role == 'admin')
-        <div class="card shadow card-steps mb-4">
+        {{-- <div class="card shadow card-steps mb-4">
             <div class="card-header py-3 d-flex align-items-center justify-content-between" style="background-color: #E72F77;">
                 <h6 class="m-0 font-weight-bold"><span>Solicitar un vídeo</span></h6>
                 <div class="dropdown no-arrow ml-2">
@@ -101,21 +100,20 @@
                     </div>
                 </div>
             </div>
-            <form class="card-body form-requestVideo" action="/solicitar-videos" method="POST" enctype="multipart/form-data">
-                @csrf
+            <div class="card-body">
                 <p><strong>Llena el formulario</strong></p>
                 <ul class="list-inline row">
-                    @foreach ($request_services as $key => $item)
-                    <li class="d-inline-block col-auto"><label><span class="align-middle">{{$item->name}} </span><input class="align-middle" type="checkbox" name="services[]" value="{{$item->id}}"></label></li>
-                    @endforeach
+                    <li class="d-inline-block col-auto"><label><span class="align-middle">Activar servicio express </span><input class="align-middle" type="checkbox" name="express"></label></li>
+                    <li class="d-inline-block col-auto"><label><span class="align-middle">Animación </span><input class="align-middle" type="checkbox" name="animation"></label></li>
+                    <li class="d-inline-block col-auto"><label><span class="align-middle">Grabación </span><input class="align-middle" type="checkbox" name="recording"></label></li>
                 </ul>
                 <div class="row">
                     <div class="col-12 col-md-6">
                         <div class="form-group">
-                            <input class="form-control" placeholder="Tema principal" type="text" name="topic">
+                            <input class="form-control" placeholder="Tema principal" type="text" name="tema">
                         </div>
                         <div class="form-group">
-                            <input class="form-control" placeholder="Tipo de presentación" type="text" name="type">
+                            <input class="form-control" placeholder="Tipo de presentación" type="text" name="tipo">
                         </div>
                         <div class="form-group">
                             <input class="form-control" placeholder="Avatar" type="text" name="avatar">
@@ -123,7 +121,7 @@
                     </div>
                     <div class="col-12 col-md-6">
                         <div class="form-group">
-                            <textarea class="form-control" placeholder="Comentarios" rows="3" name="comments"></textarea>
+                            <textarea class="form-control" placeholder="Comentarios" rows="3" name="comentarios"></textarea>
                         </div>
                         <div class="form-group">
                             <div class="input-group">
@@ -132,7 +130,7 @@
                                 </div>
                                 <div class="custom-file">
                                     <input type="file" accept="application/pdf" class="custom-file-input" id="documentUpload"
-                                    aria-describedby="documentUpload" name="speech">
+                                    aria-describedby="documentUpload" name="upload_file">
                                     <label class="custom-file-label" for="documentUpload">subir speech</label>
                                 </div>
                             </div>
@@ -144,15 +142,14 @@
                         <label for="terminos"><input type="checkbox" id="terminos" name="terminos">Acepto los términos y condiciones de Madison por mi solicitud.Cualquier modificación durante el proceso tendrá un costo adicional.</label>
                     </div>
                     <div class="col-12 col-md-6">
-                        <button class="btn btn-dark btn-block btn-sm px-5 btn-requestVideo"><span class="px-md-4">Solicitar</span></button>
+                        <button class="btn btn-dark btn-block btn-sm px-5 btn-upload"><span class="px-md-4">Solicitar</span></button>
                     </div>
                 </div>
-            </form>
-        </div>
-        @endif
+            </div>
+        </div> --}}
     </div>
-    <div class="col-12 col-md-6">
-        <div class="card shadow mb-4">
+    <div class="col-12 col-md-6 mb-4">
+        <div class="card shadow h-100">
             <div class="card-header py-3 d-flex align-items-center" style="background-color: #E72F77;">
                 <h6 class="m-0 font-weight-bold">Listado de Vídeos</h6>
                 <div class="text-right ml-auto">
@@ -177,7 +174,6 @@
             <div class="card-body" style="max-height: 380px;overflow-y: auto;">
                 <ul class="list videos-list list-unstyled mb-0">
                     @if($videos->count())
-                    @if ($role == 'superadmin')
                     @foreach($videos as $video)
                     <li class="item my-1" id="video-{{$video->id}}" data-objective="{{$video->objective[0]->id}}">
                         <div class="row py-2 bg-light">
@@ -196,38 +192,26 @@
                                 <p class="mb-0"><span class="align-middle">{{date('d-m-Y', strtotime($video->created_at))}}</span> <span class="badge badge-primary align-middle px-2">{{$video->objective[0]->name .' - Parte '.$video->part}}</span></p>
                             </div>
                             <div class="col-4 btn-group">
-                                <button class="btn btn-sm btn-success w-50 shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="{{ asset('uploads/videos/'.$video->file) }}"><i class="fas fa-eye d-block"></i> Ver</button>
-                                <button class="btn btn-sm btn-danger w-50 shadow-sm h-100 btn-delete" data-id="{{$video->id}}"><i class="fas fa-trash d-block"></i> Eliminar</button>
+                                {{-- @if($video->video_status_id == 1)
+                                <button class="btn btn-sm btn-success shadow-sm h-100"><i class="fas fa-check d-block"></i> aprobar</button>
+                                <button class="btn btn-sm btn-danger shadow-sm h-100">hacer <br>cambios</button>
+                                @elseif($video->video_status_id == 2)
+                                <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-eye fa-2x text-danger d-block"></i> En revisión</button>
+                                @elseif($video->video_status_id == 3)
+                                <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-check fa-2x text-success d-block"></i> Aprobado</button>
+                                @elseif($video->video_status_id == 4)
+                                <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-eye fa-2x text-danger d-block"></i> En revisión</button>
+                                @elseif($video->video_status_id == 5)
+                                <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-play fa-2x text-warning d-block"></i> En producción</button>
+                                @endif --}}
+                                @if ($role == 'superadmin')
+                                    <button class="btn btn-sm btn-success w-50 shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="{{ asset('uploads/videos/'.$video->file) }}"><i class="fas fa-eye d-block"></i> Ver</button>
+                                    <button class="btn btn-sm btn-danger w-50 shadow-sm h-100 btn-delete" data-id="{{$video->id}}"><i class="fas fa-trash d-block"></i> Eliminar</button>
+                                @endif
                             </div>
                         </div>
                     </li>
                     @endforeach
-                    @else
-                    @foreach($videos as $video)
-                    <li class="item my-1" id="video-{{$video->id}}" data-objective="{{$video->objective[0]->id}}">
-                        <div class="row py-2 bg-light">
-                            <div class="col-2 text-center">
-                                <div class="video h-100 w-100 bg-dark">
-                                    <div class="embed-responsive embed-responsive-16by9 h-100">
-                                        <video class="embed-responsive-item item-video">
-                                            <source src="{{ asset('uploads/videos/'.$video->file) }}">
-                                        </video>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 my-auto">
-                                <h6 class="mb-1">{{date('d-m-Y', strtotime($video->created_at))}} <span class="badge badge-secondary align-middle px-2">{{$video->status}}</span>
-                                </h6>
-                                <p class="mb-0"><span class="align-middle">{{$video->name}} </span></p>
-                            </div>
-                            <div class="col-4 btn-group">
-                                <button class="btn btn-sm btn-success w-50 shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="{{ asset('uploads/videos/'.$video->file) }}"><i class="fas fa-eye d-block"></i> Ver</button>
-                                <button class="btn btn-sm btn-danger w-50 shadow-sm h-100"><i class="fas fa-pen-square d-block"></i> Solicitar cambios</button>
-                            </div>
-                        </div>
-                    </li>
-                    @endforeach
-                    @endif
                     @else
                     <li class="item my-1 text-center py-3">
                         <i class="fa fa-play text-dark fa-2x mb-4"></i>
@@ -235,50 +219,88 @@
                         <p>Sube o solicita un vídeo para empezar.</p>
                     </li>
                     @endif
-                </ul>
-            </div>
-        </div>
-        <div class="card shadow">
-            <div class="card-header py-3 d-flex align-items-center" style="background-color: #E72F77;">
-                <h6 class="m-0 font-weight-bold">Vídeos Solicitados</h6>
-                <div class="dropdown no-arrow ml-auto">
-                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuSVideo" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-white"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                        aria-labelledby="dropdownMenuSVideo">
-                        <div class="dropdown-header">Información:</div>
-                        <a class="dropdown-item" href="#">Action</a>
-                    </div>
-                </div>
-            </div>
-            <div class="card-body" style="max-height: 380px;overflow-y: auto;">
-                <ul class="list request-list list-unstyled mb-0">
-                    @if($video_requests->count())
-                    @foreach($video_requests as $request)
-                    <li class="item my-1" id="request-{{$request->id}}">
+                    {{-- <li class="item my-1">
                         <div class="row py-2 bg-light">
-                            <div class="col-2 text-center d-flex align-items-center justify-content-center">
-                                <button class="btn btn-primary" data-toggle="modal" data-target="#modalSpeech" width="100%" data-speech="{{ asset('uploads/requests/'.$request->id.'/'.$request->speech) }}"><i class="far fa-file"></i></button>
+                            <div class="col-2 text-center">
+                                <div class="video h-100 p-2 d-table w-100 bg-dark">
+                                    <span class="d-table-cell align-middle"><i class="fa fa-play text-white-50"></i></span>
+                                </div>
                             </div>
-                            <div class="col-8 my-auto">
-                                <h6 class="mb-1 video-title">{{$request->topic}} <span class="align-middle badge badge-primary" style="font-size: 16px">{{date('d-m-Y', strtotime($request->created_at))}}</span>
-                                </h6>
-                                <p class="mb-0">{{$request->comments ?? '-'}}</p>
+                            <div class="col-6 my-auto">
+                                <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-dark">Armado</span></h6>
+                                <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
                             </div>
-                            <div class="col-2 my-auto">
-                                <a class="btn btn-primary" href="{{route('request_video.show', $request->id)}}"><i class="far fa-eye"></i></a>
+                            <div class="col-4 btn-group">
+                                <button class="btn btn-sm btn-success shadow-sm h-100"><i class="fas fa-check d-block"></i> aprobar</button>
+                                <button class="btn btn-sm btn-danger shadow-sm h-100">hacer <br>cambios</button>
                             </div>
                         </div>
                     </li>
-                    @endforeach
-                    @else
-                    <li class="item my-1 text-center py-3">
-                        <i class="fa fa-play text-dark fa-2x mb-4"></i>
-                        <p>No existen solicitudes de vídeos por el momento.</p>
-                        <p>Solicita un vídeo de ser necesario.</p>
+                    <li class="item my-1">
+                        <div class="row py-2 bg-light">
+                            <div class="col-2 text-center">
+                                <div class="video h-100 p-2 d-table w-100 bg-dark">
+                                    <span class="d-table-cell align-middle"><i class="fa fa-play text-white-50"></i></span>
+                                </div>
+                            </div>
+                            <div class="col-6 my-auto">
+                                <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-danger">Armado</span></h6>
+                                <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
+                            </div>
+                            <div class="col-4 btn-group">
+                                <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-eye fa-2x text-danger d-block"></i> En revisión</button>
+                            </div>
+                        </div>
                     </li>
-                    @endif
+                    <li class="item my-1">
+                        <div class="row py-2 bg-light">
+                            <div class="col-2 text-center">
+                                <div class="video h-100 p-2 d-table w-100 bg-dark">
+                                    <span class="d-table-cell align-middle"><i class="fa fa-play text-white-50"></i></span>
+                                </div>
+                            </div>
+                            <div class="col-6 my-auto">
+                                <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-warning">Armado</span></h6>
+                                <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
+                            </div>
+                            <div class="col-4 btn-group">
+                                <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-play fa-2x text-warning d-block"></i> En producción</button>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item my-1">
+                        <div class="row py-2 bg-light">
+                            <div class="col-2 text-center">
+                                <div class="video h-100 p-2 d-table w-100 bg-dark">
+                                    <span class="d-table-cell align-middle"><i class="fa fa-play text-white-50"></i></span>
+                                </div>
+                            </div>
+                            <div class="col-6 my-auto">
+                                <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-success">Armado</span></h6>
+                                <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
+                            </div>
+                            <div class="col-4 btn-group">
+                                <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-check fa-2x text-success d-block"></i> Aprobado</button>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item my-1">
+                        <div class="row py-2 bg-light">
+                            <div class="col-2 text-center">
+                                <div class="video h-100 p-2 d-table w-100 bg-dark">
+                                    <span class="d-table-cell align-middle"><i class="fa fa-play text-white-50"></i></span>
+                                </div>
+                            </div>
+                            <div class="col-6 my-auto">
+                                <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-primary">Sugerido</span></h6>
+                                <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
+                            </div>
+                            <div class="col-4 btn-group">
+                                <button class="btn btn-sm btn-primary shadow-sm h-100"><i class="fas fa-check d-block"></i> publicar</button>
+                                <button class="btn btn-sm btn-danger shadow-sm h-100"><i class="fas fa-trash d-block"></i> borrar</button>
+                            </div>
+                        </div>
+                    </li> --}}
                 </ul>
             </div>
         </div>
@@ -299,23 +321,6 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="modalSpeech" tabindex="-1" role="dialog" aria-labelledby="modalVideoLbl" aria-hidden="true">
-    <div class="modal-dialog modal-lg h-100" role="document" style="max-height: calc(100% - 63px)">
-        <div class="modal-content h-100">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalVideoLbl">Speech</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body p-0">
-                <div class="embed-responsive embed-responsive-16by9 h-100 bg-dark">
-                    <iframe class="embed-responsive-item" src="" width="100%"></iframe>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 @endsection
 @section('script')
 <script>
@@ -325,11 +330,6 @@ $(document).ready(function (event) {
         `<video controls class="embed-responsive-item item-video">
             <source src="`+$(event.relatedTarget).data('video')+`" type="">
         </video>`
-        )
-    })
-    $('#modalSpeech').on('show.bs.modal', function (event) {
-      $('#modalSpeech .embed-responsive').html(
-        `<iframe class="embed-responsive-item" src="`+$(event.relatedTarget).data('speech')+`" width="100%"></iframe>`
         )
     })
 
@@ -382,53 +382,6 @@ $(document).ready(function (event) {
             $('progress').attr({value:e.loaded,max:e.total});
         }
     }
-
-    $('.form-requestVideo').submit(function (event) {
-        event.preventDefault();
-        var form = $(this);
-        var url = form.attr('action');
-        $.ajax({
-            type: "post",
-            url: url,
-            data: new FormData(this),
-            processData: false,
-            contentType: false,
-            beforeSend: function (data) {
-                $('.btn-requestVideo').attr('disabled', true);
-            },
-            success: function (response) {
-                if(response.success) {
-                    $('.request-list').empty();
-                    $('#documentUpload').val('').change();
-                    var request = $.parseJSON(response.data);
-                    $.each(request, function (id, item) {
-                        $('.request-list').append(getRequestList(item));
-                    })
-                    $('.btn-requestVideo').attr('disabled', false);
-                    Swal.fire(
-                      'Solicitar Vídeo',
-                      'Se envió la solicitud de vídeo',
-                      'success'
-                    )
-                }
-            },
-            error: function (data) {
-                var errors = data.responseJSON;
-                errorsHtml = '<div class="alert alert-danger mb-0"><ul class="mb-0">';
-
-                $.each( errors.errors, function( key, value ) {
-                    errorsHtml += '<li>'+ value + '</li>'; //showing only the first error.
-                });
-                errorsHtml += '</ul></div>';
-                Swal.fire(
-                  'Solicitar Vídeo',
-                  errorsHtml,
-                  'error'
-                )
-                $('.btn-requestVideo').attr('disabled', false);
-            }
-        });
-    })
 
     $('.form-uploadvideo').submit(function (event) {
         event.preventDefault();
@@ -496,69 +449,59 @@ $(document).ready(function (event) {
     })
 
     function getList(video) {
-        @if ($role == 'superadmin')
         var html = `<li class="item my-1" id="video-`+video.id+`" data-objective="`+video.objective_id+`">
-            <div class="row py-2 bg-light">
-                <div class="col-2 text-center">
-                    <div class="video h-100 w-100 bg-dark">
-                        <div class="embed-responsive embed-responsive-16by9 h-100">
-                            <video class="embed-responsive-item item-video">
-                                <source src="/uploads/videos/`+video.file+`">
-                            </video>
+                        <div class="row py-2 bg-light">
+                            <div class="col-2 text-center">
+                                <div class="video h-100 w-100 bg-dark">
+                                    <div class="embed-responsive embed-responsive-16by9 h-100">
+                                        <video class="embed-responsive-item item-video">
+                                            <source src="uploads/videos/`+video.file+`">
+                                        </video>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 my-auto">
+                                <h6 class="mb-1 video-title">`+video.name+`
+                                </h6>
+                                <p class="mb-0"><span class="align-middle">`+dateFormatter(video.created_at)+`</span> <span class="badge badge-primary align-middle px-2">`+video.objective +` - Parte `+video.part+`</span></p>
+                            </div>
+                            <div class="col-4 btn-group">`;
+                            /*if(video.video_status_id == 1) {
+                                html += `<button class="btn btn-sm btn-success shadow-sm h-100"><i class="fas fa-check d-block"></i> aprobar</button>
+                                <button class="btn btn-sm btn-danger shadow-sm h-100">hacer <br>cambios</button>`;
+                            } else if (video.video_status_id == 2) {
+                                html += `<button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-eye fa-2x text-danger d-block"></i> En revisión</button>`;
+                            } else if (video.video_status_id == 3) {
+                                html += `<button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-check fa-2x text-success d-block"></i> Aprobado</button>`;
+                            } else if(video.video_status_id == 4) {
+                                html += `<button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-eye fa-2x text-danger d-block"></i> En revisión</button>`;
+                            } else if(video.video_status_id == 5) {
+                                html += `<button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-play fa-2x text-warning d-block"></i> En producción</button>`;
+                            }*/
+                            @if ($role == 'superadmin')
+                            html += `<button class="btn btn-sm btn-success w-50 shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="/uploads/videos/`+video.file+`"><i class="fas fa-eye d-block"></i> Ver</button>
+                            <button class="btn btn-sm btn-danger w-50 shadow-sm h-100 btn-delete" data-id="`+video.id+`"><i class="fas fa-trash d-block"></i> Eliminar</button>`;
+                            @endif
+                            html += `</div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-6 my-auto">
-                    <h6 class="mb-1 video-title">`+video.name+` </h6>
-                    <p class="mb-0"><span class="align-middle">`+dateFormatter(video.created_at)+`</span> <span class="badge badge-primary align-middle px-2">`+video.objective +` - Parte `+video.part+`</span></p>
-                </div>
-                <div class="col-4 btn-group">
-                    <button class="btn btn-sm btn-success w-50 shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="/uploads/videos/`+video.file+`"><i class="fas fa-eye d-block"></i> Ver</button>
-                    <button class="btn btn-sm btn-danger w-50 shadow-sm h-100 btn-delete" data-id="`+video.id+`"><i class="fas fa-trash d-block"></i> Eliminar</button>
-                </div>
-            </div>
-        </li>`;
-        @else
-        var html = `<li class="item my-1" id="video-`+video.id+`" data-objective="`+video.objective_id+`">
-            <div class="row py-2 bg-light">
-                <div class="col-2 text-center">
-                    <div class="video h-100 w-100 bg-dark">
-                        <div class="embed-responsive embed-responsive-16by9 h-100">
-                            <video class="embed-responsive-item item-video">
-                                <source src="/uploads/videos/`+video.file+`">
-                            </video>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6 my-auto">
-                    <h6 class="mb-1">`+dateFormatter(video.created_at)+` <span class="badge badge-secondary align-middle px-2">`+video.status+`</span>
-                    </h6>
-                    <p class="mb-0"><span class="align-middle">`+video.name+` </span></p>
-                </div>
-                <div class="col-4 btn-group">
-                    <button class="btn btn-sm btn-success w-50 shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="/uploads/videos/`+video.file+`"><i class="fas fa-eye d-block"></i> Ver</button>
-                    <button class="btn btn-sm btn-danger w-50 shadow-sm h-100"><i class="fas fa-pen-square d-block"></i> Solicitar cambios</button>
-                </div>
-            </div>
-        </li>`;
-        @endif
+                    </li>`;
         return html;
     }
+    function dateFormatter(date) {
+      var formattedDate = new Date(date);
 
-    function getRequestList(item) {
-        var html = `<li class="item my-1" id="request-`+item.id+`">
-            <div class="row py-2 bg-light">
-                <div class="col-2 text-center d-flex align-items-center justify-content-center">
-                    <button class="btn btn-primary" data-toggle="modal" data-target="#modalSpeech" width="100%" data-speech="/uploads/requests/`+item.id+`/`+item.speech+`"><i class="far fa-file"></i></button>
-                </div>
-                <div class="col-6 my-auto">
-                    <h6 class="mb-1 video-title">`+item.topic+`<span class="align-middle badge badge-primary" style="font-size: 16px">`+dateFormatter(item.created_at)+`</span>
-                    </h6>
-                    <p class="mb-0"><span class="align-middle">`+ (item.comments ? item.comments : '-') +`</span></p>
-                </div>
-            </div>
-        </li>`;
-        return html;
+      var d = formattedDate.getDate();
+      var m =  formattedDate.getMonth();
+      m += 1;  // JavaScript months are 0-11
+      var y = formattedDate.getFullYear();
+      /*var hours = formattedDate.getHours();
+      var symbol = hours >= 12 ? 'pm' : 'am';
+      hours = hours % 12;
+      hours = hours ? hours : 12;
+      var min = formattedDate.getMinutes();
+      min = min < 10 ? '0'+min : min;*/
+
+      return (d + "-" + m + "-" + y /*+ " " + hours + ":" + min + " "+ symbol*/);
     }
 
     $('.select-objectives').on('change', function() {

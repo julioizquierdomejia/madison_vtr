@@ -21,7 +21,7 @@
 
     @if($role == 'admin' || $role == 'superadmin')
         <li class="nav-item{{request()->segment(1) == 'clientes' ? ' active' : '' }}">
-            <a class="nav-link" href="/clientes">
+            <a class="nav-link" href="/clientes" style="border-left: {{request()->segment(1) == 'clientes' ? ' 4px solid #FBB911' : '0' }}">
                 <i class="fas fa-user-friends"style="color: #FBB911" ></i>
                 <span>{{$role == 'admin' ? 'USUARIOS' : 'CLIENTES'}}</span>
             </a>
@@ -32,79 +32,38 @@
                 <span>PLANES</span>
             </a>
         </li> --}}
-<<<<<<< HEAD
-        <li class="nav-item{{request()->segment(1) == 'videos' ? ' active' : '' }}">
-            <a class="nav-link" href="/videos">
-                <i class="fas fa-fw fa-play" style="color: #E72E7A"></i>
-                <span>VÍDEOS</span>
-            </a>
-        </li>
-        <li class="nav-item{{request()->segment(1) == 'objetivos' ? ' active' : '' }}">
-            <a class="nav-link" href="/objetivos">
-                <i class="fas fa-bullseye" style="color: #6666FF"></i>
-                <span>OBJETIVOS</span>
-            </a>
-        </li>
-    @endif
-
-    @if($role == 'admin')
-        <!-- Nav Item - Dashboard -->
-        {{-- <li class="nav-item active">
-            <a class="nav-link" href="/">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Rituales</span>
-            </a>
-        </li> --}}
-
-        <!-- Divider -->
-        <hr class="sidebar-divider my-0">
-
-        <li class="nav-item{{request()->segment(1) == 'rituales' ? ' active' : '' }}">
-            <a class="nav-link" href="/rituales">
-                <i class="fas fa-fw fa-check-circle" style="color: #FBB911"></i>
-                <span>RITUALES</span>
-            </a>
-        </li>
-
-        <li class="nav-item{{request()->segment(1) == 'resumen' ? ' active' : '' }}">
-            <a class="nav-link" href="/resumen">
-                <i class="fas fa-fw fa-chart-area" style="color: #E54C16"></i>
-                <span>RESUMEN</span></a>
-        </li>
-
-        <li class="nav-item{{request()->segment(1) == 'soporte' ? ' active' : '' }}">
-            <a class="nav-link" href="soporte">
-                <i class="fas fa-fw fa-question-circle" style="color: #39B8BC"></i>
-                <span>SOPORTE</span></a>
-        </li>
-=======
->>>>>>> 97c1e7ced1cea5951c1bf2848ccb64acd04e2c4c
     @endif
 
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
 
     <li class="nav-item{{request()->segment(1) == 'rituales' ? ' active' : '' }}">
-        <a class="nav-link" href="/rituales">
+        <a class="nav-link" href="/rituales" style="border-left: {{request()->segment(1) == 'rituales' ? ' 4px solid #FBB911' : '0' }}">
             <i class="fas fa-fw fa-check-circle" style="color: #FBB911"></i>
             <span>RITUALES</span>
         </a>
     </li>
 
     <li class="nav-item{{request()->segment(1) == 'videos' ? ' active' : '' }}">
-        <a class="nav-link" href="/videos">
+        <a class="nav-link" href="/videos" style="border-left: {{request()->segment(1) == 'videos' ? ' 4px solid #E72E7A' : '0' }}">
             <i class="fas fa-fw fa-play" style="color: #E72E7A"></i>
             <span>VÍDEOS</span>
         </a>
     </li>
+    <li class="nav-item{{request()->segment(1) == 'objetivos' ? ' active' : '' }}">
+        <a class="nav-link" href="/objetivos">
+            <i class="fas fa-bullseye" style="color: #6666FF"></i>
+            <span>OBJETIVOS</span>
+        </a>
+    </li>
     <li class="nav-item{{request()->segment(1) == 'resumen' ? ' active' : '' }}">
-        <a class="nav-link" href="/resumen">
+        <a class="nav-link" href="/resumen" style="border-left: {{request()->segment(1) == 'resumen' ? ' 4px solid #E54C16' : '0' }}">
             <i class="fas fa-fw fa-chart-area" style="color: #E54C16"></i>
             <span>RESUMEN</span></a>
     </li>
 
     <li class="nav-item{{request()->segment(1) == 'soporte' ? ' active' : '' }}">
-        <a class="nav-link" href="soporte">
+        <a class="nav-link" href="soporte" style="border-left: {{request()->segment(1) == 'soporte' ? ' 4px solid #39B8BC' : '0' }}">
             <i class="fas fa-fw fa-question-circle" style="color: #39B8BC"></i>
             <span>SOPORTE</span></a>
     </li>
