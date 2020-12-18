@@ -6,7 +6,7 @@
   </div>
   <div class="card-body">
     <div class="row">
-      <div class="col">
+      <div class="col-12 col-md-6">
         <h3 class="card-title mt-3">{{$video_request->topic}}</h3>
         <h5 class="h6">Tipo:</h5>
         <p class="text-primary">{{$video_request->type}}</p>
@@ -16,27 +16,12 @@
         <p class="text-dark p-3" style="background-color: #c3c3c3">{{$video_request->comments}}</p>
       </div>
 
-      <div class="col">
+      <div class="col-12 col-md-6">
         <h5 class="h6">Speech:</h5>
-        <div class="embed-responsive embed-responsive-16by9 h-100 bg-dark">
+        <div class="embed-responsive embed-responsive-1by1 bg-dark">
               <iframe class="embed-responsive-item" src="{{ asset('uploads/requests/'.$video_request->id.'/'.$video_request->speech) }}" width="100%"></iframe>
         </div>
       </div>
-    </div>
-    
-    <div class="row">
-      <div class="card-text col-12 col-md-6 mb-4">
-        
-      </div>
-      <div class="card-text col-12 col-md-6 mb-4">
-        
-      </div>
-      </div>
-    <div class="card-text mb-4">
-      
-    </div>
-    <div class="card-text mb-4">
-      
     </div>
   </div>
 </div>
