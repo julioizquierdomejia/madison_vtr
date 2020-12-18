@@ -221,7 +221,7 @@
                             </div>
                             <div class="col-4 btn-group">
                                 <button class="btn btn-sm btn-success w-50 shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="{{ asset('uploads/videos/'.$video->file) }}"><i class="fas fa-eye d-block"></i> Ver</button>
-                                <button class="btn btn-sm btn-danger w-50 shadow-sm h-100"><i class="fas fa-eye d-block"></i> Solicitar cambios</button>
+                                <button class="btn btn-sm btn-danger w-50 shadow-sm h-100"><i class="fas fa-pen-square d-block"></i> Solicitar cambios</button>
                             </div>
                         </div>
                     </li>
@@ -423,7 +423,7 @@ $(document).ready(function (event) {
                 </div>
                 <div class="col-4 btn-group">
                     <button class="btn btn-sm btn-success w-50 shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="/uploads/videos/`+video.file+`"><i class="fas fa-eye d-block"></i> Ver</button>
-                    <button class="btn btn-sm btn-danger w-50 shadow-sm h-100"><i class="fas fa-eye d-block"></i> Solicitar cambios</button>
+                    <button class="btn btn-sm btn-danger w-50 shadow-sm h-100"><i class="fas fa-pen-square d-block"></i> Solicitar cambios</button>
                 </div>
             </div>
         </li>`;
