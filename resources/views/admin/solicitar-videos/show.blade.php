@@ -5,6 +5,52 @@
       <h6 class="m-0 font-weight-bold text-white">Solicitud de Vídeo N°{{$video_request->id}}</h6>
   </div>
   <div class="card-body">
+    <div class="row">
+      <div class="col">
+        <h3 class="card-title mt-3">{{$video_request->topic}}</h3>
+        <h5 class="h6">Tipo:</h5>
+        <p class="text-primary">{{$video_request->type}}</p>
+        <h5 class="h6">Avatar:</h5>
+        <p class="text-primary">{{$video_request->avatar}}</p>
+        <h5 class="h6">Comentarios:</h5>
+        <p class="text-dark p-3" style="background-color: #c3c3c3">{{$video_request->comments}}</p>
+      </div>
+
+      <div class="col">
+        <h5 class="h6">Speech:</h5>
+        <div class="embed-responsive embed-responsive-16by9 h-100 bg-dark">
+              <iframe class="embed-responsive-item" src="{{ asset('uploads/requests/'.$video_request->id.'/'.$video_request->speech) }}" width="100%"></iframe>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="card-text col-12 col-md-6 mb-4">
+        
+      </div>
+      <div class="card-text col-12 col-md-6 mb-4">
+        
+      </div>
+      </div>
+    <div class="card-text mb-4">
+      
+    </div>
+    <div class="card-text mb-4">
+      
+    </div>
+  </div>
+</div>
+@endsection
+
+
+{{--  
+@extends('admin.layouts.app', ['title' => 'Ver solicitud de vídeo'])
+@section('content')
+<div class="card">
+  <div class="card-header py-3 d-flex align-items-center">
+      <h6 class="m-0 font-weight-bold text-white">Solicitud de Vídeo N°{{$video_request->id}}</h6>
+  </div>
+  <div class="card-body">
     <h5 class="card-title">{{$video_request->topic}}</h5>
     <div class="row">
     	<div class="card-text col-12 col-md-6 mb-4">
@@ -29,3 +75,4 @@
   </div>
 </div>
 @endsection
+--}}
