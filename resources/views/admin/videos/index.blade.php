@@ -261,10 +261,13 @@
                             <div class="col-2 text-center d-flex align-items-center justify-content-center">
                                 <button class="btn btn-primary" data-toggle="modal" data-target="#modalSpeech" width="100%" data-speech="{{ asset('uploads/requests/'.$request->id.'/'.$request->speech) }}"><i class="far fa-file"></i></button>
                             </div>
-                            <div class="col-6 my-auto">
+                            <div class="col-8 my-auto">
                                 <h6 class="mb-1 video-title">{{$request->topic}} <span class="align-middle badge badge-primary" style="font-size: 16px">{{date('d-m-Y', strtotime($request->created_at))}}</span>
                                 </h6>
                                 <p class="mb-0">{{$request->comments ?? '-'}}</p>
+                            </div>
+                            <div class="col-2 my-auto">
+                                <a class="btn btn-primary" href="{{route('request_video.show', $request->id)}}"><i class="far fa-eye"></i></a>
                             </div>
                         </div>
                     </li>

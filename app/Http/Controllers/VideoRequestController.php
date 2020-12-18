@@ -91,11 +91,11 @@ class VideoRequestController extends Controller
      * @param  \App\Models\Video  $video
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        $video = Video::findOrFail($id);
+        $video_request = VideoRequest::findOrFail($id);
 
-        return view('videos.show', compact('video'));
+        return view('admin.solicitar-videos.show', compact('video_request'));
     }
 
     /**
@@ -108,7 +108,7 @@ class VideoRequestController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin']);
         $video = Video::findOrFail($id);
-        return view('videos.edit', compact('video'));
+        return view('solicitar-videos.edit', compact('video'));
     }
 
     /**

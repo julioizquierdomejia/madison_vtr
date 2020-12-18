@@ -52,6 +52,7 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 
 	Route::resource('/objetivos', App\Http\Controllers\ObjetiveController::class);
 
-	Route::get('/solicitar-videos', [App\Http\Controllers\VideoRequestController::class, 'index'])->name('video');
-	Route::post('/solicitar-videos', [App\Http\Controllers\VideoRequestController::class, 'ajaxstore'])->name('solicitar-videos.upload');
+	Route::get('/solicitar-videos', [App\Http\Controllers\VideoRequestController::class, 'index'])->name('request_video');
+	Route::post('/solicitar-videos', [App\Http\Controllers\VideoRequestController::class, 'ajaxstore'])->name('request_video.upload');
+	Route::get('/solicitar-videos/{id}/ver', [App\Http\Controllers\VideoRequestController::class, 'show'])->name('request_video.show');
 });
