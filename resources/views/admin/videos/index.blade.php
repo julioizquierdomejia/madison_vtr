@@ -195,10 +195,8 @@
                                 <p class="mb-0"><span class="align-middle">{{date('d-m-Y', strtotime($video->created_at))}}</span> <span class="badge badge-primary align-middle px-2">{{$video->objective[0]->name .' - Parte '.$video->part}}</span></p>
                             </div>
                             <div class="col-4 btn-group">
-                                @if ($role == 'superadmin')
-                                    <button class="btn btn-sm btn-success w-50 shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="{{ asset('uploads/videos/'.$video->file) }}"><i class="fas fa-eye d-block"></i> Ver</button>
-                                    <button class="btn btn-sm btn-danger w-50 shadow-sm h-100 btn-delete" data-id="{{$video->id}}"><i class="fas fa-trash d-block"></i> Eliminar</button>
-                                @endif
+                                <button class="btn btn-sm btn-success w-50 shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="{{ asset('uploads/videos/'.$video->file) }}"><i class="fas fa-eye d-block"></i> Ver</button>
+                                <button class="btn btn-sm btn-danger w-50 shadow-sm h-100 btn-delete" data-id="{{$video->id}}"><i class="fas fa-trash d-block"></i> Eliminar</button>
                             </div>
                         </div>
                     </li>
@@ -222,12 +220,8 @@
                                 <p class="mb-0"><span class="align-middle">{{$video->name}} </span></p>
                             </div>
                             <div class="col-4 btn-group">
-                                @if ($role == 'superadmin')
-                                    <button class="btn btn-sm btn-success w-50 shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="{{ asset('uploads/videos/'.$video->file) }}"><i class="fas fa-eye d-block"></i> Ver</button>
-                                    <button class="btn btn-sm btn-danger w-50 shadow-sm h-100 btn-delete" data-id="{{$video->id}}"><i class="fas fa-trash d-block"></i> Eliminar</button>
-                                @else
                                 <button class="btn btn-sm btn-success w-50 shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="{{ asset('uploads/videos/'.$video->file) }}"><i class="fas fa-eye d-block"></i> Ver</button>
-                                @endif
+                                <button class="btn btn-sm btn-danger w-50 shadow-sm h-100"><i class="fas fa-eye d-block"></i> Solicitar cambios</button>
                             </div>
                         </div>
                     </li>
@@ -388,30 +382,52 @@ $(document).ready(function (event) {
     })
 
     function getList(video) {
+        @if ($role == 'superadmin')
         var html = `<li class="item my-1" id="video-`+video.id+`" data-objective="`+video.objective_id+`">
             <div class="row py-2 bg-light">
                 <div class="col-2 text-center">
                     <div class="video h-100 w-100 bg-dark">
                         <div class="embed-responsive embed-responsive-16by9 h-100">
                             <video class="embed-responsive-item item-video">
-                                <source src="uploads/videos/`+video.file+`">
+                                <source src="/uploads/videos/`+video.file+`">
                             </video>
                         </div>
                     </div>
                 </div>
                 <div class="col-6 my-auto">
-                    <h6 class="mb-1 video-title">`+video.name+`
-                    </h6>
+                    <h6 class="mb-1 video-title">`+video.name+` </h6>
                     <p class="mb-0"><span class="align-middle">`+dateFormatter(video.created_at)+`</span> <span class="badge badge-primary align-middle px-2">`+video.objective +` - Parte `+video.part+`</span></p>
                 </div>
-                <div class="col-4 btn-group">`;
-                @if ($role == 'superadmin')
-                html += `<button class="btn btn-sm btn-success w-50 shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="/uploads/videos/`+video.file+`"><i class="fas fa-eye d-block"></i> Ver</button>
-                <button class="btn btn-sm btn-danger w-50 shadow-sm h-100 btn-delete" data-id="`+video.id+`"><i class="fas fa-trash d-block"></i> Eliminar</button>`;
-                @endif
-                html += `</div>
+                <div class="col-4 btn-group">
+                    <button class="btn btn-sm btn-success w-50 shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="/uploads/videos/`+video.file+`"><i class="fas fa-eye d-block"></i> Ver</button>
+                    <button class="btn btn-sm btn-danger w-50 shadow-sm h-100 btn-delete" data-id="`+video.id+`"><i class="fas fa-trash d-block"></i> Eliminar</button>
+                </div>
             </div>
         </li>`;
+        @else
+        var html = `<li class="item my-1" id="video-`+video.id+`" data-objective="`+video.objective_id+`">
+            <div class="row py-2 bg-light">
+                <div class="col-2 text-center">
+                    <div class="video h-100 w-100 bg-dark">
+                        <div class="embed-responsive embed-responsive-16by9 h-100">
+                            <video class="embed-responsive-item item-video">
+                                <source src="/uploads/videos/`+video.file+`">
+                            </video>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 my-auto">
+                    <h6 class="mb-1">`+dateFormatter(video.created_at)+` <span class="badge badge-secondary align-middle px-2">`+video.status+`</span>
+                    </h6>
+                    <p class="mb-0"><span class="align-middle">`+video.name+` </span></p>
+                </div>
+                <div class="col-4 btn-group">
+                    <button class="btn btn-sm btn-success w-50 shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="/uploads/videos/`+video.file+`"><i class="fas fa-eye d-block"></i> Ver</button>
+                    <button class="btn btn-sm btn-danger w-50 shadow-sm h-100"><i class="fas fa-eye d-block"></i> Solicitar cambios</button>
+                </div>
+            </div>
+        </li>`;
+        @endif
         return html;
     }
 
