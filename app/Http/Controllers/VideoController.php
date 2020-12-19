@@ -251,28 +251,15 @@ class VideoController extends Controller
     {
         $role = \Auth::user()->roles->first()->name;
 
-        if ($role == 'superadmin') {
-            $videos = Video::join('video_types', 'video_types.id', '=', 'videos.video_type_id')
+        $videos = Video::join('video_types', 'video_types.id', '=', 'videos.video_type_id')
             ->join('video_status', 'video_status.id', '=', 'videos.video_status_id')
             ->select('videos.*', 'video_types.name as video_type', 'video_status.name as status', 'videos.video_status_id')
-            ->where('videos.part', $part)
+            ->where('videos.part', '<=',$part)
             ->whereHas('objective', function ($query) use ($objective) {
                 $query->where("video_objectives.objective_id", "=", $objective);
             })
             ->orderBy('id', 'desc')
             ->get();
-        } else {
-            $videos = Video::join('video_types', 'video_types.id', '=', 'videos.video_type_id')
-            ->join('video_status', 'video_status.id', '=', 'videos.video_status_id')
-            ->select('videos.*', 'video_types.name as video_type', 'video_status.name as status', 'videos.video_status_id')
-            ->where('videos.part', $part)
-            ->whereHas('objective', function ($query) use ($objective) {
-                $query->where("video_objectives.objective_id", "=", $objective);
-            })
-            ->where('videos.user_id', \Auth::id())
-            ->orderBy('id', 'desc')
-            ->get();
-        }
 
         return response()->json(['status'=>"success", 'data'=>$videos]);
     }
