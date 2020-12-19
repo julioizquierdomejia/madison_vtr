@@ -25,6 +25,9 @@ class CreateVideosTable extends Migration
             $table->bigInteger('video_status_id')->unsigned();
             $table->foreign('video_status_id')->references('id')->on('video_status');
 
+            $table->bigInteger('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users');
+
             $table->string('format');
             $table->integer('part');
             //$table->string('quality');
@@ -58,6 +61,7 @@ class CreateVideosTable extends Migration
         Schema::table('videos', function (Blueprint $table) {
             $table->dropForeign('videos_video_type_id_foreign');
             $table->dropForeign('videos_video_status_id_foreign');
+            $table->dropForeign('videos_user_id_foreign');
         });
         Schema::table('video_objectives', function (Blueprint $table) {
             $table->dropForeign('video_objectives_video_id_foreign');

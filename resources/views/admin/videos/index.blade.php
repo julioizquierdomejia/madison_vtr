@@ -58,10 +58,13 @@
                 <div class="form-group col-12 col-md-6">
                     <label class="mb-1" for="parte">Parte</label>
                     <select class="form-control" name="parte" id="parte">
+                        @if ($role == 'superadmin')
                         <option value="1">Parte 1</option>
                         <option value="2">Parte 2</option>
                         <option value="3">Parte 3</option>
+                        @else
                         <option value="4">Parte 4</option>
+                        @endif
                     </select>
                     <p class="error part-error" style="display: none;">Escoge la parte a la que pertenece el vídeo</p>
                 </div>
@@ -70,15 +73,15 @@
                 <ul class="list list-unstyled">
                     <li class="item my-3 d-flex justify-content-between">
                         <span>Formato .AVI o MP4</span>
-                        <input type="checkbox" name="fomato" disabled="">
+                        <input type="checkbox" name="fomato" checked disabled="">
                     </li>
                     <li class="item my-3 d-flex justify-content-between">
                         <span>Calidad HD 1280 x 720 Píxeles</span>
-                        <input type="checkbox" name="calidad" disabled="">
+                        <input type="checkbox" name="calidad" checked disabled="">
                     </li>
                     <li class="item my-3 d-flex justify-content-between">
                         <span>Buena calidad de audio</span>
-                        <input type="checkbox" name="audio" disabled="">
+                        <input type="checkbox" name="audio" checked disabled="">
                     </li>
                 </ul>
                 <div class="buttons text-right">
@@ -412,13 +415,16 @@ $(document).ready(function (event) {
                     )
                 }
             },
-            error: function (data) {
-                var errors = data.responseJSON;
+            error: function (jqXHR, textStatus, errorThrown) {
+                var errors = jqXHR.responseJSON;
                 errorsHtml = '<div class="alert alert-danger mb-0"><ul class="mb-0">';
 
                 $.each( errors.errors, function( key, value ) {
                     errorsHtml += '<li>'+ value + '</li>'; //showing only the first error.
                 });
+                if(jqXHR.status == 413) {
+                    errorsHtml += '<li>El archivo supera el tamaño configurado.</li>';
+                }
                 errorsHtml += '</ul></div>';
                 Swal.fire(
                   'Solicitar Vídeo',
@@ -475,13 +481,17 @@ $(document).ready(function (event) {
                     })
                 }
             },
-            error: function (data) {
-                var errors = data.responseJSON;
+            error: function (jqXHR, textStatus, errorThrown) {
+                $('.btn-upload').attr('disabled', false);
+                var errors = jqXHR.responseJSON;
                 errorsHtml = '<div class="alert alert-danger mb-0"><ul class="mb-0">';
 
                 $.each( errors.errors, function( key, value ) {
                     errorsHtml += '<li>'+ value + '</li>'; //showing only the first error.
                 });
+                if(jqXHR.status == 413) {
+                    errorsHtml += '<li>El vídeo supera el tamaño configurado.</li>';
+                }
                 errorsHtml += '</ul></div>';
                 Swal.fire(
                   'Vídeo',
@@ -490,7 +500,6 @@ $(document).ready(function (event) {
                 ).then(function (event) {
                     $('.progress-bar').text('0%').css('width', 0);
                 })
-                $('.btn-upload').attr('disabled', false);
             }
         });
     })

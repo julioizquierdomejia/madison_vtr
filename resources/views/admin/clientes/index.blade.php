@@ -28,14 +28,15 @@
   @endif
     <div class="col mb-4">
       <div class="card">
-        <div class="card-image text-center bg-light card-img-top d-table w-100">
-          <div class="d-table-cell align-middle" style="height: 150px">
-          @if ($cliente->photo)
-          <img src="{{$cliente->photo}}" class="card-img-top" alt="{{$cliente->name}}">
-          @else
-          <i class="far fa-user fa-3x py-3"></i>
-          @endif
+        <div class="card-image text-center bg-light card-img-top">
+          @if ($cliente->info->photo)
+          <div class="embed-responsive embed-responsive-16by9 card-img-top" style="background-image: url('/uploads/photos/{{$cliente->id.'/'.$cliente->info->photo}}');background-size: cover;background-repeat: no-repeat;background-position: center;">
           </div>
+          @else
+          <div class="embed-responsive embed-responsive-16by9 card-img-top">
+            <div class="embed-responsive-item d-flex align-items-center"><i class="far fa-user fa-3x w-100"></i></div>
+          </div>
+          @endif
         </div>
         <div class="card-body">
           <h5 class="card-title">{{$cliente->name}}</h5>
