@@ -92,7 +92,7 @@
                         </div>
                     </div>
                     <div class="buttons text-right" role="tablist">
-                        <a class="btn btn-block btn-sm px-5 btn-primary shadow-sm" data-toggle="tab" href="#nav-armando2" role="tab">Siguiente <i class="fas fa-angle-right fa-sm"></i></a>
+                        <button class="btn btn-block btn-sm px-5 btn-primary shadow-sm" data-step="2" type="button">Siguiente <i class="fas fa-angle-right fa-sm"></i></button>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="nav-armando2" role="tabpanel" aria-labelledby="nav-armando2-tab">
@@ -111,7 +111,7 @@
                         <button class="btn btn-block btn-secondary" type="button" data-toggle="collapse" data-target="#vlistsubidos" aria-expanded="false" aria-controls="vlistsubidos">Tus vídeos subidos</button>
                         <div class="collapse" id="vlistsubidos">
                           <div class="card card-body" style="max-height: 133px;overflow-y: auto;">
-                            <ul class="list list-unstyled mb-0">
+                            <ul class="list list-inline list-own-part mb-0">
                                 <li class="item my-1">...</li>
                             </ul>
                           </div>
@@ -324,6 +324,23 @@
         ajaxList(objective, 1, 'first');
         ajaxList(objective, 2, 'second');
         ajaxList(objective, 3, 'third');
+    })
+    $('[data-step="2"]').on('click', function (event) {
+        var objective = $('#objetivo').val();
+        if(objective.length == 0) {
+            $('.object-error').show();
+            return;
+        } else {
+            $('.object-error').hide();
+        }
+        if($('#vlist1 .form-check-input:checked').length
+            && $('#vlist2 .form-check-input:checked').length
+            && $('#vlist3 .form-check-input:checked').length
+            ) {
+            $('#nav-armando2-tab').trigger('click');
+
+            ajaxList(objective, 4, 'own');
+        }
     })
 
     function ajaxList(objective, part, element) {
