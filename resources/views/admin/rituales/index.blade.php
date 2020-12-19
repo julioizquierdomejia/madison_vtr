@@ -366,7 +366,7 @@
                     </div>
                     <div class="col-6 my-auto">
                         <h6 class="mb-1">`+dateFormatter(video.created_at)+` <span class="badge badge-dark">`+video.video_type+`</span></h6>
-                        <p class="mb-0">`+video.description+`</p>
+                        <p class="mb-0">`+video.name+`</p>
                     </div>
                     <div class="col-4 my-auto">
                         <div class="form-check">
