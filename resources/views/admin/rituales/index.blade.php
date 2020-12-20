@@ -1,4 +1,4 @@
-@extends('admin.layouts.app', ['title' => 'Home'])
+@extends('admin.layouts.app', ['title' => 'Rituales'])
 @section('content')
 <div class="row">
     <div class="col-12 col-md-6 mb-4">
@@ -133,8 +133,8 @@
                     <h4 class="title"><strong>Configuración final</strong> <button class="btn btn-info btn-circle btn-sm" type="button"><i class="fas fa-info-circle"></i></button></h4>
                     <div class="form-group">
                     <h6 class="m-0 font-weight-bold"><span>Primera parte</span></h6 style="max-height: 133px;overflow-y: auto;">
-                    <ul class="list list-unstyled mb-0">
-                        <li class="item my-1">
+                    <ul class="list list-inline mb-0">
+                        <li class="item first-item my-1">
                             <div class="row py-2 bg-light">
                                 <div class="col-2 text-center">
                                     <div class="video h-100 p-2 d-table w-100 bg-dark">
@@ -147,10 +147,8 @@
                                 </div>
                             </div>
                         </li>
-                    </ul>
-                    <h6 class="m-0 font-weight-bold"><span>Segunda parte</span></h6 style="max-height: 133px;overflow-y: auto;">
-                    <ul class="list list-unstyled mb-0">
-                        <li class="item my-1">
+                        <li><h6 class="m-0 font-weight-bold"><span>Segunda parte</span></h6></li>
+                        <li class="item second-item my-1">
                             <div class="row py-2 bg-light">
                                 <div class="col-2 text-center">
                                     <div class="video h-100 p-2 d-table w-100 bg-dark">
@@ -163,10 +161,8 @@
                                 </div>
                             </div>
                         </li>
-                    </ul>
-                    <h6 class="m-0 font-weight-bold"><span>Tercera parte</span></h6 style="max-height: 133px;overflow-y: auto;">
-                    <ul class="list list-unstyled mb-0">
-                        <li class="item my-1">
+                        <li><h6 class="m-0 font-weight-bold"><span>Tercera parte</span></h6></li>
+                        <li class="item third-item my-1">
                             <div class="row py-2 bg-light">
                                 <div class="col-2 text-center">
                                     <div class="video h-100 p-2 d-table w-100 bg-dark">
@@ -179,10 +175,8 @@
                                 </div>
                             </div>
                         </li>
-                    </ul>
-                    <h6 class="m-0 font-weight-bold"><span>Parte final</span></h6 style="max-height: 133px;overflow-y: auto;">
-                    <ul class="list list-unstyled mb-0">
-                        <li class="item my-1">
+                        <li><h6 class="m-0 font-weight-bold"><span>Parte final</span></h6></li>
+                        <li class="item four-item my-1">
                             <div class="row py-2 bg-light">
                                 <div class="col-2 text-center">
                                     <div class="video h-100 p-2 d-table w-100 bg-dark">
@@ -198,7 +192,7 @@
                     </ul>
                     </div>
                     <div class="buttons text-center">
-                        <a class="btn btn-sm px-5 btn-primary shadow-sm" data-toggle="tab" href="#nav-armando2" role="tab"><i class="fas fa-angle-left fa-sm"></i> Atrás</a>
+                        <button class="btn btn-sm px-5 btn-primary shadow-sm" data-back="true" type="button"><i class="fas fa-angle-left fa-sm"></i> Atrás</button>
                         <button class="btn btn-sm px-5 btn-primary shadow-sm btn-uploadRitual" type="submit">Compilar <i class="fab fa-mixer fa-sm"></i></button>
                     </div>
                 </div>
@@ -283,6 +277,7 @@
     $('[data-back="true"]').on('click', function (event) {
         $('.nav-tabs .nav-item.active').prev().trigger('click');
     })
+
     $('[data-step="1"]').on('click', function (event) {
         var objective = $('#objetivo').val();
         if($('#rname').val().length == 0) {
@@ -309,7 +304,6 @@
         } else {
             $('.date-error').hide();
         }
-        $('#nav-armando1-tab').trigger('click');
         var date = new Date($('[name=published_at]').val());
         var options = { year: 'numeric', month: 'long', day: 'numeric' };
 
@@ -318,6 +312,8 @@
         ajaxList(objective, 1, 'first');
         ajaxList(objective, 2, 'second');
         ajaxList(objective, 3, 'third');
+
+        nextNav();
     })
     $('[data-step="2"]').on('click', function (event) {
         var objective = $('#objetivo').val();
@@ -331,9 +327,9 @@
             && $('#vlist2 .form-check-input:checked').length
             && $('#vlist3 .form-check-input:checked').length
             ) {
-            $('#nav-armando2-tab').trigger('click');
 
             ajaxList(objective, 4, 'own');
+            nextNav();
         }
     })
     $('[data-step="3"]').on('click', function (event) {
@@ -347,11 +343,28 @@
         if($('#vlistsolicitados .form-check-input:checked').length
             || $('#vlistsubidos .form-check-input:checked').length
             ) {
-            $('#nav-configuracion-tab').trigger('click');
 
+            var first = $('.list-first-part .form-check-input:checked').parents('.item').clone();
+            first.find('.form-check').remove()
+            var second = $('.list-second-part .form-check-input:checked').parents('.item').clone();
+            second.find('.form-check').remove()
+            var third = $('.list-third-part .form-check-input:checked').parents('.item').clone();
+            third.find('.form-check').remove()
+            var four = $('#nav-armando2 .form-check-input:checked').parents('.item').clone();
+            four.find('.form-check').remove()
+
+            $('.first-item').html(first.html())
+            $('.second-item').html(second.html())
+            $('.third-item').html(third.html())
+            $('.four-item').html(four.html())
             //ajaxList(objective, 4, 'own');
+            nextNav();
         }
     })
+
+    function nextNav() {
+        $('.nav-tabs .nav-item.active').next().trigger('click');
+    }
 
     function ajaxList(objective, part, element) {
         $.ajax({

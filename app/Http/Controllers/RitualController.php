@@ -53,21 +53,20 @@ class RitualController extends Controller
         $role = \Auth::user()->roles->first()->name;
 
         $rules = array(
-            'name'      => 'required|string',
-            'ritual_type_id'      => 'required|integer|in:1,2,3,4',
-            'objetivo'      => 'required|integer',
-            'published_at'      => 'date|required',
+            'name'            => 'required|string',
+            'ritual_type_id'  => 'required|integer|in:1,2,3,4',
+            'objetivo'        => 'required|integer',
+            'published_at'    => 'date|required',
             'video1'    => 'required|integer|exists:videos,id',
             'video2'    => 'required|integer|exists:videos,id',
             'video3'    => 'required|integer|exists:videos,id',
             'video4'    => 'required|integer|exists:videos,id',
         );
         $messages = array(
-            'video.required'       => 'El vídeo es requerido',
-            'ritual_type_id.required'      => 'El tipo de ritual es requerido',
-            'objetivo.required'      => 'El objetivo es requerido',
-            'name.required'      => 'El nombre es requerido',
-            'published_at.required'      => 'La fecha es requerida',
+            'name.required'           => 'El nombre es requerido',
+            'ritual_type_id.required' => 'El tipo de ritual es requerido',
+            'objetivo.required'       => 'El objetivo es requerido',
+            'published_at.required'   => 'La fecha es requerida',
             'video1.required'      => 'El primer vídeo es requerido',
             'video2.required'      => 'El segundo vídeo es requerido',
             'video3.required'      => 'El tercer vídeo es requerido',
