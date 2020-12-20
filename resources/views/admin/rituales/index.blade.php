@@ -2,7 +2,8 @@
 @section('content')
 <div class="row">
     <div class="col-12 col-md-6 mb-4">
-        <div class="card shadow card-steps h-100">
+        <form class="card shadow form-Steps h-100" action="/rituales" method="POST">
+            @csrf
             <nav class="card-header py-3 d-flex align-items-center">
                 <h6 class="m-0 font-weight-bold text-white"><span>Crea un ritual</span></h6>
                 <div class="nav nav-tabs ml-auto user-no-select" id="nav-tab" role="tablist">
@@ -25,7 +26,12 @@
                 <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                     <p>Es un gusto acompañarte en alcanzar tus  metas, recuerda es mmuy importante que .... Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at porttitor sem.  Aliquam erat volutpat. Donec placerat nisl magna, et faucibus arcu condimentum sed.</p>
                     <div class="form-group">
-                        <label class="mb-2" for="objetivo">Empieza escogiendo un objetivo</label>
+                        <label class="mb-1" for="rname">Nombre del ritual</label>
+                        <input class="form-control" type="text" name="name" id="rname">
+                        <p class="error rname-error" style="display: none;">Escriba un nombre</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="mb-2" for="objetivo">Escoge un objetivo</label>
                         <select class="form-control" name="objetivo" id="objetivo">
                             @foreach($objectives as $objective)
                             <option value="{{$objective->id}}">{{$objective->name}}</option>
@@ -47,11 +53,11 @@
                     <div class="form-group">
                         <div class="f-g">
                             <label class="mb-2" for="modo">Tercera parte</label>
-                            <input class="form-control" type="date" name="fecha" min="{{date('Y-m-d')}}" value="{{date('Y-m-d')}}">
+                            <input class="form-control" type="date" name="published_at" min="{{date('Y-m-d')}}" value="{{date('Y-m-d')}}">
                         </div>
                         <p class="error date-error" style="display: none;">Escoge una fecha</p>
                     </div>
-                    <div class="buttons text-right" role="tablist">
+                    <div class="buttons text-center" role="tablist">
                         <button class="btn btn-primary" type="button" data-step="1">Siguiente <i class="fas fa-angle-right fa-sm"></i></button>
                     </div>
                 </div>
@@ -59,7 +65,7 @@
                     <h4 class="title"><strong>Armando ritual</strong> <button class="btn btn-info btn-circle btn-sm" type="button"><i class="fas fa-info-circle"></i></button></h4>
                     <ul>
                         <li>Objetivo: Incentivar colaboraración</li>
-                        <li>fecha de publicación: ss/mm/aaaa</li>
+                        <li>fecha de publicación: <span class="published_at"></span></li>
                     </ul>
                     <div class="video-list form-group">
                         <button class="btn btn-block btn-secondary" type="button" data-toggle="collapse" data-target="#vlist1" aria-expanded="false" aria-controls="vlist1">Primera parte</button>
@@ -91,15 +97,16 @@
                           </div>
                         </div>
                     </div>
-                    <div class="buttons text-right" role="tablist">
-                        <button class="btn btn-block btn-sm px-5 btn-primary shadow-sm" data-step="2" type="button">Siguiente <i class="fas fa-angle-right fa-sm"></i></button>
+                    <div class="buttons text-center" role="tablist">
+                        <button class="btn btn-sm px-5 btn-primary shadow-sm" data-back="true" type="button">Anterior <i class="fas fa-angle-left fa-sm"></i></button>
+                        <button class="btn btn-sm px-5 btn-primary shadow-sm" data-step="2" type="button">Siguiente <i class="fas fa-angle-right fa-sm"></i></button>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="nav-armando2" role="tabpanel" aria-labelledby="nav-armando2-tab">
                     <h4 class="title"><strong>Armando ritual 2</strong> <button class="btn btn-info btn-circle btn-sm" type="button"><i class="fas fa-info-circle"></i></button></h4>
                     <div class="video-list form-group">
                         <button class="btn btn-block btn-secondary" type="button" data-toggle="collapse" data-target="#vlistsolicitados" aria-expanded="false" aria-controls="vlistsolicitados">Vídeos solicitados</button>
-                        <div class="collapse" id="vlistsolicitados">
+                        <div class="collapse show" id="vlistsolicitados">
                           <div class="card card-body" style="max-height: 133px;overflow-y: auto;">
                             <ul class="list list-unstyled mb-0">
                                 <li class="item my-1">...</li>
@@ -109,7 +116,7 @@
                     </div>
                     <div class="video-list form-group">
                         <button class="btn btn-block btn-secondary" type="button" data-toggle="collapse" data-target="#vlistsubidos" aria-expanded="false" aria-controls="vlistsubidos">Tus vídeos subidos</button>
-                        <div class="collapse" id="vlistsubidos">
+                        <div class="collapse show" id="vlistsubidos">
                           <div class="card card-body" style="max-height: 133px;overflow-y: auto;">
                             <ul class="list list-inline list-own-part mb-0">
                                 <li class="item my-1">...</li>
@@ -117,8 +124,9 @@
                           </div>
                         </div>
                     </div>
-                    <div class="buttons text-right" role="tablist">
-                        <a class="btn btn-sm px-5 btn-primary shadow-sm" data-toggle="tab" href="#nav-configuracion" role="tab">Siguiente <i class="fas fa-angle-right fa-sm"></i></a>
+                    <div class="buttons text-center" role="tablist">
+                        <button class="btn btn-sm px-5 btn-primary shadow-sm" data-back="true" type="button">Anterior <i class="fas fa-angle-left fa-sm"></i></button>
+                        <button class="btn btn-sm px-5 btn-primary shadow-sm" data-step="3" type="button">Siguiente <i class="fas fa-angle-right fa-sm"></i></button>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="nav-configuracion" role="tabpanel" aria-labelledby="nav-configuracion-tab">
@@ -133,15 +141,9 @@
                                         <span class="d-table-cell align-middle"><i class="fa fa-play text-white-50"></i></span>
                                     </div>
                                 </div>
-                                <div class="col-6 my-auto">
+                                <div class="col-10 my-auto">
                                     <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-dark">Armado</span></h6>
                                     <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
-                                </div>
-                                <div class="col-4 my-auto">
-                                    <div class="form-check">
-                                        <input type="radio" class="form-check-input" id="checkarmandop2" value="1" name="armandovideo2">
-                                        <label class="form-check-label" for="checkarmandop2">Seleccionar</label>
-                                    </div>
                                 </div>
                             </div>
                         </li>
@@ -155,15 +157,9 @@
                                         <span class="d-table-cell align-middle"><i class="fa fa-play text-white-50"></i></span>
                                     </div>
                                 </div>
-                                <div class="col-6 my-auto">
+                                <div class="col-10 my-auto">
                                     <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-dark">Armado</span></h6>
                                     <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
-                                </div>
-                                <div class="col-4 my-auto">
-                                    <div class="form-check">
-                                        <input type="radio" class="form-check-input" id="checkarmandop2" value="1" name="armandovideo2">
-                                        <label class="form-check-label" for="checkarmandop2">Seleccionar</label>
-                                    </div>
                                 </div>
                             </div>
                         </li>
@@ -177,15 +173,9 @@
                                         <span class="d-table-cell align-middle"><i class="fa fa-play text-white-50"></i></span>
                                     </div>
                                 </div>
-                                <div class="col-6 my-auto">
+                                <div class="col-10 my-auto">
                                     <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-dark">Armado</span></h6>
                                     <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
-                                </div>
-                                <div class="col-4 my-auto">
-                                    <div class="form-check">
-                                        <input type="radio" class="form-check-input" id="checkarmandop2" value="1" name="armandovideo2">
-                                        <label class="form-check-label" for="checkarmandop2">Seleccionar</label>
-                                    </div>
                                 </div>
                             </div>
                         </li>
@@ -199,15 +189,9 @@
                                         <span class="d-table-cell align-middle"><i class="fa fa-play text-white-50"></i></span>
                                     </div>
                                 </div>
-                                <div class="col-6 my-auto">
+                                <div class="col-10 my-auto">
                                     <h6 class="mb-1">{{date('d-m-Y')}} <span class="badge badge-dark">Armado</span></h6>
                                     <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
-                                </div>
-                                <div class="col-4 my-auto">
-                                    <div class="form-check">
-                                        <input type="radio" class="form-check-input" id="checkarmandop2" value="1" name="armandovideo2">
-                                        <label class="form-check-label" for="checkarmandop2">Seleccionar</label>
-                                    </div>
                                 </div>
                             </div>
                         </li>
@@ -215,11 +199,11 @@
                     </div>
                     <div class="buttons text-center">
                         <a class="btn btn-sm px-5 btn-primary shadow-sm" data-toggle="tab" href="#nav-armando2" role="tab"><i class="fas fa-angle-left fa-sm"></i> Atrás</a>
-                        <button class="btn btn-sm px-5 btn-primary shadow-sm" type="button">Compilar <i class="fab fa-mixer fa-sm"></i></button>
+                        <button class="btn btn-sm px-5 btn-primary shadow-sm btn-uploadRitual" type="submit">Compilar <i class="fab fa-mixer fa-sm"></i></button>
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
     <div class="col-12 col-md-6 mb-4">
         <div class="card shadow h-100">
@@ -244,7 +228,7 @@
                 </div>
             </div>
             <div class="card-body" style="max-height: 717px;overflow-y: auto;">
-                <ul class="list list-unstyled mb-0">
+                <ul class="list list-inline list-rituals mb-0">
                     @if($rituales->count())
                     @foreach($rituales as $ritual)
                     <li class="item my-1" id="ritual-{{$ritual->id}}">
@@ -294,11 +278,19 @@
 <script>
     $('#nav-tab').on('show.bs.tab', function (event) {
         var element = $(event.target);
-        $('.card-steps .card-header h6 span').text(element.data('text'));
+        $('.form-Steps .card-header h6 span').text(element.data('text'));
     })
-
+    $('[data-back="true"]').on('click', function (event) {
+        $('.nav-tabs .nav-item.active').prev().trigger('click');
+    })
     $('[data-step="1"]').on('click', function (event) {
         var objective = $('#objetivo').val();
+        if($('#rname').val().length == 0) {
+            $('.rname-error').show();
+            return;
+        } else {
+            $('.rname-error').hide();
+        }
         if(objective.length == 0) {
             $('.object-error').show();
             return;
@@ -306,20 +298,22 @@
             $('.object-error').hide();
         }
         if($('[name=ritual_type_id]:checked').length == 0) {
-            console.log('ritual_types')
             $('.ritual_types-error').show();
             return;
         } else {
             $('.ritual_types-error').hide();
         }
-        if($('[name=fecha]').val().length == 0) {
-            console.log('fecha')
+        if($('[name=published_at]').val().length == 0) {
             $('.date-error').show();
             return;
         } else {
             $('.date-error').hide();
         }
         $('#nav-armando1-tab').trigger('click');
+        var date = new Date($('[name=published_at]').val());
+        var options = { year: 'numeric', month: 'long', day: 'numeric' };
+
+        $('.published_at').text(date.toLocaleDateString("es-ES", options));
 
         ajaxList(objective, 1, 'first');
         ajaxList(objective, 2, 'second');
@@ -340,6 +334,22 @@
             $('#nav-armando2-tab').trigger('click');
 
             ajaxList(objective, 4, 'own');
+        }
+    })
+    $('[data-step="3"]').on('click', function (event) {
+        var objective = $('#objetivo').val();
+        if(objective.length == 0) {
+            $('.object-error').show();
+            return;
+        } else {
+            $('.object-error').hide();
+        }
+        if($('#vlistsolicitados .form-check-input:checked').length
+            || $('#vlistsubidos .form-check-input:checked').length
+            ) {
+            $('#nav-configuracion-tab').trigger('click');
+
+            //ajaxList(objective, 4, 'own');
         }
     })
 
@@ -395,5 +405,54 @@
             </li>`;
         return html;
     }
+
+    $('.form-Steps').submit(function (event) {
+        event.preventDefault();
+        var form = $(this);
+        var url = form.attr('action');
+        $.ajax({
+            type: "post",
+            url: url,
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            beforeSend: function (data) {
+                $('.btn-uploadRitual').attr('disabled', true);
+            },
+            success: function (response) {
+                if(response.success) {
+                    $('.list-rituals').empty();
+                    var request = $.parseJSON(response.data);
+                    $.each(request, function (id, item) {
+                        $('.list-rituals').append(getRequestList(item));
+                    })
+                    $('.btn-uploadRitual').attr('disabled', false);
+                    Swal.fire(
+                      'Rituales',
+                      'Se registró el ritual',
+                      'success'
+                    )
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                var errors = jqXHR.responseJSON;
+                errorsHtml = '<div class="alert alert-danger mb-0"><ul class="mb-0">';
+
+                $.each( errors.errors, function( key, value ) {
+                    errorsHtml += '<li>'+ value + '</li>'; //showing only the first error.
+                });
+                /*if(jqXHR.status == 413) {
+                    errorsHtml += '<li>El archivo supera el tamaño configurado.</li>';
+                }*/
+                errorsHtml += '</ul></div>';
+                Swal.fire(
+                  'Rituales',
+                  errorsHtml,
+                  'error'
+                )
+                $('.btn-uploadRitual').attr('disabled', false);
+            }
+        });
+    })
 </script>
 @endsection

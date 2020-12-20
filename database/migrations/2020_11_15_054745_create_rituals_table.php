@@ -17,11 +17,14 @@ class CreateRitualsTable extends Migration
             $table->id();
             $table->string('name');
 
-            $table->bigInteger('ritual_status_id')->unsigned();
-            $table->foreign('ritual_status_id')->references('id')->on('ritual_status');
+            $table->bigInteger('status_id')->unsigned();
+            $table->foreign('status_id')->references('id')->on('ritual_status');
 
-            $table->bigInteger('ritual_type_id')->unsigned();
-            $table->foreign('ritual_type_id')->references('id')->on('ritual_types');
+            $table->bigInteger('type_id')->unsigned();
+            $table->foreign('type_id')->references('id')->on('ritual_types');
+
+            $table->bigInteger('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users');
 
             $table->date('published');
             $table->boolean('enabled');
@@ -62,8 +65,9 @@ class CreateRitualsTable extends Migration
     public function down()
     {
         Schema::table('rituals', function (Blueprint $table) {
-            $table->dropForeign('ritual_status_id_foreign');
-            $table->dropForeign('ritual_type_id_foreign');
+            $table->dropForeign('rituals_status_id_foreign');
+            $table->dropForeign('rituals_type_id_foreign');
+            $table->dropForeign('rituals_user_id_foreign');
         });
         Schema::table('ritual_objectives', function (Blueprint $table) {
             $table->dropForeign('ritual_objective_id_foreign');

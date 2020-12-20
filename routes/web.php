@@ -28,6 +28,7 @@ Auth::routes();
 //Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(function () {
 	Route::get('/rituales', [App\Http\Controllers\RitualController::class, 'index'])->name('ritual');
+	Route::post('/rituales', [App\Http\Controllers\RitualController::class, 'ajaxstore'])->name('ritual.store');
 	Route::get('/', [App\Http\Controllers\RitualController::class, 'index'])->name('ritual');
 
 	Route::get('/videos', [App\Http\Controllers\VideoController::class, 'index'])->name('video');

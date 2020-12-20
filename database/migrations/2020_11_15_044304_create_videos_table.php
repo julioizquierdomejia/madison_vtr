@@ -19,11 +19,11 @@ class CreateVideosTable extends Migration
             $table->string('file');
             $table->text('description')->nullable();
 
-            $table->bigInteger('video_type_id')->unsigned();
-            $table->foreign('video_type_id')->references('id')->on('video_types');
+            $table->bigInteger('type_id')->unsigned();
+            $table->foreign('type_id')->references('id')->on('video_types');
 
-            $table->bigInteger('video_status_id')->unsigned();
-            $table->foreign('video_status_id')->references('id')->on('video_status');
+            $table->bigInteger('status_id')->unsigned();
+            $table->foreign('status_id')->references('id')->on('video_status');
 
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
@@ -59,8 +59,8 @@ class CreateVideosTable extends Migration
     public function down()
     {
         Schema::table('videos', function (Blueprint $table) {
-            $table->dropForeign('videos_video_type_id_foreign');
-            $table->dropForeign('videos_video_status_id_foreign');
+            $table->dropForeign('videos_type_id_foreign');
+            $table->dropForeign('videos_status_id_foreign');
             $table->dropForeign('videos_user_id_foreign');
         });
         Schema::table('video_objectives', function (Blueprint $table) {
