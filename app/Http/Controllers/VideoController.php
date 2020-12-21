@@ -274,7 +274,7 @@ class VideoController extends Controller
                 $query->where("video_objectives.objective_id", "=", $objective);
             })
             ->orderBy('id', 'desc')
-            ->where('user_id', \Auth::id())
+            //->where('user_id', \Auth::id()) //no debe ir
             ->get();
 
         return response()->json(['status'=>"success", 'data'=>$videos]);
