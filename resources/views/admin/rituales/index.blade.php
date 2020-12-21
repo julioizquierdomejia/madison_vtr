@@ -64,8 +64,8 @@
                 <div class="tab-pane fade" id="nav-armando1" role="tabpanel" aria-labelledby="nav-armando1-tab">
                     <h4 class="title"><strong>Armando ritual</strong> <button class="btn btn-info btn-circle btn-sm" type="button"><i class="fas fa-info-circle"></i></button></h4>
                     <ul>
-                        <li>Objetivo: Incentivar colaboraración</li>
-                        <li>fecha de publicación: <span class="published_at"></span></li>
+                        <li>Objetivo: <span class="objective-selected"></span></li>
+                        <li>fecha de publicación: <span class="published-selected"></span></li>
                     </ul>
                     <div class="video-list form-group">
                         <button class="btn btn-block btn-secondary" type="button" data-toggle="collapse" data-target="#vlist1" aria-expanded="false" aria-controls="vlist1">Primera parte</button>
@@ -307,7 +307,8 @@
         var date = new Date($('[name=published_at]').val());
         var options = { year: 'numeric', month: 'long', day: 'numeric' };
 
-        $('.published_at').text(date.toLocaleDateString("es-ES", options));
+        $('.published-selected').text(date.toLocaleDateString("es-ES", options));
+        $('.objective-selected').text($('#objetivo option:selected').text());
 
         ajaxList(objective, 1, 'first');
         ajaxList(objective, 2, 'second');
