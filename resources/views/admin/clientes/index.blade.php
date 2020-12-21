@@ -39,6 +39,7 @@
           @endif
         </div>
         <div class="card-body">
+          <h4 class="card-title">{{$cliente->info->empresa}}</h4>
           <h5 class="card-title">{{$cliente->name}}</h5>
           <p class="card-text">{{$cliente->email}}</p>
           <p class="card-text">
