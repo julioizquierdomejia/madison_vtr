@@ -261,10 +261,10 @@
                     @foreach($video_requests as $request)
                     <li class="item my-1" id="request-{{$request->id}}">
                         <div class="row py-2 bg-light">
-                            <div class="col-2 text-center d-flex align-items-center justify-content-center">
+                            {{-- <div class="col-2 text-center d-flex align-items-center justify-content-center">
                                 <button class="btn btn-primary" data-toggle="modal" data-target="#modalSpeech" width="100%" data-speech="{{ asset('uploads/requests/'.$request->id.'/'.$request->speech) }}"><i class="far fa-file"></i></button>
-                            </div>
-                            <div class="col-8 my-auto">
+                            </div> --}}
+                            <div class="col-10 my-auto">
                                 <h6 class="mb-1 video-title">{{$request->topic}} <span class="align-middle badge badge-primary" style="font-size: 16px">{{date('d-m-Y', strtotime($request->created_at))}}</span>
                                 </h6>
                                 <p class="mb-0">{{$request->comments ?? '-'}}</p>
@@ -557,13 +557,16 @@ $(document).ready(function (event) {
     function getRequestList(item) {
         var html = `<li class="item my-1" id="request-`+item.id+`">
             <div class="row py-2 bg-light">
-                <div class="col-2 text-center d-flex align-items-center justify-content-center">
+                {{--<div class="col-2 text-center d-flex align-items-center justify-content-center">
                     <button class="btn btn-primary" data-toggle="modal" data-target="#modalSpeech" width="100%" data-speech="/uploads/requests/`+item.id+`/`+item.speech+`"><i class="far fa-file"></i></button>
-                </div>
-                <div class="col-6 my-auto">
+                </div>--}}
+                <div class="col-10 my-auto">
                     <h6 class="mb-1 video-title">`+item.topic+`<span class="align-middle badge badge-primary" style="font-size: 16px">`+dateFormatter(item.created_at)+`</span>
                     </h6>
                     <p class="mb-0"><span class="align-middle">`+ (item.comments ? item.comments : '-') +`</span></p>
+                </div>
+                <div class="col-2 my-auto">
+                    <a class="btn btn-primary" href="/solicitar-videos/`+item.id+`/ver"><i class="far fa-eye"></i></a>
                 </div>
             </div>
         </li>`;
