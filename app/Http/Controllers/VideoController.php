@@ -266,16 +266,30 @@ class VideoController extends Controller
     {
         $role = \Auth::user()->roles->first()->name;
 
-        $videos = Video::join('video_types', 'video_types.id', '=', 'videos.type_id')
+        if ($part == 4) {
+            //Lista de videos subidos solo por el usuario
+            $videos = Video::join('video_types', 'video_types.id', '=', 'videos.type_id')
             ->join('video_status', 'video_status.id', '=', 'videos.status_id')
             ->select('videos.*', 'video_types.name as video_type', 'video_status.name as status', 'videos.status_id')
-            ->where('videos.part', '=',$part)
+            ->where('videos.part', '=', $part)
+            ->whereHas('objective', function ($query) use ($objective) {
+                $query->where("video_objectives.objective_id", "=", $objective);
+            })
+            ->orderBy('id', 'desc')
+            ->where('user_id', \Auth::id())
+            ->get();
+        } else {
+            $videos = Video::join('video_types', 'video_types.id', '=', 'videos.type_id')
+            ->join('video_status', 'video_status.id', '=', 'videos.status_id')
+            ->select('videos.*', 'video_types.name as video_type', 'video_status.name as status', 'videos.status_id')
+            ->where('videos.part', '=', $part)
             ->whereHas('objective', function ($query) use ($objective) {
                 $query->where("video_objectives.objective_id", "=", $objective);
             })
             ->orderBy('id', 'desc')
             //->where('user_id', \Auth::id()) //no debe ir
             ->get();
+        }
 
         return response()->json(['status'=>"success", 'data'=>$videos]);
     }
