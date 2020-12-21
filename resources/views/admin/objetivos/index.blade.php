@@ -21,7 +21,7 @@
 
 <div class="row row-cols-1 row-cols-md-4 mt-4">
   @foreach($objetivos as $objetivo)
-    <div class="col mb-4" style="@if($objetivo->enabled == 1) opacity: 1" @else opa>
+    <div class="col mb-4" style="@if($objetivo->enabled == 1) opacity: 1" @endif>
       <div class="card">
         <div class="card-image text-center bg-light card-img-top d-table w-100">
         </div>

@@ -50,12 +50,14 @@
             <span>VÍDEOS</span>
         </a>
     </li>
+    @if($role == 'superadmin')
     <li class="nav-item{{request()->segment(1) == 'objetivos' ? ' active' : '' }}">
         <a class="nav-link" href="/objetivos">
             <i class="fas fa-bullseye" style="color: #6666FF"></i>
             <span>OBJETIVOS</span>
         </a>
     </li>
+    @endif
     <li class="nav-item{{request()->segment(1) == 'resumen' ? ' active' : '' }}">
         <a class="nav-link" href="/resumen" style="border-left: {{request()->segment(1) == 'resumen' ? ' 4px solid #E54C16' : '0' }}">
             <i class="fas fa-fw fa-chart-area" style="color: #E54C16"></i>
