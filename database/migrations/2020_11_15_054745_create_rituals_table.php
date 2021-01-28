@@ -18,13 +18,13 @@ class CreateRitualsTable extends Migration
             $table->string('name');
 
             $table->bigInteger('status_id')->unsigned();
-            $table->foreign('status_id')->references('id')->on('ritual_status');
+            $table->foreign('status_id')->references('id')->on('ritual_status')->onDelete('cascade');
 
             $table->bigInteger('type_id')->unsigned();
-            $table->foreign('type_id')->references('id')->on('ritual_types');
+            $table->foreign('type_id')->references('id')->on('ritual_types')->onDelete('cascade');
 
             $table->bigInteger('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
             $table->date('published');
             $table->boolean('enabled');
@@ -36,10 +36,10 @@ class CreateRitualsTable extends Migration
             $table->id();
 
             $table->bigInteger('ritual_id')->unsigned();
-            $table->foreign('ritual_id')->references('id')->on('rituals');
+            $table->foreign('ritual_id')->references('id')->on('rituals')->onDelete('cascade');
             
             $table->bigInteger('ritual_objective_id')->unsigned();
-            $table->foreign('ritual_objective_id')->references('id')->on('objectives');
+            $table->foreign('ritual_objective_id')->references('id')->on('objectives')->onDelete('cascade');
 
             $table->timestamps();
         });
@@ -48,10 +48,10 @@ class CreateRitualsTable extends Migration
             $table->id();
 
             $table->bigInteger('ritual_id')->unsigned();
-            $table->foreign('ritual_id')->references('id')->on('rituals');
+            $table->foreign('ritual_id')->references('id')->on('rituals')->onDelete('cascade');
 
             $table->bigInteger('video_id')->unsigned();
-            $table->foreign('video_id')->references('id')->on('videos');
+            $table->foreign('video_id')->references('id')->on('videos')->onDelete('cascade');
 
             $table->timestamps();
         });

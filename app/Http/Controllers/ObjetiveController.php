@@ -14,7 +14,8 @@ class ObjetiveController extends Controller
      */
     public function index()
     {
-        //
+        $request->user()->authorizeRoles(['superadmin']);
+
         $objetivos = Objective::all();
         return view('admin.objetivos.index', compact('objetivos'));
     }
@@ -26,7 +27,8 @@ class ObjetiveController extends Controller
      */
     public function create()
     {
-        //
+        $request->user()->authorizeRoles(['superadmin']);
+        
         return view('admin.objetivos.create');
     }
 
@@ -38,7 +40,7 @@ class ObjetiveController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->user()->authorizeRoles(['superadmin']);
         
         $request->validate([
             'name' => 'required',
@@ -69,7 +71,7 @@ class ObjetiveController extends Controller
      */
     public function show($id)
     {
-        //
+        $request->user()->authorizeRoles(['superadmin']);
     }
 
     /**
@@ -94,7 +96,7 @@ class ObjetiveController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->user()->authorizeRoles(['superadmin']);
 
         $objetivo = Objective::findorFail($id);
         $request->validate([
@@ -126,7 +128,7 @@ class ObjetiveController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $request->user()->authorizeRoles(['superadmin']);
         return ('hola');
     }
 }

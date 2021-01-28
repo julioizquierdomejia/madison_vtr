@@ -18,7 +18,7 @@ class CreateInfoUsersTable extends Migration
             $table->bigIncrements('id');
 
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
             $table->string('empresa')->nullable();
             $table->string('cargo')->nullable();

@@ -17,8 +17,10 @@ class ClientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
+
         if (\Auth::user()->roles->first()->name == 'admin') {
             $clientes = User::join('info_users', 'info_users.user_id', 'users.id')
                         ->where('info_users.parent_id', \Auth::user()->id)
@@ -37,7 +39,8 @@ class ClientController extends Controller
      */
     public function create()
     {
-        //
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
+
         $planes = Plan::all();
         $roles = Role::where('id', '>', 2)->get(); //obviar superadmin y admin
 
@@ -52,6 +55,8 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
+
         $superadmin = \Auth::user()->roles->first()->name == 'superadmin';
         $admin = \Auth::user()->roles->first()->name == 'admin';
 
@@ -115,7 +120,7 @@ class ClientController extends Controller
      */
     public function show($id)
     {
-        //
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
     }
 
     /**
@@ -126,7 +131,7 @@ class ClientController extends Controller
      */
     public function edit($id)
     {
-        //
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
     }
 
     /**
@@ -138,7 +143,7 @@ class ClientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
     }
 
     /**
@@ -149,6 +154,6 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
     }
 }

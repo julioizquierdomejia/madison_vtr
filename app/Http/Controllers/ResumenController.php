@@ -17,7 +17,7 @@ class ResumenController extends Controller
      */
     public function index(Request $request)
     {
-        //$request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['admin', 'editor']);
         
         $videos = Video::all();
         $rituales = Ritual::all();
@@ -33,7 +33,7 @@ class ResumenController extends Controller
      */
     public function create(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['admin', 'editor']);
 
         return view('resumen.create');
     }
@@ -46,7 +46,7 @@ class ResumenController extends Controller
      */
     public function store(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['admin', 'editor']);
 
         $rules = array(
             'name'       => 'string|required|unique:resumen',
@@ -75,10 +75,11 @@ class ResumenController extends Controller
      */
     public function show($id)
     {
-        //
-        $area = Client::findOrFail($id);
+        $request->user()->authorizeRoles(['admin', 'editor']);
 
-        return view('resumen.show', compact('area'));
+        $resumen = Resumen::findOrFail($id);
+
+        return view('resumen.show', compact('resumen'));
     }
 
     /**
@@ -89,7 +90,7 @@ class ResumenController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['admin', 'editor']);
         $resumen = Video::where('enabled', 1)->get();
         $services = Service::where('enabled', 1)->where('area_id', $id)->get();
         $area = Video::findOrFail($id);
@@ -105,7 +106,7 @@ class ResumenController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['admin', 'editor']);
         
         // validate
         // read more on validation at http://laravel.com/docs/validation
@@ -138,6 +139,6 @@ class ResumenController extends Controller
      */
     public function destroy(Request $request, Video $video)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $request->user()->authorizeRoles(['admin', 'editor']);
     }
 }

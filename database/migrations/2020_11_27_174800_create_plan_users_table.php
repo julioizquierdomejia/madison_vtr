@@ -18,10 +18,10 @@ class CreatePlanUsersTable extends Migration
             $table->bigIncrements('id');
 
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
             $table->unsignedBigInteger('plan_id');
-            $table->foreign('plan_id')->references('id')->on('plans');
+            $table->foreign('plan_id')->references('id')->on('plans')->onDelete('cascade');
 
             $table->timestamps();
 

@@ -10,7 +10,7 @@
             @if ($photo)
                 <img class="img-profile rounded-circle" src="{{ asset('uploads/photos') }}/{{Auth::user()->id.'/'.$photo}}" width="50">
             @else
-            <img class="img-profile rounded-circle" src="/online/img/undraw_profile.svg" width="50">
+            <img class="img-profile rounded-circle" src="/online/images/undraw_profile.svg" width="50">
             @endif
         </div>
         <div class="sidebar-brand-text mx-3 pt-3">
@@ -37,19 +37,23 @@
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
 
+    @if($role != 'superadmin')
     <li class="nav-item{{request()->segment(1) == 'rituales' ? ' active' : '' }}">
         <a class="nav-link" href="/rituales" style="border-left: {{request()->segment(1) == 'rituales' ? ' 4px solid #FBB911' : '0' }}">
             <i class="fas fa-fw fa-check-circle" style="color: #FBB911"></i>
             <span>RITUALES</span>
         </a>
     </li>
+    @endif
 
+    @if($role != 'user')
     <li class="nav-item{{request()->segment(1) == 'videos' ? ' active' : '' }}">
         <a class="nav-link" href="/videos" style="border-left: {{request()->segment(1) == 'videos' ? ' 4px solid #E72E7A' : '0' }}">
             <i class="fas fa-fw fa-play" style="color: #E72E7A"></i>
             <span>VÍDEOS</span>
         </a>
     </li>
+    @endif
     @if($role == 'superadmin')
     <li class="nav-item{{request()->segment(1) == 'objetivos' ? ' active' : '' }}">
         <a class="nav-link" href="/objetivos">
@@ -58,17 +62,21 @@
         </a>
     </li>
     @endif
+    @if($role != 'superadmin' && $role != 'user')
     <li class="nav-item{{request()->segment(1) == 'resumen' ? ' active' : '' }}">
         <a class="nav-link" href="/resumen" style="border-left: {{request()->segment(1) == 'resumen' ? ' 4px solid #E54C16' : '0' }}">
             <i class="fas fa-fw fa-chart-area" style="color: #E54C16"></i>
             <span>RESUMEN</span></a>
     </li>
+    @endif
 
+    @if($role == 'superadmin' || $role == 'admin')
     <li class="nav-item{{request()->segment(1) == 'soporte' ? ' active' : '' }}">
         <a class="nav-link" href="soporte" style="border-left: {{request()->segment(1) == 'soporte' ? ' 4px solid #39B8BC' : '0' }}">
             <i class="fas fa-fw fa-question-circle" style="color: #39B8BC"></i>
             <span>SOPORTE</span></a>
     </li>
+    @endif
 
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">

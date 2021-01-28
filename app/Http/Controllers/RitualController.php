@@ -28,8 +28,10 @@ class RitualController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'editor', 'user']);
+
         $ritual_types = RitualType::all();
         $objectives = Objective::where('enabled', 1)->get();
         $rituales = Ritual::join('ritual_status', 'ritual_status.id', '=', 'rituals.status_id')
@@ -50,6 +52,8 @@ class RitualController extends Controller
 
     public function ajaxstore(Request $request)
     {
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'editor', 'user']);
+        
         $role = \Auth::user()->roles->first()->name;
 
         $rules = array(

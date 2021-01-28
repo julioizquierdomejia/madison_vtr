@@ -5,6 +5,9 @@
     if($roles) {
         $role = $roles->name;
     }
+
+    /*$ffmpeg = FFMpeg\FFMpeg::create();
+    var_dump($ffmpeg);*/
 @endphp
 @section('content')
 <div class="row">
@@ -182,7 +185,10 @@
                     @if($videos->count())
                     @if ($role == 'superadmin')
                     @foreach($videos as $video)
-                    <li class="item my-1" id="video-{{$video->id}}" data-objective="{{$video->objective[0]->id}}">
+                    @php
+                        var_dump($video->pivot);
+                    @endphp
+                    <li class="item my-1" id="video-{{$video->id}}" data-objective="{{$video->objectives[0]->id}}">
                         <div class="row py-2 bg-light">
                             <div class="col-2 text-center">
                                 <div class="video h-100 w-100 bg-dark">
@@ -196,7 +202,7 @@
                             <div class="col-6 my-auto">
                                 <h6 class="mb-1 video-title">{{$video->name}} 
                                 </h6>
-                                <p class="mb-0"><span class="align-middle">{{date('d-m-Y', strtotime($video->created_at))}}</span> <span class="badge badge-primary align-middle px-2">{{$video->objective[0]->name .' - Parte '.$video->part}}</span></p>
+                                <p class="mb-0"><span class="align-middle">{{date('d-m-Y', strtotime($video->created_at))}}</span> <span class="badge badge-primary align-middle px-2">{{$video->objectives[0]->name .' - Parte '.$video->part}}</span></p>
                             </div>
                             <div class="col-4 btn-group">
                                 <button class="btn btn-sm btn-success w-50 shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="{{ asset('uploads/videos/'.$video->file) }}"><i class="fas fa-eye d-block"></i> Ver</button>
@@ -207,7 +213,7 @@
                     @endforeach
                     @else
                     @foreach($videos as $video)
-                    <li class="item my-1" id="video-{{$video->id}}" data-objective="{{$video->objective[0]->id}}">
+                    <li class="item my-1" id="video-{{$video->id}}" data-objective="{{$video->objectives[0]->id}}">
                         <div class="row py-2 bg-light">
                             <div class="col-2 text-center">
                                 <div class="video h-100 w-100 bg-dark">

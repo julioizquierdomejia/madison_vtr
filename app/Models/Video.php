@@ -13,8 +13,8 @@ class Video extends Model
         'name',
         'file',
         'description',
-        'video_type_id',
-        'video_status_id',
+        'type_id',
+        'user_id',
         'format',
         //'quality',
         //'audio',
@@ -27,8 +27,12 @@ class Video extends Model
         'updated_at'
     ];
 
-    public function objective(){
+    public function objectives() {
         //return $this->hasOne(VideoObjective::class);
         return $this->belongsToMany(Objective::class, 'video_objectives')->withPivot('video_id');
+    }
+
+    public function statuses() {
+        return $this->belongsToMany(VideoStatus::class, 'video_status_status')->withPivot('video_id');
     }
 }

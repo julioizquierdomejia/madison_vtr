@@ -58,7 +58,7 @@
                         <p class="error date-error" style="display: none;">Escoge una fecha</p>
                     </div>
                     <div class="buttons text-center" role="tablist">
-                        <button class="btn btn-primary" type="button" data-step="1">Siguiente <i class="fas fa-angle-right fa-sm"></i></button>
+                        <button class="btn btn-primary btn-step" type="button" data-step="1">Siguiente <i class="fas fa-angle-right fa-sm"></i></button>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="nav-armando1" role="tabpanel" aria-labelledby="nav-armando1-tab">
@@ -72,7 +72,7 @@
                         <div class="collapse show" id="vlist1">
                           <div class="card card-body" style="max-height: 133px;overflow-y: auto;">
                             <ul class="list list-first-part list-unstyled mb-0">
-                                <li class="item my-1">...</li>
+                                <li class="item my-1">No se encontraron vídeos.</li>
                             </ul>
                           </div>
                         </div>
@@ -82,7 +82,7 @@
                         <div class="collapse" id="vlist2">
                           <div class="card card-body" style="max-height: 133px;overflow-y: auto;">
                             <ul class="list list-second-part list-unstyled mb-0">
-                                <li class="item my-1">...</li>
+                                <li class="item my-1">No se encontraron vídeos.</li>
                             </ul>
                           </div>
                         </div>
@@ -92,14 +92,14 @@
                         <div class="collapse" id="vlist3">
                           <div class="card card-body" style="max-height: 133px;overflow-y: auto;">
                             <ul class="list list-third-part list-unstyled mb-0">
-                                <li class="item my-1">...</li>
+                                <li class="item my-1">No se encontraron vídeos.</li>
                             </ul>
                           </div>
                         </div>
                     </div>
                     <div class="buttons text-center" role="tablist">
-                        <button class="btn btn-sm px-5 btn-primary shadow-sm" data-back="true" type="button">Anterior <i class="fas fa-angle-left fa-sm"></i></button>
-                        <button class="btn btn-sm px-5 btn-primary shadow-sm" data-step="2" type="button">Siguiente <i class="fas fa-angle-right fa-sm"></i></button>
+                        <button class="btn btn-sm px-5 btn-primary" data-back="true" type="button">Anterior <i class="fas fa-angle-left fa-sm"></i></button>
+                        <button class="btn btn-sm px-5 btn-primary btn-step" data-step="2" type="button">Siguiente <i class="fas fa-angle-right fa-sm"></i></button>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="nav-armando2" role="tabpanel" aria-labelledby="nav-armando2-tab">
@@ -109,7 +109,7 @@
                         <div class="collapse show" id="vlistsolicitados">
                           <div class="card card-body" style="max-height: 133px;overflow-y: auto;">
                             <ul class="list list-unstyled mb-0">
-                                <li class="item my-1">...</li>
+                                <li class="item my-1">No se encontraron vídeos.</li>
                             </ul>
                           </div>
                         </div>
@@ -119,14 +119,14 @@
                         <div class="collapse show" id="vlistsubidos">
                           <div class="card card-body" style="max-height: 133px;overflow-y: auto;">
                             <ul class="list list-inline list-own-part mb-0">
-                                <li class="item my-1">...</li>
+                                <li class="item my-1">No se encontraron vídeos.</li>
                             </ul>
                           </div>
                         </div>
                     </div>
                     <div class="buttons text-center" role="tablist">
-                        <button class="btn btn-sm px-5 btn-primary shadow-sm" data-back="true" type="button">Anterior <i class="fas fa-angle-left fa-sm"></i></button>
-                        <button class="btn btn-sm px-5 btn-primary shadow-sm" data-step="3" type="button">Siguiente <i class="fas fa-angle-right fa-sm"></i></button>
+                        <button class="btn btn-sm px-5 btn-primary" data-back="true" type="button">Anterior <i class="fas fa-angle-left fa-sm"></i></button>
+                        <button class="btn btn-sm px-5 btn-primary btn-step" data-step="3" type="button">Siguiente <i class="fas fa-angle-right fa-sm"></i></button>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="nav-configuracion" role="tabpanel" aria-labelledby="nav-configuracion-tab">
@@ -192,8 +192,8 @@
                     </ul>
                     </div>
                     <div class="buttons text-center">
-                        <button class="btn btn-sm px-5 btn-primary shadow-sm" data-back="true" type="button"><i class="fas fa-angle-left fa-sm"></i> Atrás</button>
-                        <button class="btn btn-sm px-5 btn-primary shadow-sm btn-uploadRitual" type="submit">Compilar <i class="fab fa-mixer fa-sm"></i></button>
+                        <button class="btn btn-sm px-5 btn-primary" data-back="true" type="button"><i class="fas fa-angle-left fa-sm"></i> Atrás</button>
+                        <button class="btn btn-sm px-5 btn-primary btn-uploadRitual" type="submit">Compilar <i class="fab fa-mixer fa-sm"></i></button>
                     </div>
                 </div>
             </div>
@@ -278,88 +278,90 @@
         $('.nav-tabs .nav-item.active').prev().trigger('click');
     })
 
-    $('[data-step="1"]').on('click', function (event) {
+    $('.btn-step').on('click', function (event) {
         var objective = $('#objetivo').val();
-        if($('#rname').val().length == 0) {
-            $('.rname-error').show();
-            return;
-        } else {
-            $('.rname-error').hide();
-        }
-        if(objective.length == 0) {
-            $('.object-error').show();
-            return;
-        } else {
-            $('.object-error').hide();
-        }
-        if($('[name=ritual_type_id]:checked').length == 0) {
-            $('.ritual_types-error').show();
-            return;
-        } else {
-            $('.ritual_types-error').hide();
-        }
-        if($('[name=published_at]').val().length == 0) {
-            $('.date-error').show();
-            return;
-        } else {
-            $('.date-error').hide();
-        }
-        var date = new Date($('[name=published_at]').val());
-        var options = { year: 'numeric', month: 'long', day: 'numeric' };
+        var step = $(this).data('step');
+        console.log(step)
+        if(step == 1) {
+            if($('#rname').val().length == 0) {
+                $('.rname-error').show();
+                return;
+            } else {
+                $('.rname-error').hide();
+            }
+            if(objective.length == 0) {
+                $('.object-error').show();
+                return;
+            } else {
+                $('.object-error').hide();
+            }
+            if($('[name=ritual_type_id]:checked').length == 0) {
+                $('.ritual_types-error').show();
+                return;
+            } else {
+                $('.ritual_types-error').hide();
+            }
+            if($('[name=published_at]').val().length == 0) {
+                $('.date-error').show();
+                return;
+            } else {
+                $('.date-error').hide();
+            }
+            var date = new Date($('[name=published_at]').val());
+            var options = { year: 'numeric', month: 'long', day: 'numeric' };
 
-        $('.published-selected').text(date.toLocaleDateString("es-ES", options));
-        $('.objective-selected').text($('#objetivo option:selected').text());
+            $('.published-selected').text(date.toLocaleDateString("es-ES", options));
+            $('.objective-selected').text($('#objetivo option:selected').text());
 
-        ajaxList(objective, 1, 'first');
-        ajaxList(objective, 2, 'second');
-        ajaxList(objective, 3, 'third');
+            ajaxList(objective, 1, 'first');
+            ajaxList(objective, 2, 'second');
+            ajaxList(objective, 3, 'third');
 
-        nextNav();
-    })
-    $('[data-step="2"]').on('click', function (event) {
-        var objective = $('#objetivo').val();
-        if(objective.length == 0) {
-            $('.object-error').show();
-            return;
-        } else {
-            $('.object-error').hide();
-        }
-        if($('#vlist1 .form-check-input:checked').length
-            && $('#vlist2 .form-check-input:checked').length
-            && $('#vlist3 .form-check-input:checked').length
-            ) {
-
-            ajaxList(objective, 4, 'own');
             nextNav();
-        }
-    })
-    $('[data-step="3"]').on('click', function (event) {
-        var objective = $('#objetivo').val();
-        if(objective.length == 0) {
-            $('.object-error').show();
-            return;
-        } else {
-            $('.object-error').hide();
-        }
-        if($('#vlistsolicitados .form-check-input:checked').length
-            || $('#vlistsubidos .form-check-input:checked').length
-            ) {
+        } else if(step == 2) {
+            var objective = $('#objetivo').val();
+            if(objective.length == 0) {
+                $('.object-error').show();
+                return;
+            } else {
+                $('.object-error').hide();
+            }
+            if($('#vlist1 .form-check-input:checked').length
+                && $('#vlist2 .form-check-input:checked').length
+                && $('#vlist3 .form-check-input:checked').length
+                ) {
 
-            var first = $('.list-first-part .form-check-input:checked').parents('.item').clone();
-            first.find('.form-check').remove()
-            var second = $('.list-second-part .form-check-input:checked').parents('.item').clone();
-            second.find('.form-check').remove()
-            var third = $('.list-third-part .form-check-input:checked').parents('.item').clone();
-            third.find('.form-check').remove()
-            var four = $('#nav-armando2 .form-check-input:checked').parents('.item').clone();
-            four.find('.form-check').remove()
+                ajaxList(objective, 4, 'own');
+                nextNav();
+            }
+        } else if(step == 3) {
+            var objective = $('#objetivo').val();
+            if(objective.length == 0) {
+                $('.object-error').show();
+                return;
+            } else {
+                $('.object-error').hide();
+            }
+            if($('#vlistsolicitados .form-check-input:checked').length
+                || $('#vlistsubidos .form-check-input:checked').length
+                ) {
 
-            $('.first-item').html(first.html())
-            $('.second-item').html(second.html())
-            $('.third-item').html(third.html())
-            $('.four-item').html(four.html())
-            //ajaxList(objective, 4, 'own');
-            nextNav();
+                var first = $('.list-first-part .form-check-input:checked').parents('.item').clone();
+                first.find('.form-check').remove()
+                var second = $('.list-second-part .form-check-input:checked').parents('.item').clone();
+                second.find('.form-check').remove()
+                var third = $('.list-third-part .form-check-input:checked').parents('.item').clone();
+                third.find('.form-check').remove()
+                var four = $('#nav-armando2 .form-check-input:checked').parents('.item').clone();
+                four.find('.form-check').remove()
+
+                $('.first-item').html(first.html())
+                $('.second-item').html(second.html())
+                $('.third-item').html(third.html())
+                $('.four-item').html(four.html())
+                //ajaxList(objective, 4, 'own');
+                nextNav();
+            }
         }
     })
 

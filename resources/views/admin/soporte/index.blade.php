@@ -1,6 +1,7 @@
 @extends('admin.layouts.app', ['title' => 'Soporte'])
 @section('content')
 <div class="row">
+    @if($role != 'superadmin')
     <div class="col-12">
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex align-items-center justify-content-between" style="background-color: #44BBC7;">
@@ -35,8 +36,6 @@
             </div>
         </div>
     </div>
-</div>
-<div class="row">
     <div class="col-12 mb-4">
         <div class="card shadow h-100">
             <div class="card-header py-3 d-flex align-items-center justify-content-between" style="background-color: #44BBC7;">
@@ -54,30 +53,17 @@
                 </div>
             </div>
             <div class="card-body">
-                <div class="row">
+                <form class="frm row" action="/soporte" method="POST">
+                    @csrf
                     <div class="col">
                         <p><strong>Estamos para servirte</strong></p>
                             <ul class="list-unstyled">
+                                @foreach ($support_types as $key => $item)
                                 <li class="item my-3 d-flex justify-content-between">
-                                    <label for="cambiarplan">Quiero cambiar el plan que tengo</label>
-                                    <input type="radio" name="soporte" id="cambiarplan" value="1">
+                                    <label for="st{{$key}}">{{$item->name}}</label>
+                                    <input type="radio" name="soporte" id="st{{$key}}" value="{{$item->id}}">
                                 </li>
-                                <li class="item my-3 d-flex justify-content-between">
-                                    <label for="dudas">Tengo dudas sobre los rituales</label>
-                                    <input type="radio" name="soporte" id="dudas" value="2">
-                                </li>
-                                <li class="item my-3 d-flex justify-content-between">
-                                    <label for="solicitarvideo">No entiendo muy bien como subir o solicitar un video</label>
-                                    <input type="radio" name="soporte" id="solicitarvideo" value="3">
-                                </li>
-                                <li class="item my-3 d-flex justify-content-between">
-                                    <label for="tngoproblema">Tengo un problema</label>
-                                    <input type="radio" name="soporte" id="tngoproblema" value="4">
-                                </li>
-                                <li class="item my-3 d-flex justify-content-between">
-                                    <label for="otrotema">Otro tema</label>
-                                    <input type="radio" name="soporte" id="otrotema" value="5">
-                                </li>
+                                @endforeach
                             </ul>
                     </div>
                     <div class="col">
@@ -85,21 +71,65 @@
                             <textarea class="form-control" rows="5" name="mensaje" placeholder="Mensaje"></textarea>
                         </div>
                         <div class="buttons text-right">
-                            <button class="btn btn-dark btn-sm px-5">Enviar</button>
+                            <button class="btn btn-dark btn-sm px-5" type="submit">Enviar</button>
                         </div>                        
                     </div>
-                </div>
-
+                </form>
             </div>
         </div>
     </div>
+    @else
+    <div class="col-12">
+        <table class="table" id="tbSupports">
+            <thead>
+                <tr>
+                    <td>Fecha</td>
+                    <td>Tipo</td>
+                    <td>Usuario</td>
+                    <td>Mensaje</td>
+                </tr>
+            </thead>
+            <tbody>
+                {{-- @foreach ($supports as $item)
+                <tr>
+                    <td>{{$item->created_at->format('d-m-Y')}}</td>
+                    <td>{{$item->type->name}}</td>
+                    <td>{{$item->user->name}}</td>
+                    <td>{{$item->message}}</td>
+                </tr>
+                @endforeach --}}
+            </tbody>
+        </table>
+        </div>
+    @endif
 </div>
 @endsection
 @section('script')
 <script>
-    $('#nav-tab').on('show.bs.tab', function (event) {
-        var element = $(event.target);
-        $('.card-steps .card-header h6 span').text(element.data('text'));
+    $(document).ready(function (event) {
+        $('#nav-tab').on('show.bs.tab', function (event) {
+            var element = $(event.target);
+            $('.card-steps .card-header h6 span').text(element.data('text'));
+        })
+
+        $('#tbSupports').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "/soporte/list",
+            pageLength: 5,
+            lengthMenu: [ 5, 25, 50 ],
+            columns: [
+                { data: 'created_at', class: 'text-nowrap' },
+                { data: 'type', class: 'type' },
+                { data: 'user', class: 'user text-center' },
+                { data: 'message' },
+            ],
+            columnDefs: [
+                //{ orderable: false, targets: 2 },
+            ],
+            //order: [[ 0, "desc" ]],
+            language: dLanguage
+        });
     })
 </script>
 @endsection

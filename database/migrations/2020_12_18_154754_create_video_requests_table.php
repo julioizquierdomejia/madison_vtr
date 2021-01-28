@@ -29,10 +29,10 @@ class CreateVideoRequestsTable extends Migration
             $table->string('speech');
             
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             
             $table->unsignedBigInteger('status_id');
-            $table->foreign('status_id')->references('id')->on('video_request_status');
+            $table->foreign('status_id')->references('id')->on('video_request_status')->onDelete('cascade');
 
             $table->timestamps();
         });
@@ -41,10 +41,10 @@ class CreateVideoRequestsTable extends Migration
             $table->id();
 
             $table->unsignedBigInteger('video_request_id');
-            $table->foreign('video_request_id')->references('id')->on('video_requests');
+            $table->foreign('video_request_id')->references('id')->on('video_requests')->onDelete('cascade');
 
             $table->unsignedBigInteger('request_service_id');
-            $table->foreign('request_service_id')->references('id')->on('request_services');
+            $table->foreign('request_service_id')->references('id')->on('request_services')->onDelete('cascade');
 
             $table->timestamps();
         });

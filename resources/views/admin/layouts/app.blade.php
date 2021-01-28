@@ -18,6 +18,7 @@
     <!--link href="/online/css/sb-admin-2.css" rel="stylesheet"-->
     <!-- Styles -->
     <link href="{{ asset('online/css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('online/dataTable-1.10.23/jquery.dataTables.min.css') }}" rel="stylesheet">
 
 </head>
 
@@ -74,7 +75,7 @@
     <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    {{-- <script src="/online/js/sb-admin-2.min.js"></script> --}}
+    <script src="/online/js/sb-admin-2.min.js"></script>
 
     <!-- Page level plugins -->
     <script src="/vendor/chart.js/Chart.min.js"></script>
@@ -82,6 +83,7 @@
     <!-- Page level custom scripts -->
     <script src="/online/js/demo/chart-area-demo.js"></script>
     <script src="/online/js/demo/chart-pie-demo.js"></script>
+    <script type="text/javascript" src="/online/dataTable-1.10.23/jquery.dataTables.min.js"></script>
     <script>
     function dateFormatter(date) {
       var formattedDate = new Date(date);
@@ -99,6 +101,30 @@
 
       return (d + "-" + m + "-" + y /*+ " " + hours + ":" + min + " "+ symbol*/);
     }
+    var dLanguage = {
+          "sProcessing":     "Procesando...",
+          "sLengthMenu":     "Mostrar _MENU_ registros",
+          "sZeroRecords":    "No se encontraron resultados",
+          "sEmptyTable":     "Ningún dato disponible en esta tabla",
+          "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+          "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+          "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+          "sInfoPostFix":    "",
+          "sSearch":         "Buscar:",
+          "sUrl":            "",
+          "sInfoThousands":  ",",
+          "sLoadingRecords": "Cargando...",
+          "oPaginate": {
+            "sFirst":    "Primero",
+            "sLast":     "Último",
+            "sNext":     "Siguiente",
+            "sPrevious": "Anterior"
+          },
+          "oAria": {
+            "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+          }
+        }
     </script>
     @yield('script')
 </body>
