@@ -391,31 +391,33 @@ class VideoController extends Controller
             ->select('videos.*', 'video_types.name as video_type')
             ->where('videos.part', '=', $part)
             ->whereHas('objectives', function ($query) use ($objective) {
-                $query->whereNotNull("video_objectives.objective_id");
+                //$query->whereNotNull("video_objectives.objective_id");
+                $query->where("video_objectives.objective_id", $objective);
             })
             ->whereDoesntHave('statuses', function ($query) {
                 $query->where("statuses.id", "=", 1);
                 $query->where("statuses.id", "=", 3);
             })
-            //->with('statuses')
+            ->with('objectives')
             ->orderBy('id', 'desc')
             ->where('user_id', \Auth::id())
-            ->get()->shuffle()->all();
+            ->get();
         } else {
             $videos = Video::join('video_types', 'video_types.id', '=', 'videos.type_id')
             ->select('videos.*', 'video_types.name as video_type')
             ->where('videos.part', '=', $part)
             ->whereHas('objectives', function ($query) use ($objective) {
-                $query->whereNotNull("video_objectives.objective_id");
+                //$query->whereNotNull("video_objectives.objective_id");
+                $query->where("video_objectives.objective_id", $objective);
             })
             ->whereDoesntHave('statuses', function ($query) {
                 $query->where("statuses.id", "=", 1);
                 $query->where("statuses.id", "=", 3);
             })
-            //->with('statuses')
+            ->with('objectives')
             ->orderBy('id', 'desc')
             //->where('user_id', \Auth::id()) //no debe ir
-            ->get()->shuffle()->all();
+            ->get();
         }
 
         return response()->json(['status'=>"success", 'data'=>$videos]);

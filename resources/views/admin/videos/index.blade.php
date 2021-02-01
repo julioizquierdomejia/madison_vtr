@@ -480,6 +480,11 @@ $(document).ready(function (event) {
                 ).then(function (event) {
                     $('.progress-bar').text('0%').css('width', 0);
                 })
+            },
+            complete: function (event) {
+                form.find('input.form-control').val('');
+                form.find('input.custom-file-input').val('');
+                form.find('select').prop("selectedIndex", 1);
             }
         });
     })
