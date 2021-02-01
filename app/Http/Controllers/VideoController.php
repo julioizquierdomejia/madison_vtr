@@ -378,6 +378,19 @@ class VideoController extends Controller
         $video->enabled = 0;
         $video->save();
 
+        if (DIRECTORY_SEPARATOR === '/') {
+            $filename = env('FILES_PATH') ? env('FILES_PATH').'/uploads/videos/'.$video->file : public_path('/uploads/videos/'.$video->file);
+            // unix, linux, mac
+            if (is_file($filename)) {
+                \File::delete($filename);
+            }
+        } else {
+            $filename = public_path('/uploads/videos/'.$video->file);
+            if (is_file($filename)) {
+                \File::delete($filename);
+            }
+        }
+
         return response()->json(['status'=>"success", 'data'=>$video]);
     }
 
