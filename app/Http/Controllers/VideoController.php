@@ -268,7 +268,7 @@ class VideoController extends Controller
                     </div>';
                 $details = '<h6 class="mb-1">'.date('d-m-Y', strtotime($item->created_at)).' <span class="badge badge-secondary align-middle px-2">'.$item->video_type.'</span></h6>
                     <p class="mb-0"><span class="align-middle">'.$item->name.' </span></p>';
-                if ($show_statuses) {
+                /*if ($show_statuses) {
                     if ($status) {
                         if ($status->id != 1) {
                             $tools = '<button class="btn '.$status->class.' col btn-block shadow-sm h-100"><i class="fas '.$status->class.' fa-2x text-warning d-block"></i> '.$status->name.'</button>';
@@ -279,7 +279,9 @@ class VideoController extends Controller
                 } else {
                     $tools = '<button class="btn btn-sm btn-success w-50 shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="/uploads/videos/' .$item->file .'"><i class="fas fa-eye d-block"></i> Ver</button>
                     <button class="btn btn-sm btn-danger w-50 shadow-sm h-100"><i class="fas fa-pen-square d-block"></i> Solicitar cambios</button>';
-                }
+                }*/
+                $tools = '<button class="btn btn-sm btn-success w-50 shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="/uploads/videos/' .$item->file .'"><i class="fas fa-eye d-block"></i> Ver</button>
+                    <button class="btn btn-sm btn-danger w-50 shadow-sm h-100 btn-delete" data-id="'.$item->id.'"><i class="fas fa-trash d-block"></i> Eliminar</button>';
             }
 
             $items_array[] = array(
