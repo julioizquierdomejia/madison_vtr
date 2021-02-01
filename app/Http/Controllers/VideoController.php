@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Video;
-use App\Models\VideoStatus;
+use App\Models\Status;
 use App\Models\Objective;
 use App\Models\VideoObjective;
+use App\Models\VideoStatus;
 use App\Models\RequestService;
 use App\Models\VideoRequest;
 
@@ -24,15 +25,13 @@ class VideoController extends Controller
         $role = \Auth::user()->roles->first()->name;
         /*if ($role == 'superadmin') {
             $videos = Video::join('video_types', 'video_types.id', '=', 'videos.type_id')
-                ->join('video_status', 'video_status.id', '=', 'videos.status_id')
-                ->select('videos.*', 'video_types.name as video_type', 'video_status.name as status', 'videos.status_id')
+                ->select('videos.*', 'video_types.name as video_type')
                 //->where('enabled', 1)
                 ->orderBy('id', 'desc')
                 ->get();
         } else {
             $videos = Video::join('video_types', 'video_types.id', '=', 'videos.type_id')
-                ->join('video_status', 'video_status.id', '=', 'videos.status_id')
-                ->select('videos.*', 'video_types.name as video_type', 'video_status.name as status', 'videos.status_id')
+                ->select('videos.*', 'video_types.name as video_type')
                 ->where('user_id', \Auth::id())
                 ->orderBy('id', 'desc')
                 ->get();
@@ -49,7 +48,7 @@ class VideoController extends Controller
         $video_requests = VideoRequest::orderBy('id', 'desc')
             ->get();
 
-        $status = VideoStatus::all();
+        $status = Status::all();
 
         return view('admin.videos.index', compact('videos', 'status', 'objectives', 'request_services', 'video_requests'));
     }
@@ -105,8 +104,7 @@ class VideoController extends Controller
         $file->move(public_path('uploads/videos'), $uniqueFileName);
 
         $videos = Video::join('video_types', 'video_types.id', '=', 'videos.type_id')
-            ->join('video_status', 'video_status.id', '=', 'videos.status_id')
-            ->select('videos.*', 'video_types.name as video_type', 'video_status.name as status', 'videos.status_id')
+            ->select('videos.*', 'video_types.name as video_type')
             ->where('user_id', \Auth::id())
             ->orderBy('id', 'desc')
             ->get();
@@ -158,37 +156,148 @@ class VideoController extends Controller
 
         $file->move(public_path('uploads/videos'), $uniqueFileName);
 
-        /*if ($role == 'superadmin') {
-            $videos = Video::join('video_types', 'video_types.id', '=', 'videos.type_id')
-                ->join('video_status', 'video_status.id', '=', 'videos.status_id')
-                ->join('video_objectives', 'video_objectives.video_id', '=', 'videos.id')
-                ->join('objectives', 'objectives.id', '=', 'video_objectives.objective_id')
-                ->select('videos.*', 'video_types.name as video_type', 'video_status.name as status', 'videos.status_id', 'objectives.id as objective_id', 'objectives.name as objective')
+        if ($role == 'superadmin') {
+            $video_status = new VideoStatus();
+            $video_status->video_id = $video->id;
+            $video_status->status_id = 1;
+            $video_status->save();
+
+            $video_status = new VideoStatus();
+            $video_status->video_id = $video->id;
+            $video_status->status_id = 2;
+            $video_status->save();
+            /*$videos = Video::join('video_types', 'video_types.id', '=', 'videos.type_id')
+                ->select('videos.*', 'video_types.name as video_type')
                 //->where('enabled', 1)
                 ->orderBy('id', 'desc')
-                ->get();
+                ->get();*/
         } else {
-            $videos = Video::join('video_types', 'video_types.id', '=', 'videos.type_id')
-                ->join('video_status', 'video_status.id', '=', 'videos.status_id')
-                ->join('video_objectives', 'video_objectives.video_id', '=', 'videos.id')
-                ->join('objectives', 'objectives.id', '=', 'video_objectives.objective_id')
-                ->select('videos.*', 'video_types.name as video_type', 'video_status.name as status', 'videos.status_id', 'objectives.id as objective_id', 'objectives.name as objective')
+            $video_status = new VideoStatus();
+            $video_status->video_id = $video->id;
+            $video_status->status_id = 1;
+            $video_status->save();
+            /*$videos = Video::join('video_types', 'video_types.id', '=', 'videos.type_id')
+                ->select('videos.*', 'video_types.name as video_type')
                 //->where('enabled', 1)
                 ->where('user_id', \Auth::id())
                 ->orderBy('id', 'desc')
-                ->get();
-        }*/
-        $videos = Video::join('video_types', 'video_types.id', '=', 'videos.type_id')
-                ->join('video_objectives', 'video_objectives.video_id', '=', 'videos.id')
-                ->join('objectives', 'objectives.id', '=', 'video_objectives.objective_id')
-                ->select('videos.*', 'video_types.name as video_type', 'objectives.id as objective_id', 'objectives.name as objective')
-                //->where('enabled', 1)
-                ->where('user_id', \Auth::id())
-                ->with('statuses')
-                ->orderBy('id', 'desc')
-                ->get();
+                ->get();*/
+        }
         
-        return response()->json(['data'=>json_encode($videos),'success'=>true]);
+        return response()->json(['success'=>true]);
+    }
+
+    public function getVideos(Request $request, $show_statuses = false)
+    {
+        $roles = \Auth::user()->roles->first();
+        $role = '';
+        if($roles) {
+            $role = $roles->name;
+        }
+        ## Read value
+        $draw = $request->get('draw');
+        $start = $request->get("start");
+        $rowperpage = $request->get("length"); // Rows display per page
+
+        $columnIndex_arr = $request->get('order');
+        $columnName_arr = $request->get('columns');
+        $order_arr = $request->get('order');
+        $search_arr = $request->get('search');
+
+        $columnIndex = $columnIndex_arr[0]['column']; // Column index
+        $columnName = $columnName_arr[$columnIndex]['data']; // Column name
+        $columnSortOrder = $order_arr[0]['dir']; // asc or desc
+        $searchValue = $search_arr['value']; // Search value
+
+        $totalRecords = Video::select('count(*) as allcount')
+                ->where('user_id', \Auth::id())
+                //->with('statuses')
+                ->where('enabled', 1)
+                ->count();
+        $totalRecordswithFilter = Video::select('count(*) as allcount')
+                ->join('video_types', 'video_types.id', '=', 'videos.type_id')
+                ->where('user_id', \Auth::id())
+                //->with('statuses')
+                ->where(function($query) use ($searchValue) {
+                    $query->where('videos.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('videos.part', 'like', '%'.$searchValue.'%')
+                        ->orWhere('video_types.name', 'like', '%'.$searchValue.'%');
+                })
+                ->where('enabled', 1)
+                ->count();
+
+        $records = Video::join('video_types', 'video_types.id', '=', 'videos.type_id')
+                ->select('videos.*', 'video_types.name as video_type')
+                ->where('user_id', \Auth::id())
+                //->with('statuses')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('videos.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('videos.part', 'like', '%'.$searchValue.'%')
+                        ->orWhere('video_types.name', 'like', '%'.$searchValue.'%');
+                })
+                ->orderBy('created_at', $columnSortOrder)
+                ->where('enabled', 1)
+                ->get();
+
+        $items_array = [];
+
+        foreach($records as $item) {
+            $objective = $item->objectives->count() ? $item->objectives[0]->name : '';
+            $status = $item->statuses->count() ? $item->statuses->last() : [];
+            if ($role == 'superadmin') {
+                $video = '<div class="video bg-dark" style="height: 60px;width: 60px;">
+                        <div class="embed-responsive embed-responsive-16by9 h-100">
+                            <video class="embed-responsive-item item-video">
+                                <source src="/uploads/videos/'.$item->file.'">
+                            </video>
+                        </div>
+                    </div>';
+                $details = '<h6 class="mb-1 video-title">'.$item->name.' </h6>
+                        <p class="mb-0"><span class="align-middle">'.date('d-m-Y', strtotime($item->created_at)).'</span> <span class="badge badge-primary align-middle px-2">'. $objective .' - Parte '.$item->part.'</span></p>';
+                $tools = '<button class="btn btn-sm btn-success w-50 shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="/uploads/videos/' .$item->file .'"><i class="fas fa-eye d-block"></i> Ver</button>
+                    <button class="btn btn-sm btn-danger w-50 shadow-sm h-100 btn-delete" data-id="'.$item->id.'"><i class="fas fa-trash d-block"></i> Eliminar</button>';
+            } else {
+                $video = '<div class="video bg-dark" style="height: 60px;width: 60px;">
+                        <div class="embed-responsive embed-responsive-16by9 h-100">
+                            <video class="embed-responsive-item item-video">
+                                <source src="/uploads/videos/'.$item->file.'">
+                            </video>
+                        </div>
+                    </div>';
+                $details = '<h6 class="mb-1">'.date('d-m-Y', strtotime($item->created_at)).' <span class="badge badge-secondary align-middle px-2">'.$item->video_type.'</span></h6>
+                    <p class="mb-0"><span class="align-middle">'.$item->name.' </span></p>';
+                if ($show_statuses) {
+                    if ($status) {
+                        if ($status->id != 1) {
+                            $tools = '<button class="btn '.$status->class.' col btn-block shadow-sm h-100"><i class="fas '.$status->class.' fa-2x text-warning d-block"></i> '.$status->name.'</button>';
+                        } else {
+                            $tools = '<div class="btn-group"><button class="btn btn-sm btn-success shadow-sm h-100"><i class="fas fa-check d-block"></i> aprobar</button> <button class="btn btn-sm btn-danger shadow-sm h-100">hacer <br>cambios</button></div>';
+                        }
+                    }
+                } else {
+                    $tools = '<button class="btn btn-sm btn-success w-50 shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="/uploads/videos/' .$item->file .'"><i class="fas fa-eye d-block"></i> Ver</button>
+                    <button class="btn btn-sm btn-danger w-50 shadow-sm h-100"><i class="fas fa-pen-square d-block"></i> Solicitar cambios</button>';
+                }
+            }
+
+            $items_array[] = array(
+                "video" => $video,
+                "details" => $details,
+                "tools" => $tools
+            );
+        }
+
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordswithFilter,
+            "aaData" => $items_array
+        );
+
+        echo json_encode($response);
+        exit;
     }
 
     /**
@@ -279,28 +388,34 @@ class VideoController extends Controller
         if ($part == 4) {
             //Lista de videos subidos solo por el usuario
             $videos = Video::join('video_types', 'video_types.id', '=', 'videos.type_id')
-            ->join('video_status', 'video_status.id', '=')
-            ->select('videos.*', 'video_types.name as video_type', 'video_status.name as status')
+            ->select('videos.*', 'video_types.name as video_type')
             ->where('videos.part', '=', $part)
             ->whereHas('objectives', function ($query) use ($objective) {
                 $query->whereNotNull("video_objectives.objective_id");
             })
-            ->with('statuses')
+            ->whereDoesntHave('statuses', function ($query) {
+                $query->where("statuses.id", "=", 1);
+                $query->where("statuses.id", "=", 3);
+            })
+            //->with('statuses')
             ->orderBy('id', 'desc')
             ->where('user_id', \Auth::id())
-            ->get();
+            ->get()->shuffle()->all();
         } else {
             $videos = Video::join('video_types', 'video_types.id', '=', 'videos.type_id')
-            ->join('video_status', 'video_status.id', '=')
-            ->select('videos.*', 'video_types.name as video_type', 'video_status.name as status')
+            ->select('videos.*', 'video_types.name as video_type')
             ->where('videos.part', '=', $part)
             ->whereHas('objectives', function ($query) use ($objective) {
                 $query->whereNotNull("video_objectives.objective_id");
             })
-            ->with('statuses')
+            ->whereDoesntHave('statuses', function ($query) {
+                $query->where("statuses.id", "=", 1);
+                $query->where("statuses.id", "=", 3);
+            })
+            //->with('statuses')
             ->orderBy('id', 'desc')
             //->where('user_id', \Auth::id()) //no debe ir
-            ->get();
+            ->get()->shuffle()->all();
         }
 
         return response()->json(['status'=>"success", 'data'=>$videos]);

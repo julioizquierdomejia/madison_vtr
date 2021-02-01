@@ -9,7 +9,7 @@ class PlanController extends Controller
 {
     //
 
-     public function index()
+     public function index(Request $request)
     {
 
     	$planes = Plan::all();

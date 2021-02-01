@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateVideoStatusTable extends Migration
+class CreateStatusesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,11 @@ class CreateVideoStatusTable extends Migration
      */
     public function up()
     {
-        Schema::create('video_status', function (Blueprint $table) {
+        Schema::create('statuses', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('class');
+            $table->string('color');
             $table->timestamps();
         });
     }
@@ -27,6 +29,6 @@ class CreateVideoStatusTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('video_status');
+        Schema::dropIfExists('statuses');
     }
 }

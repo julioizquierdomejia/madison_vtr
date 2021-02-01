@@ -181,70 +181,22 @@
                 </div>
             </div>
             <div class="card-body" style="max-height: 380px;overflow-y: auto;">
-                <ul class="list videos-list list-unstyled mb-0">
-                    @if($videos->count())
-                    @if ($role == 'superadmin')
-                    @foreach($videos as $video)
-                    @php
-                        var_dump($video->pivot);
-                    @endphp
-                    <li class="item my-1" id="video-{{$video->id}}" data-objective="{{$video->objectives[0]->id}}">
-                        <div class="row py-2 bg-light">
-                            <div class="col-2 text-center">
-                                <div class="video h-100 w-100 bg-dark">
-                                    <div class="embed-responsive embed-responsive-16by9 h-100">
-                                        <video class="embed-responsive-item item-video">
-                                            <source src="{{ asset('uploads/videos/'.$video->file) }}">
-                                        </video>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 my-auto">
-                                <h6 class="mb-1 video-title">{{$video->name}} 
-                                </h6>
-                                <p class="mb-0"><span class="align-middle">{{date('d-m-Y', strtotime($video->created_at))}}</span> <span class="badge badge-primary align-middle px-2">{{$video->objectives[0]->name .' - Parte '.$video->part}}</span></p>
-                            </div>
-                            <div class="col-4 btn-group">
-                                <button class="btn btn-sm btn-success w-50 shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="{{ asset('uploads/videos/'.$video->file) }}"><i class="fas fa-eye d-block"></i> Ver</button>
-                                <button class="btn btn-sm btn-danger w-50 shadow-sm h-100 btn-delete" data-id="{{$video->id}}"><i class="fas fa-trash d-block"></i> Eliminar</button>
-                            </div>
-                        </div>
-                    </li>
-                    @endforeach
-                    @else
-                    @foreach($videos as $video)
-                    <li class="item my-1" id="video-{{$video->id}}" data-objective="{{$video->objectives[0]->id}}">
-                        <div class="row py-2 bg-light">
-                            <div class="col-2 text-center">
-                                <div class="video h-100 w-100 bg-dark">
-                                    <div class="embed-responsive embed-responsive-16by9 h-100">
-                                        <video class="embed-responsive-item item-video">
-                                            <source src="{{ asset('uploads/videos/'.$video->file) }}">
-                                        </video>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 my-auto">
-                                <h6 class="mb-1">{{date('d-m-Y', strtotime($video->created_at))}} <span class="badge badge-secondary align-middle px-2">{{$video->status}}</span>
-                                </h6>
-                                <p class="mb-0"><span class="align-middle">{{$video->name}} </span></p>
-                            </div>
-                            <div class="col-4 btn-group">
-                                <button class="btn btn-sm btn-success w-50 shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="{{ asset('uploads/videos/'.$video->file) }}"><i class="fas fa-eye d-block"></i> Ver</button>
-                                <button class="btn btn-sm btn-danger w-50 shadow-sm h-100"><i class="fas fa-pen-square d-block"></i> Solicitar cambios</button>
-                            </div>
-                        </div>
-                    </li>
-                    @endforeach
-                    @endif
-                    @else
-                    <li class="item my-1 text-center py-3">
-                        <i class="fa fa-play text-dark fa-2x mb-4"></i>
-                        <p>No existen vídeos por el momento.</p>
-                        <p>Sube o solicita un vídeo para empezar.</p>
-                    </li>
-                    @endif
-                </ul>
+                <div class="videos-list">
+                    <table class="table" id="tbVideos">
+                        <thead class="">
+                            <tr>
+                                <td>Vídeo</td>
+                                <td>Detalles</td>
+                                <td>Acciones</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                               <td colspan="3">Procesando...</td> 
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
         <div class="card shadow">
@@ -329,6 +281,26 @@
 @section('script')
 <script>
 $(document).ready(function (event) {
+    var tbvideos;
+    tbvideos = $('#tbVideos').DataTable({
+         processing: true,
+         serverSide: true,
+         ajax: "{{route('videos.list')}}",
+         pageLength: 5,
+         lengthMenu: [ 5, 25, 50 ],
+         columns: [
+            { data: 'video', class: 'border-0 align-middle' },
+            { data: 'details', class: 'border-0' },
+            { data: 'tools', class: 'text-center border-0 text-nowrap'}
+        ],
+         columnDefs: [
+          //{ orderable: false, targets: 2 },
+          //{ orderable: false, targets: 6 }
+        ],
+        order: [[ 0, "desc" ]],
+        language: dLanguage
+      });
+
     $('#modalVideo').on('show.bs.modal', function (event) {
       $('#modalVideo .embed-responsive').html(
         `<video controls class="embed-responsive-item item-video">
@@ -365,7 +337,8 @@ $(document).ready(function (event) {
                                 '',
                                 "success"
                             );
-                            $(".videos-list #video-"+delete_id+"").remove();
+                            //$(".videos-list #video-"+delete_id+"").remove();
+                            tbvideos.ajax.reload();
                         }
                     }
                 });
@@ -471,12 +444,13 @@ $(document).ready(function (event) {
             },
             success: function (response) {
                 if(response.success) {
-                    $('.videos-list').empty();
+                    /*$('.videos-list').empty();
                     $('#videoUpload').val('').change();
                     var videos = $.parseJSON(response.data);
                     $.each(videos, function (id, item) {
                         $('.videos-list').append(getList(item));
-                    })
+                    })*/
+                    tbvideos.ajax.reload();
                     $('.btn-upload').attr('disabled', false);
                     Swal.fire(
                       'Vídeo',

@@ -203,27 +203,23 @@
                 </div>
             </div>
             <div class="card-body">
-                <ul class="list list-unstyled mb-0">
-                    @foreach($videos as $video)
-                    <li class="item my-1" id="video-{{$video->id}}">
-                        <div class="row py-2 bg-light">
-                            <div class="col-2 text-center">
-                                <div class="video h-100 p-2 d-table w-100 bg-dark">
-                                    <span class="d-table-cell align-middle"><i class="fa fa-play text-white-50"></i></span>
-                                </div>
-                            </div>
-                            <div class="col-6 my-auto">
-                                <h6 class="mb-1">{{date('d-m-Y', strtotime($video->created_at))}} <span class="badge badge-dark">Armado</span></h6>
-                                <p class="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus.</p>
-                            </div>
-                            <div class="col-4 btn-group">
-                                <button class="btn btn-sm btn-success shadow-sm h-100"><i class="fas fa-check d-block"></i> aprobar</button>
-                                <button class="btn btn-sm btn-danger shadow-sm h-100">hacer <br>cambios</button>
-                            </div>
-                        </div>
-                    </li>
-                    @endforeach
-                    <li class="item my-1">
+                <div class="videos-list">
+                    <table class="table" id="tbVideos">
+                        <thead class="">
+                            <tr>
+                                <td>Vídeo</td>
+                                <td>Detalles</td>
+                                <td>Acciones</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                               <td colspan="3">Procesando...</td> 
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="item my-1">
                         <div class="row py-2 bg-light">
                             <div class="col-2 text-center">
                                 <div class="video h-100 p-2 d-table w-100 bg-dark">
@@ -239,8 +235,8 @@
                                 <button class="btn btn-sm btn-danger shadow-sm h-100">hacer <br>cambios</button>
                             </div>
                         </div>
-                    </li>
-                    <li class="item my-1">
+                    </div>
+                    <div class="item my-1">
                         <div class="row py-2 bg-light">
                             <div class="col-2 text-center">
                                 <div class="video h-100 p-2 d-table w-100 bg-dark">
@@ -255,8 +251,8 @@
                                 <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-eye fa-2x text-danger d-block"></i> En revisión</button>
                             </div>
                         </div>
-                    </li>
-                    <li class="item my-1">
+                    </div>
+                    <div class="item my-1">
                         <div class="row py-2 bg-light">
                             <div class="col-2 text-center">
                                 <div class="video h-100 p-2 d-table w-100 bg-dark">
@@ -271,8 +267,8 @@
                                 <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-play fa-2x text-warning d-block"></i> En producción</button>
                             </div>
                         </div>
-                    </li>
-                    <li class="item my-1">
+                    </div>
+                    <div class="item my-1">
                         <div class="row py-2 bg-light">
                             <div class="col-2 text-center">
                                 <div class="video h-100 p-2 d-table w-100 bg-dark">
@@ -287,8 +283,8 @@
                                 <button class="btn bg-white col btn-block shadow-sm h-100"><i class="fas fa-check fa-2x text-success d-block"></i> Aprobado</button>
                             </div>
                         </div>
-                    </li>
-                    <li class="item my-1">
+                    </div>
+                    <div class="item my-1">
                         <div class="row py-2 bg-light">
                             <div class="col-2 text-center">
                                 <div class="video h-100 p-2 d-table w-100 bg-dark">
@@ -304,8 +300,7 @@
                                 <button class="btn btn-sm btn-danger shadow-sm h-100"><i class="fas fa-trash d-block"></i> borrar</button>
                             </div>
                         </div>
-                    </li>
-                </ul>
+                    </div>
             </div>
         </div>
     </div>
@@ -313,9 +308,31 @@
 @endsection
 @section('script')
 <script>
-    $('#nav-tab').on('show.bs.tab', function (event) {
-        var element = $(event.target);
-        $('.card-steps .card-header h6 span').text(element.data('text'));
+    $(document).ready(function (event) {
+        $('#nav-tab').on('show.bs.tab', function (event) {
+            var element = $(event.target);
+            $('.card-steps .card-header h6 span').text(element.data('text'));
+        })
+
+        var tbvideos;
+        tbvideos = $('#tbVideos').DataTable({
+             processing: true,
+             serverSide: true,
+             ajax: "{{route('videos.list', true)}}",
+             pageLength: 5,
+             lengthMenu: [ 5, 25, 50 ],
+             columns: [
+                { data: 'video', class: 'border-0 align-middle' },
+                { data: 'details', class: 'border-0' },
+                { data: 'tools', class: 'text-center border-0 text-nowrap'}
+            ],
+             columnDefs: [
+              //{ orderable: false, targets: 2 },
+              //{ orderable: false, targets: 6 }
+            ],
+            order: [[ 0, "desc" ]],
+            language: dLanguage
+          });
     })
 </script>
 @endsection

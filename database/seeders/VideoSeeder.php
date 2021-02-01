@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\VideoStatus;
+use App\Models\Status;
 use App\Models\VideoRequestStatus;
 use App\Models\RequestService;
 use App\Models\VideoType;
@@ -48,20 +48,25 @@ class VideoSeeder extends Seeder
         $video_type->save();
 
         //Estados de vídeos
-        $video_status = new VideoStatus();
-        $video_status->name = "Subido";
-        $video_status->save();
-        $video_status = new VideoStatus();
+        $video_status = new Status();
         $video_status->name = "Por Aprobar";
+        $video_status->class = "fa-spin";
+        $video_status->color = "badge-dark";
         $video_status->save();
-        $video_status = new VideoStatus();
+        $video_status = new Status();
         $video_status->name = "Aprobado";
+        $video_status->class = "fa-success";
+        $video_status->color = "badge-success";
         $video_status->save();
-        $video_status = new VideoStatus();
+        $video_status = new Status();
         $video_status->name = "En revisión";
+        $video_status->class = "fa-eye";
+        $video_status->color = "badge-danger";
         $video_status->save();
-        $video_status = new VideoStatus();
+        $video_status = new Status();
         $video_status->name = "En producción";
+        $video_status->class = "fa-play";
+        $video_status->color = "badge-warning";
         $video_status->save();
     }
 }

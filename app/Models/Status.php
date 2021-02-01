@@ -5,15 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class VideoStatusStatus extends Model
+class Status extends Model
 {
     use HasFactory;
 
-    protected $table = 'video_status_status';
-
     protected $fillable = [
-        'id_video',
-        'id_status',
+        'name',
+        'class',
+        'color',
     ];
 
     protected $dates = [

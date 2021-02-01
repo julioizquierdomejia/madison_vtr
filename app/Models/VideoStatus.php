@@ -9,10 +9,11 @@ class VideoStatus extends Model
 {
     use HasFactory;
 
-    protected $table = 'video_status';
+    //protected $table = 'video_status_status';
 
     protected $fillable = [
-        'name',
+        'video_id',
+        'status_id',
     ];
 
     protected $dates = [

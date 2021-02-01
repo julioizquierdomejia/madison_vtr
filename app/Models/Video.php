@@ -33,6 +33,6 @@ class Video extends Model
     }
 
     public function statuses() {
-        return $this->belongsToMany(VideoStatus::class, 'video_status_status')->withPivot('video_id');
+        return $this->belongsToMany(Status::class, 'video_statuses')->withPivot('video_id');
     }
 }
