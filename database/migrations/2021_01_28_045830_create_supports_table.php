@@ -13,6 +13,12 @@ class CreateSupportsTable extends Migration
      */
     public function up()
     {
+        Schema::create('support_types', function (Blueprint $table) {
+            $table->id();
+            $table->text('name');
+            $table->timestamps();
+        });
+
         Schema::create('supports', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('support_type_id')->unsigned();
@@ -21,12 +27,6 @@ class CreateSupportsTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->text('message');
             $table->boolean('answered')->default(0);
-            $table->timestamps();
-        });
-
-        Schema::create('support_types', function (Blueprint $table) {
-            $table->id();
-            $table->text('name');
             $table->timestamps();
         });
     }
