@@ -401,6 +401,7 @@ class VideoController extends Controller
             ->with('objectives')
             ->orderBy('id', 'desc')
             ->where('user_id', \Auth::id())
+            ->where('enabled', 1)
             ->get();
         } else {
             $videos = Video::join('video_types', 'video_types.id', '=', 'videos.type_id')
@@ -417,6 +418,7 @@ class VideoController extends Controller
             ->with('objectives')
             ->orderBy('id', 'desc')
             //->where('user_id', \Auth::id()) //no debe ir
+            ->where('enabled', 1)
             ->get();
         }
 
