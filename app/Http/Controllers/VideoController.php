@@ -381,10 +381,8 @@ class VideoController extends Controller
         if (DIRECTORY_SEPARATOR === '/') {
             // unix, linux, mac
             $filename = env('FILES_PATH').'/uploads/videos/'.$video->file;
-            if ($filename) {
-                if (is_file($filename)) {
-                    \File::delete($filename);
-                }
+            if (is_file($filename)) {
+                \File::delete($filename);
             } else {
                 $filename = public_path('/uploads/videos/'.$video->file);
                 if (is_file($filename)) {
