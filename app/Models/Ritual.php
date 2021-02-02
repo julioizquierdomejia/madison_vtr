@@ -11,13 +11,16 @@ class Ritual extends Model
 
     protected $fillable = [
         'name',
-        'ritual_objective_id',
-        'ritual_status_id',
-        'published',
+        'status_id',
+        'type_id',
+        //'objective_id',
+        'user_id',
+        'file',
         'enabled',
     ];
 
     protected $dates = [
+        'published_at',
         'created_at',
         'updated_at'
     ];

@@ -34,7 +34,7 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::get('/videos', [App\Http\Controllers\VideoController::class, 'index'])->name('video');
 	Route::post('/videos', [App\Http\Controllers\VideoController::class, 'ajaxstore'])->name('videos.upload');
 	Route::get('/videos/list/{statuses?}', [App\Http\Controllers\VideoController::class, 'getVideos'])->name('videos.list');
-	Route::get('/videos/{objective}/{part}/list', [App\Http\Controllers\VideoController::class, 'getVideoList'])->name('videos.byObjective');
+	Route::get('/videos/{objective}/{part}/{type}/list', [App\Http\Controllers\VideoController::class, 'getVideoList'])->name('videos.byObjective');
 	Route::post('/videos/{id}/delete', [App\Http\Controllers\VideoController::class, 'destroy'])->name('videos.delete');
 	Route::get('/resumen', [App\Http\Controllers\ResumenController::class, 'index'])->name('resumen');
 

@@ -78,9 +78,10 @@ class RitualController extends Controller
         );
         $this->validate($request, $rules, $messages);
 
-        $file = $request->file('video');
-        $ext = $file->extension();
-        $uniqueFileName = preg_replace('/\s+/', "-", uniqid().'_'.$file->getClientOriginalName());
+        $ffmpeg = \FFMpeg\FFMpeg::create();
+        dd($ffmpeg);
+
+        //$uniqueFileName = preg_replace('/\s+/', "-", uniqid().'_'.$file->getClientOriginalName());
 
         $ritual = new Ritual();
         $ritual->name = $request->get('name');
@@ -88,7 +89,7 @@ class RitualController extends Controller
         $ritual->description = $uniqueFileName;
         $ritual->type_id = $request->get('ritual_type_id');
         $ritual->status_id = 1;
-        $ritual->published = $request->get('published_at');
+        $ritual->published_at = $request->get('published_at');
         $ritual->user_id = \Auth::id();
         $ritual->enabled = 1;
         $ritual->save();

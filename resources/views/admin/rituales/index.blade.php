@@ -78,7 +78,7 @@
                         </div>
                     </div>
                     <div class="video-list form-group">
-                        <button class="btn btn-block btn-secondary" type="button" data-toggle="collapse" data-target="#vlist2" aria-expanded="false" aria-controls="vlist2">Segunda parte</button>
+                        <button class="btn btn-block btn-secondary collapsed" type="button" data-toggle="collapse" data-target="#vlist2" aria-expanded="false" aria-controls="vlist2">Segunda parte</button>
                         <div class="collapse" id="vlist2">
                           <div class="card card-body" style="max-height: 133px;overflow-y: auto;">
                             <ul class="list list-second-part list-unstyled mb-0">
@@ -88,7 +88,7 @@
                         </div>
                     </div>
                     <div class="video-list form-group">
-                        <button class="btn btn-block btn-secondary" type="button" data-toggle="collapse" data-target="#vlist3" aria-expanded="false" aria-controls="vlist3">Tercera parte</button>
+                        <button class="btn btn-block btn-secondary collapsed" type="button" data-toggle="collapse" data-target="#vlist3" aria-expanded="false" aria-controls="vlist3">Tercera parte</button>
                         <div class="collapse" id="vlist3">
                           <div class="card card-body" style="max-height: 133px;overflow-y: auto;">
                             <ul class="list list-third-part list-unstyled mb-0">
@@ -278,10 +278,17 @@
         $('.nav-tabs .nav-item.active').prev().trigger('click');
     })
 
+    $(document).on('click', '#nav-armando1 .video-list .form-check-input', function (event) {
+        var btn_collapse = $(this).parents('.video-list').next().find('[data-toggle="collapse"]');
+        if(btn_collapse.hasClass('collapsed')) {
+            btn_collapse.trigger('click');
+        }
+    })
+
     $('.btn-step').on('click', function (event) {
         var objective = $('#objetivo').val();
         var step = $(this).data('step');
-        console.log(step)
+        var r_type = $('[name="ritual_type_id"]').val();
         if(step == 1) {
             if($('#rname').val().length == 0) {
                 $('.rname-error').show();
@@ -313,9 +320,9 @@
             $('.published-selected').text(date.toLocaleDateString("es-ES", options));
             $('.objective-selected').text($('#objetivo option:selected').text());
 
-            ajaxList(objective, 1, 'first');
-            ajaxList(objective, 2, 'second');
-            ajaxList(objective, 3, 'third');
+            ajaxList(objective, 1, r_type, 'first');
+            ajaxList(objective, 2, r_type, 'second');
+            ajaxList(objective, 3, r_type, 'third');
 
             nextNav();
         } else if(step == 2) {
@@ -331,8 +338,14 @@
                 && $('#vlist3 .form-check-input:checked').length
                 ) {
 
-                ajaxList(objective, 4, 'own');
+                ajaxList(objective, 4, r_type, 'own');
                 nextNav();
+            } else {
+                Swal.fire(
+                  'Rituales',
+                  'Se deben seleccionar todos los vídeos',
+                  'warning'
+                )
             }
         } else if(step == 3) {
             var objective = $('#objetivo').val();
@@ -361,6 +374,12 @@
                 $('.four-item').html(four.html())
                 //ajaxList(objective, 4, 'own');
                 nextNav();
+            } else {
+                Swal.fire(
+                  'Rituales',
+                  'No se seleccionó ningún vídeo',
+                  'warning'
+                )
             }
         }
     })
@@ -369,10 +388,10 @@
         $('.nav-tabs .nav-item.active').next().trigger('click');
     }
 
-    function ajaxList(objective, part, element) {
+    function ajaxList(objective, part, type, element) {
         $.ajax({
             type: 'GET',
-            url: '/videos/'+objective+'/'+part+'/list',
+            url: '/videos/'+objective+'/'+part+'/'+type+'/list',
             data: {},
             dataType: 'json',
             success: function(result) {
@@ -385,7 +404,7 @@
                             list.append(getItem(item, part))
                         })
                     } else {
-                        list.append('<li class="item my-1">No hay vídeos</li>')
+                        list.append('<li class="item my-1">No se encontraron vídeos.</li>')
                     }
                 }
             },
@@ -411,12 +430,12 @@
                         <h6 class="mb-1">`+dateFormatter(video.created_at)+` <span class="badge badge-dark">`+video.video_type+`</span></h6>
                         <p class="mb-0">`+video.name+`</p>
                     </div>
-                    <div class="col-4 my-auto">
-                        <div class="form-check">
+                    <label class="col-4 d-flex align-items-center mb-0" for="video`+video.id+`p`+part+`">
+                        <div class="form-check py-2">
                             <input type="radio" class="form-check-input align-middle" id="video`+video.id+`p`+part+`" value="`+video.id+`" name="video`+part+`">
-                            <label class="form-check-label align-middle" for="video`+video.id+`p`+part+`">Seleccionar</label>
+                            <span class="form-check-label align-middle">Seleccionar</span>
                         </div>
-                    </div>
+                    </label>
                 </div>
             </li>`;
         return html;

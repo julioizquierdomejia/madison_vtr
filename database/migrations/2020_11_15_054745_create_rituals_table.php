@@ -26,7 +26,8 @@ class CreateRitualsTable extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
-            $table->date('published');
+            $table->date('published_at');
+            $table->string('file');
             $table->boolean('enabled');
 
             $table->timestamps();
@@ -38,8 +39,8 @@ class CreateRitualsTable extends Migration
             $table->bigInteger('ritual_id')->unsigned();
             $table->foreign('ritual_id')->references('id')->on('rituals')->onDelete('cascade');
             
-            $table->bigInteger('ritual_objective_id')->unsigned();
-            $table->foreign('ritual_objective_id')->references('id')->on('objectives')->onDelete('cascade');
+            $table->bigInteger('objective_id')->unsigned();
+            $table->foreign('objective_id')->references('id')->on('objectives')->onDelete('cascade');
 
             $table->timestamps();
         });
@@ -70,13 +71,13 @@ class CreateRitualsTable extends Migration
             $table->dropForeign('rituals_user_id_foreign');
         });
         Schema::table('ritual_objectives', function (Blueprint $table) {
-            $table->dropForeign('ritual_objective_id_foreign');
-            $table->dropForeign('ritual_id_foreign');
+            $table->dropForeign('ritual_objectives_ritual_id_foreign');
+            $table->dropForeign('ritual_objectives_objective_id_foreign');
         });
 
         Schema::table('ritual_parts', function (Blueprint $table) {
-            $table->dropForeign('ritual_ritual_id_foreign');
-            $table->dropForeign('ritual_video_id_foreign');
+            $table->dropForeign('ritual_parts_ritual_id_foreign');
+            $table->dropForeign('ritual_parts_video_id_foreign');
         });
 
         Schema::dropIfExists('rituals');

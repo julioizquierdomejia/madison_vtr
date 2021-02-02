@@ -166,22 +166,16 @@ class VideoController extends Controller
             $video_status->video_id = $video->id;
             $video_status->status_id = 2;
             $video_status->save();
-            /*$videos = Video::join('video_types', 'video_types.id', '=', 'videos.type_id')
-                ->select('videos.*', 'video_types.name as video_type')
-                //->where('enabled', 1)
-                ->orderBy('id', 'desc')
-                ->get();*/
         } else {
             $video_status = new VideoStatus();
             $video_status->video_id = $video->id;
             $video_status->status_id = 1;
             $video_status->save();
-            /*$videos = Video::join('video_types', 'video_types.id', '=', 'videos.type_id')
-                ->select('videos.*', 'video_types.name as video_type')
-                //->where('enabled', 1)
-                ->where('user_id', \Auth::id())
-                ->orderBy('id', 'desc')
-                ->get();*/
+
+            $video_status = new VideoStatus();
+            $video_status->video_id = $video->id;
+            $video_status->status_id = 2;
+            $video_status->save();
         }
         
         return response()->json(['success'=>true]);
@@ -256,8 +250,8 @@ class VideoController extends Controller
                     </div>';
                 $details = '<h6 class="mb-1 video-title">'.$item->name.' </h6>
                         <p class="mb-0"><span class="align-middle">'.date('d-m-Y', strtotime($item->created_at)).'</span> <span class="badge badge-primary align-middle px-2">'. $objective .' - Parte '.$item->part.'</span></p>';
-                $tools = '<button class="btn btn-sm btn-success w-50 shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="/uploads/videos/' .$item->file .'"><i class="fas fa-eye d-block"></i> Ver</button>
-                    <button class="btn btn-sm btn-danger w-50 shadow-sm h-100 btn-delete" data-id="'.$item->id.'"><i class="fas fa-trash d-block"></i> Eliminar</button>';
+                $tools = '<div class="buttons-group"><button class="btn py-2 btn-success shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="/uploads/videos/' .$item->file .'" title="Ver"><i class="fas fa-eye d-block"></i></button>
+                    <button class="btn btn-danger py-2 shadow-sm h-100 btn-delete" data-id="'.$item->id.'" title="Eliminar"><i class="fas fa-trash d-block"></i></button></div>';
             } else {
                 $video = '<div class="video bg-dark" style="height: 60px;width: 60px;">
                         <div class="embed-responsive embed-responsive-16by9 h-100">
@@ -271,17 +265,17 @@ class VideoController extends Controller
                 /*if ($show_statuses) {
                     if ($status) {
                         if ($status->id != 1) {
-                            $tools = '<button class="btn '.$status->class.' col btn-block shadow-sm h-100"><i class="fas '.$status->class.' fa-2x text-warning d-block"></i> '.$status->name.'</button>';
+                            $tools = '<div class="buttons-group"><button class="btn '.$status->class.' col btn-block shadow-sm h-100"><i class="fas '.$status->class.' fa-2x text-warning d-block"></i> '.$status->name.'</button></div>';
                         } else {
-                            $tools = '<div class="btn-group"><button class="btn btn-sm btn-success shadow-sm h-100"><i class="fas fa-check d-block"></i> aprobar</button> <button class="btn btn-sm btn-danger shadow-sm h-100">hacer <br>cambios</button></div>';
+                            $tools = '<div class="buttons-group"><div class="btn-group"><button class="btn btn-success py-2 shadow-sm h-100"><i class="fas fa-check d-block"></i> aprobar</button> <button class="btn btn-danger py-2 shadow-sm h-100">hacer <br>cambios</button></div>';
                         }
                     }
                 } else {
-                    $tools = '<button class="btn btn-sm btn-success w-50 shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="/uploads/videos/' .$item->file .'"><i class="fas fa-eye d-block"></i> Ver</button>
-                    <button class="btn btn-sm btn-danger w-50 shadow-sm h-100"><i class="fas fa-pen-square d-block"></i> Solicitar cambios</button>';
+                    $tools = '<div class="buttons-group"><button class="btn btn-success py-2 shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="/uploads/videos/' .$item->file .'"><i class="fas fa-eye d-block"></i> Ver</button>
+                    <button class="btn btn-danger py-2 shadow-sm h-100"><i class="fas fa-pen-square d-block"></i> Solicitar cambios</button></div>';
                 }*/
-                $tools = '<button class="btn btn-sm btn-success w-50 shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="/uploads/videos/' .$item->file .'"><i class="fas fa-eye d-block"></i> Ver</button>
-                    <button class="btn btn-sm btn-danger w-50 shadow-sm h-100 btn-delete" data-id="'.$item->id.'"><i class="fas fa-trash d-block"></i> Eliminar</button>';
+                $tools = '<div class="buttons-group"><button class="btn btn-success py-2 shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="/uploads/videos/' .$item->file .'" title="Ver"><i class="fas fa-eye d-block"></i></button>
+                    <button class="btn btn-danger py-2 shadow-sm h-100 btn-delete" data-id="'.$item->id.'" title="Eliminar"><i class="fas fa-trash d-block"></i></button></div>';
             }
 
             $items_array[] = array(
@@ -399,47 +393,86 @@ class VideoController extends Controller
         return response()->json(['status'=>"success", 'data'=>$video]);
     }
 
-    public function getVideoList(Request $request, $objective, $part)
+    public function getVideoList(Request $request, $objective, $part, $type)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'editor']);
         
         $role = \Auth::user()->roles->first()->name;
 
-        if ($part == 4) {
-            //Lista de videos subidos solo por el usuario
-            $videos = Video::join('video_types', 'video_types.id', '=', 'videos.type_id')
-            ->select('videos.*', 'video_types.name as video_type')
-            ->where('videos.part', '=', $part)
-            ->whereHas('objectives', function ($query) use ($objective) {
-                //$query->whereNotNull("video_objectives.objective_id");
-                $query->where("video_objectives.objective_id", $objective);
-            })
-            ->whereDoesntHave('statuses', function ($query) {
-                $query->where("statuses.id", "=", 1);
-                $query->where("statuses.id", "=", 3);
-            })
-            ->with('objectives')
-            ->orderBy('id', 'desc')
-            ->where('user_id', \Auth::id())
-            ->where('enabled', 1)
-            ->get();
+        if ($type == 1) { //Sugerir
+            if ($part == 4) {
+                //Lista de videos subidos solo por el usuario
+                $videos = Video::join('video_types', 'video_types.id', '=', 'videos.type_id')
+                ->select('videos.*', 'video_types.name as video_type')
+                ->where('videos.part', '=', $part)
+                ->whereHas('objectives', function ($query) use ($objective) {
+                    $query->where("video_objectives.objective_id", $objective);
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("statuses.id", "=", 1);
+                    $query->where("statuses.id", "=", 3);
+                })
+                ->with('objectives')
+                ->orderBy('id', 'desc')
+                ->where('user_id', \Auth::id())
+                ->where('enabled', 1)
+                ->limit(10)
+                ->get();
+            } else {
+                $videos = Video::join('video_types', 'video_types.id', '=', 'videos.type_id')
+                ->select('videos.*', 'video_types.name as video_type')
+                ->where('videos.part', '=', $part)
+                ->whereHas('objectives', function ($query) use ($objective) {
+                    $query->where("video_objectives.objective_id", $objective);
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("statuses.id", "=", 1);
+                    $query->where("statuses.id", "=", 3);
+                })
+                ->with('objectives')
+                ->orderBy('id', 'desc')
+                //->where('user_id', \Auth::id()) //no debe ir
+                ->where('enabled', 1)
+                ->limit(10)
+                ->get();
+            }
         } else {
-            $videos = Video::join('video_types', 'video_types.id', '=', 'videos.type_id')
-            ->select('videos.*', 'video_types.name as video_type')
-            ->where('videos.part', '=', $part)
-            ->whereHas('objectives', function ($query) use ($objective) {
-                //$query->whereNotNull("video_objectives.objective_id");
-                $query->where("video_objectives.objective_id", $objective);
-            })
-            ->whereDoesntHave('statuses', function ($query) {
-                $query->where("statuses.id", "=", 1);
-                $query->where("statuses.id", "=", 3);
-            })
-            ->with('objectives')
-            ->orderBy('id', 'desc')
-            //->where('user_id', \Auth::id()) //no debe ir
-            ->where('enabled', 1)
-            ->get();
+            if ($part == 4) {
+                //Lista de videos subidos solo por el usuario
+                $videos = Video::join('video_types', 'video_types.id', '=', 'videos.type_id')
+                ->select('videos.*', 'video_types.name as video_type')
+                ->where('videos.part', '=', $part)
+                ->whereHas('objectives', function ($query) use ($objective) {
+                    $query->where("video_objectives.objective_id", $objective);
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("statuses.id", "=", 1);
+                    $query->where("statuses.id", "=", 3);
+                })
+                ->with('objectives')
+                ->orderBy('id', 'desc')
+                ->where('user_id', \Auth::id())
+                ->where('enabled', 1)
+                ->limit(10)
+                ->get();
+            } else {
+                $videos = Video::join('video_types', 'video_types.id', '=', 'videos.type_id')
+                ->select('videos.*', 'video_types.name as video_type')
+                ->where('videos.part', '=', $part)
+                ->whereHas('objectives', function ($query) use ($objective) {
+                    $query->where("video_objectives.objective_id", $objective);
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("statuses.id", "=", 1);
+                    $query->where("statuses.id", "=", 3);
+                })
+                ->with('objectives')
+                ->orderBy('id', 'desc')
+                //->where('user_id', \Auth::id()) //no debe ir
+                ->where('enabled', 1)
+                ->limit(10)
+                ->get();
+            }
         }
 
         return response()->json(['status'=>"success", 'data'=>$videos]);
