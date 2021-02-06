@@ -267,9 +267,32 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modalVideo" tabindex="-1" role="dialog" aria-labelledby="modalVideoLbl" aria-hidden="true">
+    <div class="modal-dialog modal-lg h-100" role="document" style="max-height: calc(100% - 63px)">
+        <div class="modal-content h-100">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalVideoLbl">Vídeo</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="embed-responsive embed-responsive-16by9 h-100 bg-dark"></div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @section('script')
 <script>
+    $('#modalVideo').on('show.bs.modal', function (event) {
+      $('#modalVideo .embed-responsive').html(
+        `<video controls class="embed-responsive-item item-video">
+            <source src="`+$(event.relatedTarget).data('video')+`" type="">
+        </video>`
+        )
+    })
+
     $('#nav-tab').on('show.bs.tab', function (event) {
         var element = $(event.target);
         $('.form-Steps .card-header h6 span').text(element.data('text'));
@@ -435,6 +458,7 @@
                             <input type="radio" class="form-check-input align-middle" id="video`+video.id+`p`+part+`" value="`+video.id+`" name="video`+part+`">
                             <span class="form-check-label align-middle">Seleccionar</span>
                         </div>
+                        <button class="btn btn-success py-2 shadow-sm ml-2" data-toggle="modal" data-target="#modalVideo" data-video="/uploads/videos/`+video.file+`" title="Ver" type="button"><i class="fas fa-eye d-block"></i></button>
                     </label>
                 </div>
             </li>`;

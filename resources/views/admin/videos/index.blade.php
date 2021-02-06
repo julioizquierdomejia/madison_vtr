@@ -260,11 +260,11 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="modalSpeech" tabindex="-1" role="dialog" aria-labelledby="modalVideoLbl" aria-hidden="true">
+<div class="modal fade" id="modalSpeech" tabindex="-1" role="dialog" aria-labelledby="modalSpeechLbl" aria-hidden="true">
     <div class="modal-dialog modal-lg h-100" role="document" style="max-height: calc(100% - 63px)">
         <div class="modal-content h-100">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalVideoLbl">Speech</h5>
+                <h5 class="modal-title" id="modalSpeechLbl">Speech</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
