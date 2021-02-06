@@ -260,7 +260,7 @@ class VideoController extends Controller
                             </video>
                         </div>
                     </div>';
-                $details = '<h6 class="mb-1">'.date('d-m-Y', strtotime($item->created_at)).' <span class="badge badge-secondary align-middle px-2">'.$item->video_type.'</span></h6>
+                $details = '<h6 class="mb-1">'.date('d-m-Y', strtotime($item->created_at)).' <span class="badge badge-primary align-middle" style="font-size:14px;padding-top:2px">'.$objective.'</span></h6>
                     <p class="mb-0"><span class="align-middle">'.$item->name.' </span></p>';
                 /*if ($show_statuses) {
                     if ($status) {
