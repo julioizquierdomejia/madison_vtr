@@ -30,4 +30,8 @@ class Order extends Model
     public function services() {
         return $this->belongsToMany(OrderService::class, 'orders_services')->withPivot('order_id');
     }
+
+    public function objective() {
+        return $this->hasOne(Objective::class, 'id');
+    }
 }

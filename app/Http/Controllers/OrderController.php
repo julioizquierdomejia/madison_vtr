@@ -24,6 +24,7 @@ class OrderController extends Controller
     public function getList(Request $request)
     {
         $role = \Auth::user()->roles->first()->name;
+        $user_id = \Auth::id();
 
         ## Read value
         $draw = $request->get('draw');
@@ -45,6 +46,11 @@ class OrderController extends Controller
                 $query->where("status.id", "=", 1)
                     ->orWhere("status.id", "=", 2);
             })*/
+            ->where(function($query) use ($role, $user_id) {
+                if ($role != 'superadmin') {
+                    $query->where('user_id', $user_id);
+                }
+            })
             ->count();
 
         $totalRecordswithFilter = Order::select('count(*) as allcount')
@@ -52,6 +58,11 @@ class OrderController extends Controller
                 $query->where('orders.topic', 'like', '%'.$searchValue.'%')
                     ->orWhere('orders.type', 'like', '%'.$searchValue.'%')
                     ->orWhere('orders.avatar', 'like', '%'.$searchValue.'%');
+            })
+            ->where(function($query) use ($role, $user_id) {
+                if ($role != 'superadmin') {
+                    $query->where('user_id', $user_id);
+                }
             })
             /*->whereHas('statuses', function ($query) {
                 $query->where("status.id", "=", 1)
@@ -72,6 +83,11 @@ class OrderController extends Controller
                 $query->where("status.id", "=", 1)
                     ->orWhere("status.id", "=", 2);
             })*/
+            ->where(function($query) use ($role, $user_id) {
+                if ($role != 'superadmin') {
+                    $query->where('user_id', $user_id);
+                }
+            })
             ->orderBy($columnName, $columnSortOrder)
             ->get();
 
@@ -135,10 +151,11 @@ class OrderController extends Controller
     {
         $rules = array(
             'services'      => 'nullable|array',
-            'topic'     => 'required|string',
-            'type'      => 'required|string',
+            'tema'     => 'required|string',
+            'tipo'      => 'required|string',
             'avatar'    => 'required|string',
             'comments'  => 'nullable|string',
+            'objetivo'  => 'required|integer|exists:objectives,id',
             'speech'    => 'required|mimes:pdf|max:50000',
         );
         $this->validate($request, $rules);
@@ -149,12 +166,13 @@ class OrderController extends Controller
         $uniqueFileName = preg_replace('/\s+/', "-", uniqid().'_'.$speech->getClientOriginalName());
 
         $video_request = new Order();
-        $video_request->topic = $request->get('topic');
-        $video_request->type = $request->get('type');
+        $video_request->topic = $request->get('tema');
+        $video_request->type = $request->get('tipo');
         $video_request->avatar = $request->get('avatar');
         $video_request->comments = $request->get('comments');
         $video_request->speech = $uniqueFileName;
         $video_request->user_id = \Auth::id();
+        $video_request->objective_id = $request->get('objetivo');
         //$video_request->status_id = 1; //Subido
         $video_request->save();
 
@@ -183,6 +201,10 @@ class OrderController extends Controller
      */
     public function show(Request $request, $id)
     {
+        $role = \Auth::user()->roles->first()->name;
+        if ($role != 'superadmin') {
+            
+        }
         $video_request = Order::findOrFail($id);
 
         return view('admin.solicitar-videos.show', compact('video_request'));

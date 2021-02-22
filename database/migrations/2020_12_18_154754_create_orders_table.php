@@ -25,6 +25,9 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
+            $table->unsignedBigInteger('objective_id');
+            $table->foreign('objective_id')->references('id')->on('objectives')->onDelete('cascade');
+
             $table->timestamps();
         });
 
@@ -62,6 +65,7 @@ class CreateOrdersTable extends Migration
     {
         Schema::table('orders', function (Blueprint $table) {
             $table->dropForeign('orders_user_id_foreign');
+            $table->dropForeign('orders_objective_id_foreign');
             //$table->dropForeign('orders_status_id_foreign');
         });
         Schema::table('orders_statuses', function (Blueprint $table) {

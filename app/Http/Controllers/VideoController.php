@@ -9,7 +9,7 @@ use App\Models\Objective;
 use App\Models\VideoObjective;
 use App\Models\VideoStatus;
 use App\Models\Service;
-use App\Models\RequestStatus;
+use App\Models\OrderStatus;
 
 class VideoController extends Controller
 {
@@ -122,7 +122,7 @@ class VideoController extends Controller
             'parte'      => 'required|integer|in:1,2,3,4',
             'objetivo'      => 'required|integer',
             'user_id'      => 'nullable|integer|exists:users,id',
-            'request_id'      => 'nullable|integer|exists:requests,id',
+            'request_id'      => 'nullable|integer|exists:orders,id',
             //'enabled'      => 'boolean|required',
         );
         $messages = array(
@@ -181,8 +181,8 @@ class VideoController extends Controller
         }
 
         if ($request_id) {
-            $request_status = new RequestStatus();
-            $request_status->request_id = $request_id;
+            $request_status = new OrderStatus();
+            $request_status->order_id = $request_id;
             $request_status->status_id = 2;
             $request_status->save();
         }

@@ -117,13 +117,22 @@
                 <div class="row">
                     <div class="col-12 col-md-6">
                         <div class="form-group">
-                            <input class="form-control" placeholder="Tema principal" type="text" name="topic">
+                            <input class="form-control" placeholder="Tema principal" type="text" name="tema">
                         </div>
                         <div class="form-group">
-                            <input class="form-control" placeholder="Tipo de presentación" type="text" name="type">
+                            <input class="form-control" placeholder="Tipo de presentación" type="text" name="tipo">
                         </div>
                         <div class="form-group">
                             <input class="form-control" placeholder="Avatar" type="text" name="avatar">
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" name="objetivo" id="solobjetivo" title="Objetivo">
+                                <option value="">Selecciona tu Objetivo</option>
+                                @foreach($objectives as $objective)
+                                <option value="{{$objective->id}}">{{$objective->name}}</option>
+                                @endforeach
+                            </select>
+                            <p class="error object-error" style="display: none;">Escoge un objetivo</p>
                         </div>
                     </div>
                     <div class="col-12 col-md-6">
