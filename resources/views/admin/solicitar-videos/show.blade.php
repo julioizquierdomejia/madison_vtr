@@ -14,6 +14,12 @@
         <p class="text-primary">{{$video_request->avatar}}</p>
         <h5 class="h6">Comentarios:</h5>
         <p class="text-dark p-3" style="background-color: #c3c3c3">{{$video_request->comments}}</p>
+        <h5 class="h6">Servicios:</h5>
+        <ul class="list-inline">
+        @foreach ($video_request->services as $service)
+          <li class="mb-1"><span class="badge badge-primary px-2" style="font-size: 13px"><i class="fa fa-check mr-2"></i>{{$service->name}}</span></li>
+        @endforeach
+        </ul>
       </div>
 
       <div class="col-12 col-md-6">

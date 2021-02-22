@@ -5,13 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class VideoRequestService extends Model
+class OrderStatus extends Model
 {
     use HasFactory;
 
+    protected $table = 'orders_statuses';
+
     protected $fillable = [
-        'video_request_id',
-        'request_service_id',
+        'status_id',
+        'order_id',
     ];
 
     protected $dates = [

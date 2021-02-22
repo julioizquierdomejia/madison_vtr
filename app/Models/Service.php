@@ -5,11 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class VideoRequestStatus extends Model
+class Service extends Model
 {
     use HasFactory;
-
-    protected $table = 'video_request_status';
 
     protected $fillable = [
         'name',

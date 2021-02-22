@@ -1,21 +1,18 @@
 @extends('admin.layouts.app', ['title' => 'Objetivos'])
 @section('content')
-
-
 @php
   $title = 'Objetivos';
 @endphp
 
 <h1>{{$title}}</h1>
 
-
 <div class="row">
   <div class="col">
-  	<a class="btn btn-secondary" href="/objetivos" title="Create a project">
+  	<a class="btn btn-secondary" href="/objetivos">
       <i class="far fa-arrow-alt-circle-left"></i>
       Volver al Listado
-    </a>    
-    <a class="btn btn-success" href="{{ route('clientes.create') }}" title="Create a project">
+    </a>
+    <a class="btn btn-success" href="{{ route('clientes.create') }}">
       <i class="fas fa-plus-circle mr-2"></i>
       Crear Nuevo {{$title}}
     </a>    

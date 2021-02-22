@@ -1,5 +1,3 @@
-@extends('admin.layouts.app', ['title' => 'Home'])
-@section('content')
 @php
   $role = \Auth::user()->roles->first()->name;
   if($role == 'admin') {
@@ -8,9 +6,9 @@
     $title = 'Cliente';
   }
 @endphp
+@extends('admin.layouts.app', ['title' => $title])
+@section('content')
 <h1>{{$title}}s</h1>
-
-
 <div class="row">
   <div class="col">
     <a class="btn btn-success" href="{{ route('clientes.create') }}" title="Create a project">

@@ -39,12 +39,12 @@
                         </select>
                         <p class="error object-error" style="display: none;">Escoge un objetivo</p>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group d-none">
                         <label class="mb-2" for="modo">¿Cómo Quieres armar el ritual?</label>
                         <br>
                         @foreach($ritual_types as $key => $type)
                         <div class="form-check form-check-inline">
-                            <input type="radio" class="form-check-input" id="ritual_type_id{{$key}}" value="{{$type->id}}" name="ritual_type_id">
+                            <input type="radio" class="form-check-input" id="ritual_type_id{{$key}}" value="{{$type->id}}" @if ($type->id == 2) checked @endif name="ritual_type_id">
                             <label class="form-check-label" for="ritual_type_id{{$key}}"><span class="align-middle">{{$type->name}}</span></label>
                         </div>
                         @endforeach

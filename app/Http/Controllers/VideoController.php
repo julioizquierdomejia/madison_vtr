@@ -8,8 +8,8 @@ use App\Models\Status;
 use App\Models\Objective;
 use App\Models\VideoObjective;
 use App\Models\VideoStatus;
-use App\Models\RequestService;
-use App\Models\VideoRequest;
+use App\Models\Service;
+use App\Models\RequestStatus;
 
 class VideoController extends Controller
 {
@@ -44,13 +44,11 @@ class VideoController extends Controller
                 ->get();
 
         $objectives = Objective::where('enabled', 1)->get();
-        $request_services = RequestService::all();
-        $video_requests = VideoRequest::orderBy('id', 'desc')
-            ->get();
+        $request_services = Service::all();
 
         $status = Status::all();
 
-        return view('admin.videos.index', compact('videos', 'status', 'objectives', 'request_services', 'video_requests'));
+        return view('admin.videos.index', compact('videos', 'status', 'objectives', 'request_services', 'role'));
     }
 
     /**
@@ -123,6 +121,8 @@ class VideoController extends Controller
             'name'      => 'required|string',
             'parte'      => 'required|integer|in:1,2,3,4',
             'objetivo'      => 'required|integer',
+            'user_id'      => 'nullable|integer|exists:users,id',
+            'request_id'      => 'nullable|integer|exists:requests,id',
             //'enabled'      => 'boolean|required',
         );
         $messages = array(
@@ -133,6 +133,8 @@ class VideoController extends Controller
         );
         $this->validate($request, $rules, $messages);
 
+        $demand_user_id = $request->get('user_id');
+        $request_id = $request->get('request_id');
         $file = $request->file('video');
         $ext = $file->extension();
         $uniqueFileName = preg_replace('/\s+/', "-", uniqid().'_'.$file->getClientOriginalName());
@@ -146,7 +148,7 @@ class VideoController extends Controller
         $video->format = $file->getMimeType();
         $video->type_id = 1;
         //$video->status_id = 1;
-        $video->user_id = \Auth::id();
+        $video->user_id = $demand_user_id ? $demand_user_id : \Auth::id();
         $video->save();
 
         $video_objective = new VideoObjective();
@@ -177,6 +179,13 @@ class VideoController extends Controller
             $video_status->status_id = 2;
             $video_status->save();
         }
+
+        if ($request_id) {
+            $request_status = new RequestStatus();
+            $request_status->request_id = $request_id;
+            $request_status->status_id = 2;
+            $request_status->save();
+        }
         
         return response()->json(['success'=>true]);
     }
@@ -188,6 +197,7 @@ class VideoController extends Controller
         if($roles) {
             $role = $roles->name;
         }
+        $user_id = \Auth::id();
         ## Read value
         $draw = $request->get('draw');
         $start = $request->get("start");
@@ -204,13 +214,13 @@ class VideoController extends Controller
         $searchValue = $search_arr['value']; // Search value
 
         $totalRecords = Video::select('count(*) as allcount')
-                ->where('user_id', \Auth::id())
+                ->where('user_id', $user_id)
                 //->with('statuses')
                 ->where('enabled', 1)
                 ->count();
         $totalRecordswithFilter = Video::select('count(*) as allcount')
                 ->join('video_types', 'video_types.id', '=', 'videos.type_id')
-                ->where('user_id', \Auth::id())
+                ->where('user_id', $user_id)
                 //->with('statuses')
                 ->where(function($query) use ($searchValue) {
                     $query->where('videos.name', 'like', '%'.$searchValue.'%')
@@ -222,7 +232,7 @@ class VideoController extends Controller
 
         $records = Video::join('video_types', 'video_types.id', '=', 'videos.type_id')
                 ->select('videos.*', 'video_types.name as video_type')
-                ->where('user_id', \Auth::id())
+                ->where('user_id', $user_id)
                 //->with('statuses')
                 ->skip($start)
                 ->take($rowperpage)
@@ -231,6 +241,11 @@ class VideoController extends Controller
                         ->orWhere('videos.part', 'like', '%'.$searchValue.'%')
                         ->orWhere('video_types.name', 'like', '%'.$searchValue.'%');
                 })
+                /*->whereHas('objectives', function($q) use ($searchValue) {
+                    if ($searchValue) {
+                        $q->where('objectives.name', $searchValue);
+                    }
+                })*/
                 ->orderBy('created_at', $columnSortOrder)
                 ->where('enabled', 1)
                 ->get();
@@ -280,6 +295,7 @@ class VideoController extends Controller
 
             $items_array[] = array(
                 "video" => $video,
+                "objective" => $objective,
                 "details" => $details,
                 "tools" => $tools
             );
@@ -398,6 +414,7 @@ class VideoController extends Controller
         $request->user()->authorizeRoles(['superadmin', 'admin', 'editor']);
         
         $role = \Auth::user()->roles->first()->name;
+        $user_id = \Auth::id();
 
         if ($type == 1) { //Sugerir
             if ($part == 4) {
@@ -414,7 +431,7 @@ class VideoController extends Controller
                 })
                 ->with('objectives')
                 ->orderBy('id', 'desc')
-                ->where('user_id', \Auth::id())
+                ->where('user_id', $user_id)
                 ->where('enabled', 1)
                 ->limit(10)
                 ->get();
@@ -431,7 +448,7 @@ class VideoController extends Controller
                 })
                 ->with('objectives')
                 ->orderBy('id', 'desc')
-                //->where('user_id', \Auth::id()) //no debe ir
+                //->where('user_id', $user_id) //no debe ir
                 ->where('enabled', 1)
                 ->limit(10)
                 ->get();
@@ -451,7 +468,7 @@ class VideoController extends Controller
                 })
                 ->with('objectives')
                 ->orderBy('id', 'desc')
-                ->where('user_id', \Auth::id())
+                ->where('user_id', $user_id)
                 ->where('enabled', 1)
                 ->limit(10)
                 ->get();
@@ -468,7 +485,7 @@ class VideoController extends Controller
                 })
                 ->with('objectives')
                 ->orderBy('id', 'desc')
-                //->where('user_id', \Auth::id()) //no debe ir
+                //->where('user_id', $user_id) //no debe ir
                 ->where('enabled', 1)
                 ->limit(10)
                 ->get();

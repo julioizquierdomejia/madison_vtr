@@ -1,11 +1,5 @@
 @extends('admin.layouts.app', ['title' => 'Vídeos'])
 @php
-    $roles = Auth::user()->roles->first();
-    $role = '';
-    if($roles) {
-        $role = $roles->name;
-    }
-
     /*$ffmpeg = FFMpeg\FFMpeg::create();
     var_dump($ffmpeg);*/
 @endphp
@@ -45,6 +39,11 @@
             </nav>
             <div class="card-body">
                 <div class="row">
+                <div class="form-group col-12 uname-section" style="display: none;">
+                    <p class="mb-0 text-primary bg-light p-2 py-3">Subir vídeo solicitado por <span class="uname-text"></span></p>
+                    <input class="form-control" type="text" hidden="" name="user_id" id="uname">
+                    <input class="form-control" type="text" hidden="" name="request_id" id="rqid">
+                </div>
                 <div class="form-group col-12">
                     <label class="mb-1" for="vname">Nombre de vídeo</label>
                     <input class="form-control" type="text" name="name" id="vname">
@@ -183,18 +182,23 @@
             <div class="card-body" style="max-height: 380px;overflow-y: auto;">
                 <div class="videos-list">
                     <table class="table" id="tbVideos">
-                        <thead class="">
+                        <thead>
                             <tr>
-                                <td>Vídeo</td>
-                                <td>Detalles</td>
-                                <td>Acciones</td>
+                                <th>Vídeo</th>
+                                <th>Detalles</th>
+                                <th class="d-none">Objetivo</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody></tbody>
+                        <tfoot class="d-none">
                             <tr>
-                               <td colspan="3">Procesando...</td> 
+                                <th>Vídeo</th>
+                                <th>Detalles</th>
+                                <th class="objective" hidden="">Objetivo</th>
+                                <th>Acciones</th>
                             </tr>
-                        </tbody>
+                        </tfoot>
                     </table>
                 </div>
             </div>
@@ -213,34 +217,18 @@
                     </div>
                 </div>
             </div>
-            <div class="card-body" style="max-height: 380px;overflow-y: auto;">
-                <ul class="list request-list list-unstyled mb-0">
-                    @if($video_requests->count())
-                    @foreach($video_requests as $request)
-                    <li class="item my-1" id="request-{{$request->id}}">
-                        <div class="row py-2 bg-light">
-                            {{-- <div class="col-2 text-center d-flex align-items-center justify-content-center">
-                                <button class="btn btn-primary" data-toggle="modal" data-target="#modalSpeech" width="100%" data-speech="{{ asset('uploads/requests/'.$request->id.'/'.$request->speech) }}"><i class="far fa-file"></i></button>
-                            </div> --}}
-                            <div class="col-10 my-auto">
-                                <h6 class="mb-1 video-title">{{$request->topic}} <span class="align-middle badge badge-primary" style="font-size: 16px">{{date('d-m-Y', strtotime($request->created_at))}}</span>
-                                </h6>
-                                <p class="mb-0">{{$request->comments ?? '-'}}</p>
-                            </div>
-                            <div class="col-2 my-auto">
-                                <a class="btn btn-primary" href="{{route('request_video.show', $request->id)}}"><i class="far fa-eye"></i></a>
-                            </div>
-                        </div>
-                    </li>
-                    @endforeach
-                    @else
-                    <li class="item my-1 text-center py-3">
-                        <i class="fa fa-play text-dark fa-2x mb-4"></i>
-                        <p>No existen solicitudes de vídeos por el momento.</p>
-                        <p>Solicita un vídeo de ser necesario.</p>
-                    </li>
-                    @endif
-                </ul>
+            <div class="card-body" style="max-height: 306px;overflow-y: auto;">
+                <table class="table" id="tbSolVideos">
+                    <thead class="">
+                        <tr>
+                            <th>Vídeo</th>
+                            @if ($role == 'superadmin')<th>Usuario</th>@endif
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -281,7 +269,12 @@
 @section('script')
 <script>
 $(document).ready(function (event) {
-    var tbvideos;
+    var tbvideos, tbsolvideos;
+    $('#tbVideos tfoot th').each( function () {
+        var title = $(this).text(),
+            _class = $(this).attr('class') || '';
+        $(this).html( '<input class="iv-input input-'+_class+'" type="text" placeholder="Buscar '+title+'" />' );
+    } );
     tbvideos = $('#tbVideos').DataTable({
          processing: true,
          serverSide: true,
@@ -289,13 +282,52 @@ $(document).ready(function (event) {
          pageLength: 5,
          lengthMenu: [ 5, 25, 50 ],
          columns: [
-            { data: 'video', class: 'border-0 align-middle' },
+            { data: 'video', class: 'border-0' },
             { data: 'details', class: 'border-0' },
+            { data: 'objective', class: 'border-0 d-none' },
             { data: 'tools', class: 'text-center border-0 text-nowrap'}
         ],
          columnDefs: [
           //{ orderable: false, targets: 2 },
-          //{ orderable: false, targets: 6 }
+          { orderable: false, targets: 2 }
+        ],
+        order: [[ 0, "desc" ]],
+        language: dLanguage,
+        initComplete: function () {
+            // Apply the search
+            this.api().columns().every( function () {
+                var that = this;
+ 
+                $( '.iv-input', this.footer()).on( 'keyup change clear', function () {
+                    if ( that.search() != this.value ) {
+                        that
+                            .search( this.value )
+                            .draw();
+                    }
+                } );
+            } );
+        }
+    });
+
+    $('.select-objectives').on('change', function (event) {
+        $('.input-objective').val($(this).find('option:selected').text()).change()
+    })
+
+    sol_columns = [
+        { data: 'topic', class: 'border-0' },
+        @if ($role == 'superadmin') { data: 'user', class: 'text-center border-0 text-nowrap'},@endif
+        { data: 'tools', class: 'text-center border-0 text-nowrap'}
+    ]
+
+    tbsolvideos = $('#tbSolVideos').DataTable({
+         processing: true,
+         serverSide: true,
+         ajax: "{{route('solicitudes')}}",
+         pageLength: 5,
+         lengthMenu: [ 5, 25, 50 ],
+         columns: sol_columns,
+         columnDefs: [
+          { orderable: false, targets: @if ($role == 'superadmin') 2 @else 1 @endif },
         ],
         order: [[ 0, "desc" ]],
         language: dLanguage
@@ -312,6 +344,17 @@ $(document).ready(function (event) {
       $('#modalSpeech .embed-responsive').html(
         `<iframe class="embed-responsive-item" src="`+$(event.relatedTarget).data('speech')+`" width="100%"></iframe>`
         )
+    })
+
+    $(document).on('click', '.btn-supload', function (event) {
+        var user = $(this).parents('tr').find('.uname-name');
+        $('#uname').val($(this).data('uid'));
+        $('#rqid').val($(this).data('rid'));
+        $('.uname-section').show();
+        $('.uname-text').html(user.clone());
+        $([document.documentElement, document.body]).animate({
+            scrollTop: $(".form-uploadvideo").offset().top
+        }, 500);
     })
 
     $(document).on('click', '.btn-delete', function (event) {
@@ -382,10 +425,11 @@ $(document).ready(function (event) {
                 if(response.success) {
                     $('.request-list').empty();
                     $('#documentUpload').val('').change();
-                    var request = $.parseJSON(response.data);
+                    /*var request = $.parseJSON(response.data);
                     $.each(request, function (id, item) {
                         $('.request-list').append(getRequestList(item));
-                    })
+                    })*/
+                    tbsolvideos.ajax.reload();
                     $('.btn-requestVideo').attr('disabled', false);
                     Swal.fire(
                       'Solicitar Vídeo',

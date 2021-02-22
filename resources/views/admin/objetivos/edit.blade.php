@@ -1,13 +1,10 @@
-@extends('admin.layouts.app', ['title' => 'Objetivos'])
+@php
+  $title = 'Objetivo';
+@endphp
+@extends('admin.layouts.app', ['title' => $title])
 @section('content')
 
-
-@php
-  $title = 'Objetivos';
-@endphp
-
 <h1>{{$title}}</h1>
-
 
 <div class="row">
   <div class="col">

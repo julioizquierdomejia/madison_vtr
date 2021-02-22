@@ -1,5 +1,3 @@
-@extends('admin.layouts.app', ['title' => 'Home'])
-@section('content')
 @php
   $role = \Auth::user()->roles->first()->name;
   if($role == 'admin') {
@@ -14,7 +12,8 @@
     $plan_id = '';
   }
 @endphp
-
+@extends('admin.layouts.app', ['title' => 'Crear '.$title])
+@section('content')
 <h1>{{$title}}</h1>
 
 <div class="row">

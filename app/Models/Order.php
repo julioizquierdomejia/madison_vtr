@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class VideoRequest extends Model
+class Order extends Model
 {
     use HasFactory;
 
@@ -15,7 +15,7 @@ class VideoRequest extends Model
         'avatar',
         'comments',
         'speech',
-        'status_id',
+        //'status_id',
     ];
 
     protected $dates = [
@@ -23,7 +23,11 @@ class VideoRequest extends Model
         'updated_at'
     ];
 
+    public function statuses() {
+        return $this->belongsToMany(OrderStatus::class, 'orders_statuses')->withPivot('order_id');
+    }
+
     public function services() {
-        return $this->belongsToMany(RequestService::class, 'video_requests_services')->withPivot('video_request_id');
+        return $this->belongsToMany(OrderService::class, 'orders_services')->withPivot('order_id');
     }
 }
