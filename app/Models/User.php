@@ -46,11 +46,15 @@ class User extends Authenticatable
     }
 
     public function info(){
-        return $this->hasOne(InfoUser::class);
+        return $this->hasOne(UserInformation::class);
     }
 
     public function plans(){
         return $this->belongsToMany(Plan::class);
+    }
+
+    public function order() {
+        return $this->belongsTo(Order::class, 'id');
     }
 
     //Auth

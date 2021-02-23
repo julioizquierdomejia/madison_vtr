@@ -40,9 +40,15 @@
             <div class="card-body">
                 <div class="row">
                 <div class="form-group col-12 uname-section" style="display: none;">
-                    <p class="mb-0 text-primary bg-light p-2 py-3">Subir vídeo solicitado por <span class="uname-text"></span></p>
-                    <input class="form-control" type="text" hidden="" name="user_id" id="uname">
-                    <input class="form-control" type="text" hidden="" name="request_id" id="rqid">
+                    <div class="bg-light py-2 px-3">
+                    <div class="row align-items-center">
+                        <p class="mb-0 text-primary px-2">Subir vídeo solicitado por <span class="uname-text"></span>
+                            <input class="form-control" type="text" hidden="" name="user_id" id="uname">
+                            <input class="form-control" type="text" hidden="" name="request_id" id="rqid">
+                        </p>
+                        <button class="btn btn-light ml-auto btn-close" type="button" style="font-size: 22px;line-height: 13px;">&times;</button>
+                    </div>
+                    </div>
                 </div>
                 <div class="form-group col-12">
                     <label class="mb-1" for="vname">Nombre de vídeo</label>
@@ -60,13 +66,13 @@
                 <div class="form-group col-12 col-md-6">
                     <label class="mb-1" for="parte">Parte</label>
                     <select class="form-control" name="parte" id="parte">
-                        @if ($role == 'superadmin')
+                        {{-- @if ($role == 'superadmin') --}}
                         <option value="1">Parte 1</option>
                         <option value="2">Parte 2</option>
                         <option value="3">Parte 3</option>
-                        @else
-                        <option value="4">Parte 4</option>
-                        @endif
+                        {{-- @else --}}
+                        <option value="4" class="part-user" style="display: none;">Parte 4</option>
+                        {{-- @endif --}}
                     </select>
                     <p class="error part-error" style="display: none;">Escoge la parte a la que pertenece el vídeo</p>
                 </div>
@@ -357,13 +363,37 @@ $(document).ready(function (event) {
 
     $(document).on('click', '.btn-supload', function (event) {
         var user = $(this).parents('tr').find('.uname-name');
+        var obj = $(this).data('oid');
+        $('.uname-section').slideDown('fast');
         $('#uname').val($(this).data('uid'));
         $('#rqid').val($(this).data('rid'));
-        $('.uname-section').show();
+
+        $('#parte option:not(.part-user)').hide();
+        $('.part-user').show();
+        $('#parte').val(4);
+
+        $('#objetivo option').hide();
+        $('#objetivo option[value='+obj+']').show();
+        $('#objetivo').val(obj);
+
         $('.uname-text').html(user.clone());
         $([document.documentElement, document.body]).animate({
             scrollTop: $(".form-uploadvideo").offset().top
         }, 500);
+        $(document).on('click', '.btn-close', function (event) {
+            $('.uname-section').slideUp('fast');
+            $('#uname').val('');
+            $('#rqid').val('');
+
+            $('#objetivo option').show();
+            $('#objetivo').val($('#objetivo option:first').attr('value'));
+
+            $('#parte option:not(.part-user)').show();
+            $('.part-user').hide();
+            $('#parte').val(1);
+            
+            $('.uname-text').html('');
+        })
     })
 
     $(document).on('click', '.btn-delete', function (event) {

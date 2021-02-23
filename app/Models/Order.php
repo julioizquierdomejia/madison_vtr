@@ -34,4 +34,12 @@ class Order extends Model
     public function objective() {
         return $this->hasOne(Objective::class, 'id');
     }
+
+    public function user() {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
+    /*public function info(){
+        return $this->hasOne(UserInformation::class, 'user_id', 'id');
+    }*/
 }

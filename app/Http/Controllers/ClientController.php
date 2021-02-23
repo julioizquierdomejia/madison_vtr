@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\InfoUser;
+use App\Models\UserInformation;
 use App\Models\Plan;
 use App\Models\Role;
-use App\Models\PlanUser;
+use App\Models\UserPlan;
 use App\Models\RoleUser;
 
 class ClientController extends Controller
@@ -83,7 +83,7 @@ class ClientController extends Controller
         $user->password = bcrypt('12345678');
         $user->save();
         
-        $user_info = new InfoUser;
+        $user_info = new UserInformation;
         $user_info->user_id = $user->id;
         $user_info->empresa = $request->get('empresa');
         $user_info->cargo = $request->get('cargo');
@@ -92,7 +92,7 @@ class ClientController extends Controller
         }
         $user_info->save();
 
-        $plan_user = new PlanUser;
+        $plan_user = new UserPlan;
         $plan_user->user_id = $user->id;
         $plan_user->plan_id = $request->get('plan_id');
         $plan_user->save();

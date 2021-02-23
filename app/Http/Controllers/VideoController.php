@@ -36,19 +36,19 @@ class VideoController extends Controller
                 ->orderBy('id', 'desc')
                 ->get();
         }*/
-        $videos = Video::join('video_types', 'video_types.id', '=', 'videos.type_id')
+        /*$videos = Video::join('video_types', 'video_types.id', '=', 'videos.type_id')
                 ->select('videos.*', 'video_types.name as video_type')
                 //->with('statuses')
                 ->where('user_id', \Auth::id())
                 ->orderBy('id', 'desc')
-                ->get();
+                ->get();*/
 
         $objectives = Objective::where('enabled', 1)->get();
         $request_services = Service::all();
 
         $status = Status::all();
 
-        return view('admin.videos.index', compact('videos', 'status', 'objectives', 'request_services', 'role'));
+        return view('admin.videos.index', compact(/*'videos', */'status', 'objectives', 'request_services', 'role'));
     }
 
     /**

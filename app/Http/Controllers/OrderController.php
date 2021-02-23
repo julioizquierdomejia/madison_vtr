@@ -70,8 +70,7 @@ class OrderController extends Controller
             })*/
             ->count();
 
-        $video_requests = Order::join('users', 'users.id', '=', 'orders.user_id')
-            ->select('orders.*', 'users.name as user')
+        $video_requests = Order::select('orders.*')
             ->skip($start)
             ->take($rowperpage)
             ->where(function($query) use ($searchValue, $role) {
@@ -93,18 +92,19 @@ class OrderController extends Controller
 
         $items_array = [];
 
-        foreach ($video_requests as $key => $request) {
-            $topic = '<h6 class="mb-1 video-title">'.$request->topic.' <span class="align-middle badge badge-primary" style="font-size: 16px">'.date('d/m/Y', strtotime($request->created_at)) .'</span></h6>
-                <p class="mb-0">'.$request->comments ?? '-'.'</p>';
+        foreach ($video_requests as $key => $row) {
+            $empresa = $row->user->info->empresa;
+            $topic = '<h6 class="mb-1 video-title">'.$row->topic.' <span class="align-middle badge badge-primary" style="font-size: 16px">'.date('d/m/Y', strtotime($row->created_at)) .'</span></h6>
+                <p class="mb-0">'.$row->comments ?? '-'.'</p>';
             if ($role == 'superadmin') {
-                $tools = '<button class="btn btn-warning shadow-sm btn-supload" data-uid="'.$request->user_id.'" data-rid="'.$request->id.'" title="Subir vídeo"><i class="fas fa-upload"></i></button> ';
-                $user = '<span class="badge badge-success uname-name">'.$request->user.'</span>';
+                $tools = '<button class="btn btn-warning shadow-sm btn-supload" data-oid="'.$row->objective_id.'" data-uid="'.$row->user_id.'" data-rid="'.$row->id.'" title="Subir vídeo"><i class="fas fa-upload"></i></button> ';
+                $user = '<span class="badge badge-success uname-name">'.$empresa.'</span>';
             } else {
                 $tools = '';
                 $user = '';
             }
 
-            $tools .= '<a class="btn btn-primary shadow-sm" href="'.route('request_video.show', $request->id).'"><i class="far fa-eye"></i></a>';
+            $tools .= '<a class="btn btn-primary shadow-sm" href="'.route('request_video.show', $row->id).'"><i class="far fa-eye"></i></a>';
 
             $items_array[] = array(
                 "topic" => $topic,
@@ -202,10 +202,11 @@ class OrderController extends Controller
     public function show(Request $request, $id)
     {
         $role = \Auth::user()->roles->first()->name;
-        if ($role != 'superadmin') {
-            
+        if ($role == 'superadmin') {
+            $video_request = Order::findOrFail($id);
+        } else {
+            $video_request = Order::where('user_id', \Auth::id())->firstOrFail($id);
         }
-        $video_request = Order::findOrFail($id);
 
         return view('admin.solicitar-videos.show', compact('video_request'));
     }
