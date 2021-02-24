@@ -7,23 +7,25 @@
   <div class="card-body">
     <div class="row">
       <div class="col-12 col-md-6">
-        <h3 class="h6">Cliente:</h3>
+        @if ($role == 'superadmin')
+        <h3 class="h6 mt-3">Cliente:</h3>
         <p class="text-primary">{{$video_request->user->info->empresa}}</p>
-        <h3 class="card-title mt-3">{{$video_request->topic}}</h3>
+        @endif
+        <h3 class="card-title">{{$video_request->topic}}</h3>
         <h5 class="h6">Tipo:</h5>
         <p class="text-primary">{{$video_request->type}}</p>
         <h5 class="h6">Avatar:</h5>
         <p class="text-primary">{{$video_request->avatar}}</p>
-        <h5 class="h6">Comentarios:</h5>
-        <p class="text-dark p-3" style="background-color: #c3c3c3">{{$video_request->comments}}</p>
         <h5 class="h6">Servicios:</h5>
         <ul class="list-inline">
-        {{-- @foreach ($video_request->services as $service)
-          <li class="mb-1"><span class="badge badge-primary px-2" style="font-size: 13px"><i class="fa fa-check mr-2"></i>{{$service->name}}</span></li>
-        @endforeach --}}
+        @foreach ($video_request->services as $service)
+          <li class="mb-1 d-inline-block"><span class="badge badge-primary px-2" style="font-size: 13px"><i class="fa fa-check mr-2"></i>{{$service->name}}</span></li>
+        @endforeach
         </ul>
         <h5 class="h6">Objetivo:</h5>
         <p class="text-primary">{{$video_request->objective->name}}</p>
+        <h5 class="h6">Comentarios:</h5>
+        <p class="text-dark p-3" style="background-color: #c3c3c3">{{$video_request->comments}}</p>
       </div>
 
       <div class="col-12 col-md-6">

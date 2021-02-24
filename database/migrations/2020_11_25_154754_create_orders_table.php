@@ -28,10 +28,13 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('objective_id');
             $table->foreign('objective_id')->references('id')->on('objectives')->onDelete('cascade');
 
+            $table->unsignedBigInteger('video_id')->nullable();
+            $table->foreign('video_id')->references('id')->on('videos')->onDelete('cascade');
+
             $table->timestamps();
         });
 
-        Schema::create('orders_statuses', function (Blueprint $table) {
+        /*Schema::create('order_statuses', function (Blueprint $table) {
             $table->id();
 
             $table->unsignedBigInteger('order_id');
@@ -41,9 +44,9 @@ class CreateOrdersTable extends Migration
             $table->foreign('status_id')->references('id')->on('statuses')->onDelete('cascade');
 
             $table->timestamps();
-        });
+        });*/
 
-        Schema::create('orders_services', function (Blueprint $table) {
+        Schema::create('order_services', function (Blueprint $table) {
             $table->id();
 
             $table->unsignedBigInteger('order_id');
@@ -66,18 +69,19 @@ class CreateOrdersTable extends Migration
         Schema::table('orders', function (Blueprint $table) {
             $table->dropForeign('orders_user_id_foreign');
             $table->dropForeign('orders_objective_id_foreign');
+            $table->dropForeign('orders_video_id_foreign');
             //$table->dropForeign('orders_status_id_foreign');
         });
-        Schema::table('orders_statuses', function (Blueprint $table) {
-            $table->dropForeign('orders_statuses_order_id_foreign');
-            $table->dropForeign('orders_statuses_status_id_foreign');
-        });
-        Schema::table('orders_services', function (Blueprint $table) {
-            $table->dropForeign('orders_services_order_id_foreign');
-            $table->dropForeign('orders_services_service_id_foreign');
+        // Schema::table('order_statuses', function (Blueprint $table) {
+        //     $table->dropForeign('order_statuses_order_id_foreign');
+        //     $table->dropForeign('order_statuses_status_id_foreign');
+        // });
+        Schema::table('order_services', function (Blueprint $table) {
+            $table->dropForeign('order_services_order_id_foreign');
+            $table->dropForeign('order_services_service_id_foreign');
         });
         Schema::dropIfExists('orders');
-        Schema::dropIfExists('orders_statuses');
-        Schema::dropIfExists('orders_services');
+        Schema::dropIfExists('order_statuses');
+        Schema::dropIfExists('order_services');
     }
 }

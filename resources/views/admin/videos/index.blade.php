@@ -42,9 +42,11 @@
                 <div class="form-group col-12 uname-section" style="display: none;">
                     <div class="bg-light py-2 px-3">
                     <div class="row align-items-center">
-                        <p class="mb-0 text-primary px-2">Subir vídeo solicitado por <span class="uname-text"></span>
+                        <p class="mb-0 text-primary px-2"><span class="uname-text-parent">Subir vídeo solicitado por</span> <span class="uname-text"></span>
+                            <input class="form-control" type="text" hidden="" name="video_id" id="vreqid">
                             <input class="form-control" type="text" hidden="" name="user_id" id="uname">
                             <input class="form-control" type="text" hidden="" name="request_id" id="rqid">
+                            <input class="form-control" type="text" hidden="" name="type" id="typevd">
                         </p>
                         <button class="btn btn-light ml-auto btn-close" type="button" style="font-size: 22px;line-height: 13px;">&times;</button>
                     </div>
@@ -66,13 +68,13 @@
                 <div class="form-group col-12 col-md-6">
                     <label class="mb-1" for="parte">Parte</label>
                     <select class="form-control" name="parte" id="parte">
-                        {{-- @if ($role == 'superadmin') --}}
-                        <option value="1">Parte 1</option>
-                        <option value="2">Parte 2</option>
-                        <option value="3">Parte 3</option>
-                        {{-- @else --}}
-                        <option value="4" class="part-user" style="display: none;">Parte 4</option>
-                        {{-- @endif --}}
+                        @if ($role == 'superadmin')
+                        <option value="1" class="part-admin">Parte 1</option>
+                        <option value="2" class="part-admin">Parte 2</option>
+                        <option value="3" class="part-admin">Parte 3</option>
+                        @else
+                        <option value="4" class="part-user">Parte 4</option>
+                        @endif
                     </select>
                     <p class="error part-error" style="display: none;">Escoge la parte a la que pertenece el vídeo</p>
                 </div>
@@ -238,6 +240,7 @@
                         <tr>
                             <th>Vídeo</th>
                             @if ($role == 'superadmin')<th>Usuario</th>@endif
+                            <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -331,6 +334,7 @@ $(document).ready(function (event) {
     sol_columns = [
         { data: 'topic', class: 'border-0' },
         @if ($role == 'superadmin') { data: 'user', class: 'text-center border-0 text-nowrap'},@endif
+        { data: 'status', class: 'text-center border-0 text-nowrap'},
         { data: 'tools', class: 'text-center border-0 text-nowrap'}
     ]
 
@@ -361,16 +365,49 @@ $(document).ready(function (event) {
         )
     })
 
-    $(document).on('click', '.btn-supload', function (event) {
+    $(document).on('click', '.btn-changestatus', function (event) {
+        var button = $(this),
+            type = button.data('type');
+
+        $.ajax({
+            type: "POST",
+            url: '/solicitudes/' + button.data('id') + '/cambiar-estado',
+            data: {
+                _token: "{{ csrf_token() }}",
+                type: type
+            },
+            success: function (data) {
+                if (data.status == 'success'){
+                    tbsolvideos.ajax.reload();
+                }
+            }
+        });
+    })
+
+    $(document).on('click', '.btn-solvideo', function (event) {
         var user = $(this).parents('tr').find('.uname-name');
         var obj = $(this).data('oid');
+        var type = $(this).data('type');
+        var video = $(this).data('video');
+        if(type == 'edit') {
+            $('.form-uploadvideo .card-header h6 span').text('Editar vídeo');
+            $('.uname-text-parent').text('Editar vídeo solicitado por');
+            $('#vreqid').val(video.id);
+            $('#vname').val(video.name);
+        } else {
+            $('.form-uploadvideo .card-header h6 span').text('Subir un vídeo');
+            $('.uname-text-parent').text('Subir vídeo solicitado por');
+        }
         $('.uname-section').slideDown('fast');
         $('#uname').val($(this).data('uid'));
         $('#rqid').val($(this).data('rid'));
-
-        $('#parte option:not(.part-user)').hide();
+        $('#typevd').val(type);
         $('.part-user').show();
-        $('#parte').val(4);
+
+        @if ($role == 'superadmin')
+        $('#parte option').hide();
+        $('#parte').append('<option value="4">Parte 4</option>').val(4);
+        @endif
 
         $('#objetivo option').hide();
         $('#objetivo option[value='+obj+']').show();
@@ -381,15 +418,20 @@ $(document).ready(function (event) {
             scrollTop: $(".form-uploadvideo").offset().top
         }, 500);
         $(document).on('click', '.btn-close', function (event) {
+            $('.form-uploadvideo .card-header h6 span').text('Subir un vídeo');
             $('.uname-section').slideUp('fast');
             $('#uname').val('');
             $('#rqid').val('');
+            $('#typevd').val('');
 
             $('#objetivo option').show();
             $('#objetivo').val($('#objetivo option:first').attr('value'));
 
-            $('#parte option:not(.part-user)').show();
-            $('.part-user').hide();
+            @if ($role == 'superadmin')
+            $('#vreqid').val('');
+            $('#parte [option="4"]').remove();
+            $('#parte option').show();
+            @endif
             $('#parte').val(1);
             
             $('.uname-text').html('');
@@ -534,7 +576,11 @@ $(document).ready(function (event) {
                         $('.videos-list').append(getList(item));
                     })*/
                     tbvideos.ajax.reload();
+                    if($('#rqid').val().length) {
+                        tbsolvideos.ajax.reload();
+                    }
                     $('.btn-upload').attr('disabled', false);
+                    $('.btn-close').trigger('click');
                     Swal.fire(
                       'Vídeo',
                       'Vídeo subido',

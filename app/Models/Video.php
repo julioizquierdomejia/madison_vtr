@@ -19,6 +19,7 @@ class Video extends Model
         //'quality',
         //'audio',
         'part',
+        'objective_id',
         'enabled',
     ];
 
@@ -28,11 +29,11 @@ class Video extends Model
     ];
 
     public function objectives() {
-        //return $this->hasOne(VideoObjective::class);
-        return $this->belongsToMany(Objective::class, 'video_objectives')->withPivot('video_id');
+        return $this->hasOne(Objective::class, 'id');
+        //return $this->belongsToMany(Objective::class, 'video_objectives')->withPivot('video_id');
     }
 
     public function statuses() {
-        return $this->belongsToMany(Status::class, 'video_statuses')->withPivot('video_id');
+        return $this->belongsToMany(Status::class, 'video_statuses')->withPivot('video_id')->orderBy('video_statuses.id', 'asc');
     }
 }

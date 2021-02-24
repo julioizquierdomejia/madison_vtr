@@ -23,16 +23,20 @@ class Order extends Model
         'updated_at'
     ];
 
-    public function statuses() {
+    /*public function statuses() {
         return $this->belongsToMany(OrderStatus::class, 'orders_statuses')->withPivot('order_id');
-    }
+    }*/
 
     public function services() {
-        return $this->belongsToMany(OrderService::class, 'orders_services')->withPivot('order_id');
+        return $this->belongsToMany(Service::class, 'order_services')->withPivot('order_id');
     }
 
     public function objective() {
         return $this->hasOne(Objective::class, 'id');
+    }
+
+    public function video() {
+        return $this->hasOne(Video::class, 'id', 'video_id');
     }
 
     public function user() {

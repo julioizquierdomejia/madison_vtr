@@ -16,24 +16,38 @@ class StatusSeeder extends Seeder
     {
         //Estados de vídeos
         $status = new Status();
-        $status->name = "Por Aprobar";
-        $status->class = "fa-spin";
-        $status->color = "badge-dark";
-        $status->save();
-        $status = new Status();
-        $status->name = "En revisión";
+        $status->alias = "reviewing";
+        $status->name = "En revisión"; //cuando se crea el vídeo (superadmin/cliente)
         $status->class = "fa-eye";
-        $status->color = "badge-danger";
+        $status->color = "text-danger";
         $status->save();
+
         $status = new Status();
-        $status->name = "Aprobado";
+        $status->alias = "approved";
+        $status->name = "Aprobado"; //el cliente puede aprobar el vídeo (se publica el vídeo)
         $status->class = "fa-success";
-        $status->color = "badge-success";
+        $status->color = "text-success";
         $status->save();
+
         $status = new Status();
-        $status->name = "En producción";
+        $status->alias = "changing";
+        $status->name = "Haciendo cambios"; //o el cliente puede pedir cambios en el vídeo
+        $status->class = "fa-success";
+        $status->color = "text-success";
+        $status->save();
+
+        $status = new Status();
+        $status->alias = "for_approving";
+        $status->name = "Por Aprobar"; //al pedir cambios el cliente en el vídeo
+        $status->class = "fa-spin";
+        $status->color = "text-dark";
+        $status->save();
+
+        $status = new Status();
+        $status->alias = "published";
+        $status->name = "En producción"; //cuando el superadmin crea el vídeo (se publica el vídeo)
         $status->class = "fa-play";
-        $status->color = "badge-warning";
+        $status->color = "text-warning";
         $status->save();
     }
 }

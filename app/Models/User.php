@@ -50,7 +50,7 @@ class User extends Authenticatable
     }
 
     public function plans(){
-        return $this->belongsToMany(Plan::class);
+        return $this->belongsToMany(Plan::class, 'user_plans');
     }
 
     public function order() {

@@ -22,11 +22,11 @@ class CreateVideosTable extends Migration
             $table->bigInteger('type_id')->unsigned();
             $table->foreign('type_id')->references('id')->on('video_types')->onDelete('cascade');
 
-            /*$table->bigInteger('status_id')->unsigned();
-            $table->foreign('status_id')->references('id')->on('video_status');*/
-
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
+            $table->bigInteger('objective_id')->unsigned();
+            $table->foreign('objective_id')->references('id')->on('objectives');
 
             $table->string('format');
             $table->integer('part');
@@ -38,7 +38,7 @@ class CreateVideosTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('video_objectives', function (Blueprint $table) {
+        /*Schema::create('video_objectives', function (Blueprint $table) {
             $table->id();
             
             $table->bigInteger('video_id')->unsigned();
@@ -48,7 +48,7 @@ class CreateVideosTable extends Migration
             $table->foreign('objective_id')->references('id')->on('objectives')->onDelete('cascade');
 
             $table->timestamps();
-        });
+        });*/
 
         Schema::create('video_statuses', function (Blueprint $table) {
             $table->id();
@@ -74,11 +74,12 @@ class CreateVideosTable extends Migration
             $table->dropForeign('videos_type_id_foreign');
             $table->dropForeign('videos_status_id_foreign');
             $table->dropForeign('videos_user_id_foreign');
+            $table->dropForeign('videos_objective_id_foreign');
         });
-        Schema::table('video_objectives', function (Blueprint $table) {
+        /*Schema::table('video_objectives', function (Blueprint $table) {
             $table->dropForeign('video_objectives_video_id_foreign');
             $table->dropForeign('video_objectives_objective_id_foreign');
-        });
+        });*/
         Schema::table('video_statuses', function (Blueprint $table) {
             $table->dropForeign('video_statuses_video_id_foreign');
             $table->dropForeign('video_statuses_status_id_foreign');
@@ -86,6 +87,6 @@ class CreateVideosTable extends Migration
 
         Schema::dropIfExists('videos');
         Schema::dropIfExists('video_statuses');
-        Schema::dropIfExists('video_objectives');
+        //Schema::dropIfExists('video_objectives');
     }
 }

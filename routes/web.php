@@ -36,6 +36,7 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::get('/videos/list/{statuses?}', [App\Http\Controllers\VideoController::class, 'getVideos'])->name('videos.list');
 	Route::get('/videos/{objective}/{part}/{type}/list', [App\Http\Controllers\VideoController::class, 'getVideoList'])->name('videos.byObjective');
 	Route::post('/videos/{id}/delete', [App\Http\Controllers\VideoController::class, 'destroy'])->name('videos.delete');
+	Route::post('/solicitudes/{video}/cambiar-estado', [App\Http\Controllers\VideoController::class, 'changeStatus'])->name('change.video.status');
 	Route::get('/resumen', [App\Http\Controllers\ResumenController::class, 'index'])->name('resumen');
 
 	Route::get('/perfil', [App\Http\Controllers\PerfilController::class, 'index'])->name('perfil');

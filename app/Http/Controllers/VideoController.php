@@ -10,6 +10,7 @@ use App\Models\VideoObjective;
 use App\Models\VideoStatus;
 use App\Models\Service;
 use App\Models\OrderStatus;
+use App\Models\Order;
 
 class VideoController extends Controller
 {
@@ -91,7 +92,7 @@ class VideoController extends Controller
         $video->file = $uniqueFileName;
         $video->description = $uniqueFileName;
         $video->part = $request->get('part');
-        $video->objective_id = $request->get('objective');
+        $video->objective_id = $request->get('objetivo');
         $video->format = $file->getMimeType();
         $video->type_id = 1;
         //$video->status_id = 1;
@@ -133,59 +134,124 @@ class VideoController extends Controller
         );
         $this->validate($request, $rules, $messages);
 
+        $type = $request->get('type');
         $demand_user_id = $request->get('user_id');
+        $video_id = $request->get('video_id');
         $request_id = $request->get('request_id');
         $file = $request->file('video');
         $ext = $file->extension();
         $uniqueFileName = preg_replace('/\s+/', "-", uniqid().'_'.$file->getClientOriginalName());
 
-        $video = new Video();
-        $video->name = $request->get('name');
-        $video->file = $uniqueFileName;
-        $video->description = $uniqueFileName;
-        $video->part = $request->get('parte');
-        $video->enabled = 1;
-        $video->format = $file->getMimeType();
-        $video->type_id = 1;
-        //$video->status_id = 1;
-        $video->user_id = $demand_user_id ? $demand_user_id : \Auth::id();
-        $video->save();
+        if ($request_id) {
+            if ($role == 'superadmin') {
+                if ($type == 'edit') {
+                    /*$old_video = Video::findOrFail($video_id);
+                    $old_video->enabled = 0; //Desactivar el video anterior
+                    $old_video->save();
 
-        $video_objective = new VideoObjective();
-        $video_objective->objective_id = $request->get('objetivo');
-        $video_objective->video_id = $video->id;
-        $video_objective->save();
+                    //Crea un nuevo vídeo
+                    $new_video = new Video();
+                    $new_video->name = $request->get('name');
+                    $new_video->file = $uniqueFileName;
+                    $new_video->description = $uniqueFileName;
+                    $new_video->part = $old_video->part;
+                    $new_video->format = $file->getMimeType();
+                    $new_video->type_id = $old_video->type_id;
+                    $new_video->objective_id = $old_video->objective_id;
+                    $new_video->user_id = $old_video->user_id;
+                    $new_video->enabled = 1;
+                    $new_video->save();*/
+                    $new_video = Video::findOrFail($video_id);
+                    $new_video->name = $request->get('name');
+                    $new_video->file = $uniqueFileName;
+                    $new_video->description = $uniqueFileName;
+                    $new_video->format = $file->getMimeType();
+                    $new_video->save();
+
+                    $order = Order::findOrFail($request_id);
+                    $order->video_id = $new_video->id;
+                    $order->save();
+
+                    $status = Status::where('alias', 'for_approving')->firstOrFail();
+                    if ($status) {
+                        $video_status = new VideoStatus();
+                        $video_status->video_id = $new_video->id;
+                        $video_status->status_id = $status->id;
+                        $video_status->save();
+                    }
+                } else {
+                    $video = new Video();
+                    $video->name = $request->get('name');
+                    $video->file = $uniqueFileName;
+                    $video->description = $uniqueFileName;
+                    $video->part = $request->get('parte');
+                    $video->format = $file->getMimeType();
+                    $video->type_id = 2;
+                    $video->objective_id = $request->get('objetivo');
+                    $video->user_id = $demand_user_id ? $demand_user_id : \Auth::id();
+                    $video->enabled = 1;
+                    $video->save();
+
+                    $order = Order::findOrFail($request_id);
+                    $order->video_id = $video->id;
+                    $order->save();
+
+                    $status = Status::where('alias', 'reviewing')->first();
+                    if ($status) {
+                        $video_status = new VideoStatus();
+                        $video_status->video_id = $video->id;
+                        $video_status->status_id = $status->id;
+                        $video_status->save();
+                    }
+                }
+            }
+        } else {
+            $video = new Video();
+            $video->name = $request->get('name');
+            $video->file = $uniqueFileName;
+            $video->description = $uniqueFileName;
+            $video->part = $request->get('parte');
+            $video->format = $file->getMimeType();
+            $video->type_id = 1;
+            $video->objective_id = $request->get('objetivo');
+            $video->user_id = $demand_user_id ? $demand_user_id : \Auth::id();
+            $video->enabled = 1;
+            $video->save();
+
+            if ($role == 'superadmin') {
+                $status = Status::where('alias', 'reviewing')->first();
+                if ($status) {
+                    $video_status = new VideoStatus();
+                    $video_status->video_id = $video->id;
+                    $video_status->status_id = $status->id;
+                    $video_status->save();
+                }
+                $status = Status::where('alias', 'published')->firstOrFail();
+                if ($status) {
+                    $video_status = new VideoStatus();
+                    $video_status->video_id = $video->id;
+                    $video_status->status_id = $status->id;
+                    $video_status->save();
+                }
+            } else {
+                $status = Status::where('alias', 'reviewing')->firstOrFail();
+                if ($status) {
+                    $video_status = new VideoStatus();
+                    $video_status->video_id = $video->id;
+                    $video_status->status_id = 1;
+                    $video_status->save();
+                }
+                $status = Status::where('alias', 'approved')->firstOrFail();
+                if ($status) {
+                    $video_status = new VideoStatus();
+                    $video_status->video_id = $video->id;
+                    $video_status->status_id = $status->id;
+                    $video_status->save();
+                }
+            }
+        }
 
         $file->move(public_path('uploads/videos'), $uniqueFileName);
-
-        if ($role == 'superadmin') {
-            $video_status = new VideoStatus();
-            $video_status->video_id = $video->id;
-            $video_status->status_id = 1;
-            $video_status->save();
-
-            $video_status = new VideoStatus();
-            $video_status->video_id = $video->id;
-            $video_status->status_id = 2;
-            $video_status->save();
-        } else {
-            $video_status = new VideoStatus();
-            $video_status->video_id = $video->id;
-            $video_status->status_id = 1;
-            $video_status->save();
-
-            $video_status = new VideoStatus();
-            $video_status->video_id = $video->id;
-            $video_status->status_id = 2;
-            $video_status->save();
-        }
-
-        if ($request_id) {
-            $request_status = new OrderStatus();
-            $request_status->order_id = $request_id;
-            $request_status->status_id = 2;
-            $request_status->save();
-        }
         
         return response()->json(['success'=>true]);
     }
@@ -253,7 +319,6 @@ class VideoController extends Controller
         $items_array = [];
 
         foreach($records as $item) {
-            $objective = $item->objectives->count() ? $item->objectives[0]->name : '';
             $status = $item->statuses->count() ? $item->statuses->last() : [];
             if ($role == 'superadmin') {
                 $video = '<div class="video bg-dark" style="height: 60px;width: 60px;">
@@ -264,7 +329,7 @@ class VideoController extends Controller
                         </div>
                     </div>';
                 $details = '<h6 class="mb-1 video-title">'.$item->name.' </h6>
-                        <p class="mb-0"><span class="align-middle">'.date('d-m-Y', strtotime($item->created_at)).'</span> <span class="badge badge-primary align-middle px-2">'. $objective .' - Parte '.$item->part.'</span></p>';
+                        <p class="mb-0"><span class="align-middle">'.date('d-m-Y', strtotime($item->created_at)).'</span> <span class="badge badge-primary align-middle px-2">'. $item->objectives->name .' - Parte '.$item->part.'</span></p>';
                 $tools = '<div class="buttons-group"><button class="btn py-2 btn-success shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="/uploads/videos/' .$item->file .'" title="Ver"><i class="fas fa-eye d-block"></i></button>
                     <button class="btn btn-danger py-2 shadow-sm h-100 btn-delete" data-id="'.$item->id.'" title="Eliminar"><i class="fas fa-trash d-block"></i></button></div>';
             } else {
@@ -275,7 +340,7 @@ class VideoController extends Controller
                             </video>
                         </div>
                     </div>';
-                $details = '<h6 class="mb-1">'.date('d-m-Y', strtotime($item->created_at)).' <span class="badge badge-primary align-middle" style="font-size:14px;padding-top:2px">'.$objective.'</span></h6>
+                $details = '<h6 class="mb-1">'.date('d-m-Y', strtotime($item->created_at)).' <span class="badge badge-primary align-middle" style="font-size:14px;padding-top:2px">'.$item->objectives->name.'</span></h6>
                     <p class="mb-0"><span class="align-middle">'.$item->name.' </span></p>';
                 /*if ($show_statuses) {
                     if ($status) {
@@ -295,7 +360,7 @@ class VideoController extends Controller
 
             $items_array[] = array(
                 "video" => $video,
-                "objective" => $objective,
+                "objective" => $item->objectives->name,
                 "details" => $details,
                 "tools" => $tools
             );
@@ -356,6 +421,7 @@ class VideoController extends Controller
         $rules = array(
             'name'       => 'required|string|unique:videos,name,'.$id,
             'enabled'      => 'boolean|required',
+            'objetivo'      => 'required|integer',
         );
         $this->validate($request, $rules);
 
@@ -365,6 +431,7 @@ class VideoController extends Controller
 
         $video->name       = $request->get('name');
         $video->enabled    = $request->get('enabled');
+        $video->objective_id = $request->get('objetivo');
         $video->save();
 
         activitylog('videos', 'update', $original_data, $video->toArray());
@@ -426,8 +493,8 @@ class VideoController extends Controller
                     $query->where("video_objectives.objective_id", $objective);
                 })
                 ->whereDoesntHave('statuses', function ($query) {
-                    $query->where("statuses.id", "=", 1);
-                    $query->where("statuses.id", "=", 3);
+                    $query->where("statuses.id", "=", 2);
+                    $query->where("statuses.id", "=", 5);
                 })
                 ->with('objectives')
                 ->orderBy('id', 'desc')
@@ -442,9 +509,9 @@ class VideoController extends Controller
                 ->whereHas('objectives', function ($query) use ($objective) {
                     $query->where("video_objectives.objective_id", $objective);
                 })
-                ->whereDoesntHave('statuses', function ($query) {
-                    $query->where("statuses.id", "=", 1);
-                    $query->where("statuses.id", "=", 3);
+                ->whereHas('statuses', function ($query) {
+                    $query->where("statuses.id", "=", 2);
+                    $query->where("statuses.id", "=", 5);
                 })
                 ->with('objectives')
                 ->orderBy('id', 'desc')
@@ -462,9 +529,9 @@ class VideoController extends Controller
                 ->whereHas('objectives', function ($query) use ($objective) {
                     $query->where("video_objectives.objective_id", $objective);
                 })
-                ->whereDoesntHave('statuses', function ($query) {
-                    $query->where("statuses.id", "=", 1);
-                    $query->where("statuses.id", "=", 3);
+                ->whereHas('statuses', function ($query) {
+                    $query->where("statuses.id", "=", 2);
+                    $query->where("statuses.id", "=", 5);
                 })
                 ->with('objectives')
                 ->orderBy('id', 'desc')
@@ -479,9 +546,9 @@ class VideoController extends Controller
                 ->whereHas('objectives', function ($query) use ($objective) {
                     $query->where("video_objectives.objective_id", $objective);
                 })
-                ->whereDoesntHave('statuses', function ($query) {
-                    $query->where("statuses.id", "=", 1);
-                    $query->where("statuses.id", "=", 3);
+                ->whereHas('statuses', function ($query) {
+                    $query->where("statuses.id", "=", 2);
+                    $query->where("statuses.id", "=", 5);
                 })
                 ->with('objectives')
                 ->orderBy('id', 'desc')
@@ -493,5 +560,23 @@ class VideoController extends Controller
         }
 
         return response()->json(['status'=>"success", 'data'=>$videos]);
+    }
+
+    public function changeStatus(Request $request, $video_id)
+    {
+        $rules = array(
+            'type'      => 'required|string',
+        );
+        $this->validate($request, $rules);
+
+        $alias = $request->get('type');
+        $status = Status::where('alias', $alias)->firstOrFail();
+
+        $video_status = new VideoStatus();
+        $video_status->video_id = $video_id;
+        $video_status->status_id = $status->id;
+        $video_status->save();
+
+        return response()->json(['status'=>"success"]);
     }
 }

@@ -94,10 +94,46 @@ class OrderController extends Controller
 
         foreach ($video_requests as $key => $row) {
             $empresa = $row->user->info->empresa;
-            $topic = '<h6 class="mb-1 video-title">'.$row->topic.' <span class="align-middle badge badge-primary" style="font-size: 16px">'.date('d/m/Y', strtotime($row->created_at)) .'</span></h6>
-                <p class="mb-0">'.$row->comments ?? '-'.'</p>';
+            $alias = '';
+            $status = ' <button class="btn btn-light py-2 shadow-sm" style="font-size:12px">En cola</button>';
+            $video = $row->video;
+            if ($video) {
+                $row_video = [
+                    'id' => $video->id,
+                    'name' => $video->name,
+                    'part' => $video->part,
+                    'objective_id' => $video->objective_id,
+                ];
+                $last_status = $video->statuses->last();
+                if ($last_status) {
+                    $alias = $last_status->alias;
+                    if ($alias == 'approved' || $alias == 'published') {
+                        $totalRecords> 0 ? $totalRecords-- : $totalRecords;
+                        $totalRecordswithFilter> 0 ? $totalRecordswithFilter-- : $totalRecordswithFilter;
+                        continue;
+                    }
+                    if ($role == 'superadmin') {
+                        $status = ' <button class="btn shadow-sm" style="font-size:12px"><i class="fas '.$last_status->class.' '.$last_status->color.' text-warning d-block"></i> '.$last_status->name.'</button> ';
+                    } else {
+                        if ($alias == 'changing' || $alias == 'approved') {
+                            $status = ' <button class="btn shadow-sm" style="font-size:12px"><i class="fas '.$last_status->class.' '.$last_status->color.' text-warning d-block"></i> '.$last_status->name.'</button> ';
+                        } else {
+                            $status = ' <button class="btn btn-success py-2 shadow-sm btn-changestatus" data-id="'.$row->video->id.'" data-type="approved" style="font-size:12px"><i class="fas fa-check d-block"></i> aprobar</button> <button class="btn btn-danger py-2 shadow-sm btn-changestatus" data-id="'.$row->video->id.'"  data-type="changing" style="font-size:12px;line-height:15px">hacer <br>cambios</button> ';
+                        }
+                    }
+                }
+            }
+            $topic = '<h6 class="mb-1 video-title">'.$row->topic.' <span class="align-middle badge badge-primary" style="font-size: 16px">'.date('d/m/Y', strtotime($row->created_at)) .'</span></h6><p class="mb-0">'.$row->comments ?? '-'.'</p>';
             if ($role == 'superadmin') {
-                $tools = '<button class="btn btn-warning shadow-sm btn-supload" data-oid="'.$row->objective_id.'" data-uid="'.$row->user_id.'" data-rid="'.$row->id.'" title="Subir vídeo"><i class="fas fa-upload"></i></button> ';
+                if ($alias == 'reviewing') {
+                    $tools = '';
+                } else {
+                    if ($alias == 'changing') {
+                        $tools = '<button class="btn btn-warning shadow-sm btn-solvideo" data-oid="'.$row->objective_id.'" data-video="'.htmlspecialchars(json_encode($row->video->statuses), ENT_QUOTES, 'UTF-8').'" data-uid="'.$row->user_id.'" data-rid="'.$row->id.'" data-type="edit" title="Editar vídeo"><i class="fas fa-edit"></i></button> ';
+                    } else {
+                        $tools = '<button class="btn btn-warning shadow-sm btn-solvideo" data-oid="'.$row->objective_id.'" data-uid="'.$row->user_id.'" data-rid="'.$row->id.'" data-type="upload" title="Subir vídeo"><i class="fas fa-upload"></i></button> ';
+                    }
+                }
                 $user = '<span class="badge badge-success uname-name">'.$empresa.'</span>';
             } else {
                 $tools = '';
@@ -109,6 +145,7 @@ class OrderController extends Controller
             $items_array[] = array(
                 "topic" => $topic,
                 "user" => $user,
+                "status" => $status,
                 "tools" => $tools
             );
         }
@@ -176,10 +213,10 @@ class OrderController extends Controller
         //$video_request->status_id = 1; //Subido
         $video_request->save();
 
-        $request_status = new OrderStatus();
+        /*$request_status = new OrderStatus();
         $request_status->order_id = $video_request->id;
         $request_status->status_id = 1;
-        $request_status->save();
+        $request_status->save();*/
 
         foreach ($services as $key => $item) {
             $video_service = new OrderService();
@@ -205,10 +242,10 @@ class OrderController extends Controller
         if ($role == 'superadmin') {
             $video_request = Order::findOrFail($id);
         } else {
-            $video_request = Order::where('user_id', \Auth::id())->firstOrFail($id);
+            $video_request = Order::where('user_id', \Auth::id())->findOrFail($id);
         }
 
-        return view('admin.solicitar-videos.show', compact('video_request'));
+        return view('admin.solicitar-videos.show', compact('role', 'video_request'));
     }
 
     /**
