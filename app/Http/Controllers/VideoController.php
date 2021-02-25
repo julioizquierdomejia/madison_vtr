@@ -282,6 +282,10 @@ class VideoController extends Controller
         $totalRecords = Video::select('count(*) as allcount')
                 ->where('user_id', $user_id)
                 //->with('statuses')
+                ->whereHas('statuses', function ($query) {
+                    $query->where("statuses.id", "=", 2)
+                        ->orWhere("statuses.id", "=", 5);
+                })
                 ->where('enabled', 1)
                 ->count();
         $totalRecordswithFilter = Video::select('count(*) as allcount')
@@ -292,6 +296,10 @@ class VideoController extends Controller
                     $query->where('videos.name', 'like', '%'.$searchValue.'%')
                         ->orWhere('videos.part', 'like', '%'.$searchValue.'%')
                         ->orWhere('video_types.name', 'like', '%'.$searchValue.'%');
+                })
+                ->whereHas('statuses', function ($query) {
+                    $query->where("statuses.id", "=", 2)
+                        ->orWhere("statuses.id", "=", 5);
                 })
                 ->where('enabled', 1)
                 ->count();
@@ -306,6 +314,10 @@ class VideoController extends Controller
                     $query->where('videos.name', 'like', '%'.$searchValue.'%')
                         ->orWhere('videos.part', 'like', '%'.$searchValue.'%')
                         ->orWhere('video_types.name', 'like', '%'.$searchValue.'%');
+                })
+                ->whereHas('statuses', function ($query) {
+                    $query->where("statuses.id", "=", 2)
+                        ->orWhere("statuses.id", "=", 5);
                 })
                 /*->whereHas('objectives', function($q) use ($searchValue) {
                     if ($searchValue) {
@@ -492,7 +504,7 @@ class VideoController extends Controller
                 ->whereHas('objectives', function ($query) use ($objective) {
                     $query->where("video_objectives.objective_id", $objective);
                 })
-                ->whereDoesntHave('statuses', function ($query) {
+                ->whereHas('statuses', function ($query) {
                     $query->where("statuses.id", "=", 2);
                     $query->where("statuses.id", "=", 5);
                 })
