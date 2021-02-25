@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Plan;
 use App\Models\PlanUser;
-use App\Models\InfoUser;
+use App\Models\UserInformation;
 
 class PerfilController extends Controller
 {
@@ -52,9 +52,9 @@ class PerfilController extends Controller
         //$user->password = bcrypt('12345678');
         $user->save();
         
-        $user_info = InfoUser::where('user_id', $user->id)->first();
+        $user_info = UserInformation::where('user_id', $user->id)->first();
         if ($user_info == null) {
-            $user_info = new InfoUser();
+            $user_info = new UserInformation();
             $user_info->user_id = $user->id;
         }
         $user_info->empresa = $request->get('empresa');
@@ -116,10 +116,10 @@ class PerfilController extends Controller
             $photo->move(public_path() . $new_path, $imageName);
 
             // we are updating our image column with the help of user id
-            InfoUser::where('user_id', $userid)
+            UserInformation::where('user_id', $userid)
                     ->update(['photo'=>$imageName]);
 
-            $user_info = InfoUser::where('user_id', $userid)->first();
+            $user_info = UserInformation::where('user_id', $userid)->first();
 
             return response()->json(['status'=>"success",'photo'=>$new_path.$user_info->photo,'userid'=>$userid]);
         }
