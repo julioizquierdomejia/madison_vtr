@@ -51,6 +51,7 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::get('clientes', [App\Http\Controllers\ClientController::class, 'index'])->name('clientes.index');
 	Route::get('clientes/crear', [App\Http\Controllers\ClientController::class, 'create'])->name('clientes.create');
 	Route::post('clientes/store', [App\Http\Controllers\ClientController::class, 'store'])->name('clientes.store');
+	Route::get('clientes/list', [App\Http\Controllers\ClientController::class, 'list'])->name('clients.list');
 
 	Route::resource('/objetivos', App\Http\Controllers\ObjetiveController::class);
 
@@ -59,6 +60,6 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::get('/solicitar-videos/{id}/ver', [App\Http\Controllers\OrderController::class, 'show'])->name('request_video.show');
 	Route::get('/solicitudes/list', [App\Http\Controllers\OrderController::class, 'getList'])->name('solicitudes');
 
-	Route::get('/soporte/list', [App\Http\Controllers\SupportController::class, 'list']);
-	Route::resource('/soporte', App\Http\Controllers\SupportController::class);
+	Route::get('soporte/list', [App\Http\Controllers\SupportController::class, 'list']);
+	Route::resource('soporte', App\Http\Controllers\SupportController::class);
 });
