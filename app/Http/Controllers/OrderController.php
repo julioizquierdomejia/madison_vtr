@@ -113,17 +113,17 @@ class OrderController extends Controller
                         continue;
                     }
                     if ($role == 'superadmin') {
-                        $status = ' <button class="btn shadow-sm" style="font-size:12px"><i class="fas '.$last_status->class.' '.$last_status->color.' text-warning d-block"></i> '.$last_status->name.'</button> ';
+                        $status = ' <button class="btn btn-success py-3 shadow-sm" data-toggle="modal" data-target="#modalVideo" data-video="/uploads/videos/'.$row->video->file.'" title="Ver"><i class="fas fa-eye d-block"></i></button> <button class="btn shadow-sm" style="font-size:12px"><i class="fas '.$last_status->class.' '.$last_status->color.' text-warning d-block"></i> '.$last_status->name.'</button> ';
                     } else {
                         if ($alias == 'changing' || $alias == 'approved') {
                             $status = ' <button class="btn shadow-sm" style="font-size:12px"><i class="fas '.$last_status->class.' '.$last_status->color.' text-warning d-block"></i> '.$last_status->name.'</button> ';
                         } else {
-                            $status = ' <button class="btn btn-success py-2 shadow-sm btn-changestatus" data-id="'.$row->video->id.'" data-type="approved" style="font-size:12px"><i class="fas fa-check d-block"></i> aprobar</button> <button class="btn btn-danger py-2 shadow-sm btn-changestatus" data-id="'.$row->video->id.'"  data-type="changing" style="font-size:12px;line-height:15px">hacer <br>cambios</button> ';
+                            $status = ' <button class="btn btn-success py-3 shadow-sm" data-toggle="modal" data-target="#modalVideo" data-video="/uploads/videos/'.$row->video->file.'" title="Ver"><i class="fas fa-eye d-block"></i></button> <button class="btn btn-success py-2 shadow-sm" data-toggle="modal" data-target="#modalChanging" data-id="'.$row->video->id.'" data-type="approved" style="font-size:12px"><i class="fas fa-check d-block"></i> aprobar</button> <button class="btn btn-danger py-2 shadow-sm" data-toggle="modal" data-target="#modalChanging" data-id="'.$row->video->id.'" data-type="changing" style="font-size:12px;line-height:15px">hacer <br>cambios</button>';
                         }
                     }
                 }
             }
-            $topic = '<h6 class="mb-1 video-title">'.$row->topic.' <span class="align-middle badge badge-primary" style="font-size: 16px">'.date('d/m/Y', strtotime($row->created_at)) .'</span></h6><p class="mb-0">'.$row->comments ?? '-'.'</p>';
+            $topic = '<h6 class="mb-1 video-title"><span class="v-title">'.$row->topic.' </span><span class="align-middle badge badge-primary" style="font-size: 16px">'.date('d/m/Y', strtotime($row->created_at)) .'</span></h6><p class="mb-0">'.$row->comments ?? '-'.'</p>';
             if ($role == 'superadmin') {
                 if ($alias == 'reviewing') {
                     $tools = '';

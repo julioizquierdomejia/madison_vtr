@@ -340,7 +340,7 @@ class VideoController extends Controller
                             </video>
                         </div>
                     </div>';
-                $details = '<h6 class="mb-1 video-title">'.$item->name.' </h6>
+                $details = '<h6 class="mb-1 video-title"><span class="v-title">'.$item->name.'</span></h6>
                         <p class="mb-0"><span class="align-middle">'.date('d-m-Y', strtotime($item->created_at)).'</span> <span class="badge badge-primary align-middle px-2">'. $item->objectives->name .' - Parte '.$item->part.'</span></p>';
                 $tools = '<div class="buttons-group"><button class="btn py-2 btn-success shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="/uploads/videos/' .$item->file .'" title="Ver"><i class="fas fa-eye d-block"></i></button>
                     <button class="btn btn-danger py-2 shadow-sm h-100 btn-delete" data-id="'.$item->id.'" title="Eliminar"><i class="fas fa-trash d-block"></i></button></div>';

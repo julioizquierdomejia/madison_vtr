@@ -283,6 +283,36 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modalChanging" tabindex="-1" role="dialog" aria-labelledby="modalChanginglbl" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document" style="max-height: calc(100% - 63px)">
+        <div class="modal-content h-100">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalChanginglbl">Solicitud de vídeos</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body text-center py-4">
+                <div class="confirm-approving">
+                    <h6>¿Confirma la aprobación del vídeo subido?</h6>
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-lg-4 mx-auto">
+                            <button class="btn btn-success py-2 shadow-sm btn-block btn-changestatus" data-id="" data-type="approved"><i class="fas fa-check"></i> aprobar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="confirm-changes">
+                    <textarea class="form-control mb-2" id="txtChComments" rows="4" placeholder="Escribe tus comentarios"></textarea>
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-lg-4 mx-auto">
+                            <button class="btn btn-danger py-2 shadow-sm btn-block btn-changestatus" data-id="" data-type="changing">hacer cambios</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @section('script')
 <script>
@@ -365,30 +395,46 @@ $(document).ready(function (event) {
         )
     })
 
+    $('#modalChanging').on('show.bs.modal', function (event) {
+        var btn = $(event.relatedTarget);
+        var id = btn.data('id');
+        $('#modalChanging .btn-changestatus').data('id', id);
+        if(btn.data('type') == 'approved') {
+            $('.confirm-approving').show();
+            $('.confirm-changes').hide();
+        } else if(btn.data('type') == 'changing') {
+            $('.confirm-approving').hide();
+            $('.confirm-changes').show();
+        }
+    })
+
     $(document).on('click', '.btn-changestatus', function (event) {
         var button = $(this),
             type = button.data('type');
-
-        $.ajax({
-            type: "POST",
-            url: '/solicitudes/' + button.data('id') + '/cambiar-estado',
-            data: {
-                _token: "{{ csrf_token() }}",
-                type: type
-            },
-            success: function (data) {
-                if (data.status == 'success'){
-                    tbsolvideos.ajax.reload();
+        if(button.data('id')) {
+            $.ajax({
+                type: "POST",
+                url: '/solicitudes/' + button.data('id') + '/cambiar-estado',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    type: type
+                },
+                success: function (data) {
+                    if (data.status == 'success'){
+                        $('#modalChanging').modal('hide');
+                        tbsolvideos.ajax.reload();
+                    }
                 }
-            }
-        });
+            });
+        }
     })
 
     $(document).on('click', '.btn-solvideo', function (event) {
-        var user = $(this).parents('tr').find('.uname-name');
-        var obj = $(this).data('oid');
-        var type = $(this).data('type');
-        var video = $(this).data('video');
+        var btn = $(this),
+            user = btn.parents('tr').find('.uname-name'),
+            obj = btn.data('oid'),
+            type = btn.data('type'),
+            video = btn.data('video');
         if(type == 'edit') {
             $('.form-uploadvideo .card-header h6 span').text('Editar vídeo');
             $('.uname-text-parent').text('Editar vídeo solicitado por');
@@ -398,9 +444,10 @@ $(document).ready(function (event) {
             $('.form-uploadvideo .card-header h6 span').text('Subir un vídeo');
             $('.uname-text-parent').text('Subir vídeo solicitado por');
         }
+        $('#vname').val(btn.parents('tr').find('.v-title').text());
         $('.uname-section').slideDown('fast');
-        $('#uname').val($(this).data('uid'));
-        $('#rqid').val($(this).data('rid'));
+        $('#uname').val(btn.data('uid'));
+        $('#rqid').val(btn.data('rid'));
         $('#typevd').val(type);
         $('.part-user').show();
 
