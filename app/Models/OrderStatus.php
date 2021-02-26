@@ -14,6 +14,7 @@ class OrderStatus extends Model
     protected $fillable = [
         'status_id',
         'order_id',
+        'comments',
     ];
 
     protected $dates = [

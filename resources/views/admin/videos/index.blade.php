@@ -287,12 +287,24 @@
     <div class="modal-dialog modal-lg" role="document" style="max-height: calc(100% - 63px)">
         <div class="modal-content h-100">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalChanginglbl">Solicitud de vídeos</h5>
+                <h5 class="modal-title" id="modalChanginglbl">
+                    <strong>
+                @if ($role == 'superadmin')
+                Cambios pedidos por el cliente
+                @else
+                Solicitud de vídeos
+                @endif
+                </strong>
+                </h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
             <div class="modal-body text-center py-4">
+                @if ($role == 'superadmin')
+                <h6 class="v-popup-title text-primary"></h6>
+                <div class="video-description"></div>
+                @else
                 <div class="confirm-approving">
                     <h6>¿Confirma la aprobación del vídeo subido?</h6>
                     <div class="row">
@@ -302,21 +314,36 @@
                     </div>
                 </div>
                 <div class="confirm-changes">
-                    <textarea class="form-control mb-2" id="txtChComments" rows="4" placeholder="Escribe tus comentarios"></textarea>
+                    <div class="form-group">
+                    <textarea class="form-control text-left" id="txtChComments" rows="4" placeholder="Escribe tus comentarios"></textarea>
+                    </div>
                     <div class="row">
                         <div class="col-12 col-md-6 col-lg-4 mx-auto">
                             <button class="btn btn-danger py-2 shadow-sm btn-block btn-changestatus" data-id="" data-type="changing">hacer cambios</button>
                         </div>
                     </div>
                 </div>
+                @endif
             </div>
+            @if ($role == 'superadmin')
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal" type="button">Ok</button>
+            </div>
+            @endif
         </div>
     </div>
 </div>
 @endsection
 @section('script')
+<!-- include summernote css/js -->
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 <script>
 $(document).ready(function (event) {
+    $('#txtChComments').summernote({
+        placeholder: 'Detalles de cambios en solicitud de vídeo',
+        height: 100
+    });
     var tbvideos, tbsolvideos;
     $('#tbVideos tfoot th').each( function () {
         var title = $(this).text(),
@@ -398,6 +425,10 @@ $(document).ready(function (event) {
     $('#modalChanging').on('show.bs.modal', function (event) {
         var btn = $(event.relatedTarget);
         var id = btn.data('id');
+        @if ($role == 'superadmin')
+        $('.video-description').html(btn.data('description'));
+        $('.v-popup-title').text(btn.parents('tr').find('.v-title').text());
+        @else
         $('#modalChanging .btn-changestatus').data('id', id);
         if(btn.data('type') == 'approved') {
             $('.confirm-approving').show();
@@ -406,18 +437,21 @@ $(document).ready(function (event) {
             $('.confirm-approving').hide();
             $('.confirm-changes').show();
         }
+        @endif
     })
 
     $(document).on('click', '.btn-changestatus', function (event) {
         var button = $(this),
             type = button.data('type');
+            comments = $('#txtChComments').val()
         if(button.data('id')) {
             $.ajax({
                 type: "POST",
                 url: '/solicitudes/' + button.data('id') + '/cambiar-estado',
                 data: {
                     _token: "{{ csrf_token() }}",
-                    type: type
+                    type: type,
+                    description: comments
                 },
                 success: function (data) {
                     if (data.status == 'success'){

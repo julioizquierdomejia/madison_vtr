@@ -113,12 +113,18 @@ class OrderController extends Controller
                         continue;
                     }
                     if ($role == 'superadmin') {
-                        $status = ' <button class="btn btn-success py-3 shadow-sm" data-toggle="modal" data-target="#modalVideo" data-video="/uploads/videos/'.$row->video->file.'" title="Ver"><i class="fas fa-eye d-block"></i></button> <button class="btn shadow-sm" style="font-size:12px"><i class="fas '.$last_status->class.' '.$last_status->color.' text-warning d-block"></i> '.$last_status->name.'</button> ';
+                        $status = ' <button class="btn btn-success py-3 shadow-sm" data-toggle="modal" data-target="#modalVideo" data-video="/uploads/videos/'.$row->video->file.'" title="Ver"><i class="fas fa-eye d-block"></i></button> ';
+                        if ($alias == 'changing') {
+                            $description = $row->video->description;
+                            $status .= '<button class="btn shadow-sm btn-'.$alias. ' '.$last_status->color.'" data-toggle="modal" '.($description != '' ? 'data-target="#modalChanging"' : '').' style="font-size:12px" data-description="'.htmlspecialchars($description, ENT_QUOTES, 'UTF-8').'"><i class="'.$last_status->class.' '.$last_status->color.' text-warning d-block"></i>'.($description != '' ? '<i class="fas fa-exclamation"></i>' : '').' '.$last_status->name.'</button> ';
+                        } else {
+                            $status .= '<button class="btn shadow-sm btn-'.$alias. ' '.$last_status->color. '" style="font-size:12px"><i class="'.$last_status->class.' '.$last_status->color.' text-warning d-block"></i> '.$last_status->name.'</button> ';
+                        }
                     } else {
                         if ($alias == 'changing' || $alias == 'approved') {
-                            $status = ' <button class="btn shadow-sm" style="font-size:12px"><i class="fas '.$last_status->class.' '.$last_status->color.' text-warning d-block"></i> '.$last_status->name.'</button> ';
+                            $status = ' <button class="btn shadow-sm btn-'.$alias. ' '.$last_status->color. '" style="font-size:12px"><i class="'.$last_status->class.' '.$last_status->color.' text-warning d-block"></i> '.$last_status->name.'</button> ';
                         } else {
-                            $status = ' <button class="btn btn-success py-3 shadow-sm" data-toggle="modal" data-target="#modalVideo" data-video="/uploads/videos/'.$row->video->file.'" title="Ver"><i class="fas fa-eye d-block"></i></button> <button class="btn btn-success py-2 shadow-sm" data-toggle="modal" data-target="#modalChanging" data-id="'.$row->video->id.'" data-type="approved" style="font-size:12px"><i class="fas fa-check d-block"></i> aprobar</button> <button class="btn btn-danger py-2 shadow-sm" data-toggle="modal" data-target="#modalChanging" data-id="'.$row->video->id.'" data-type="changing" style="font-size:12px;line-height:15px">hacer <br>cambios</button>';
+                            $status = ' <button class="btn btn-success py-3 shadow-sm" data-toggle="modal" data-target="#modalVideo" data-video="/uploads/videos/'.$row->video->file.'" title="Ver"><i class="fas fa-eye d-block"></i></button> <button class="btn btn-success py-2 shadow-sm" data-toggle="modal" data-target="#modalChanging" data-id="'.$row->video->id.'" data-type="approved" style="font-size:12px"><i class="fa-check d-block"></i> aprobar</button> <button class="btn btn-danger py-2 shadow-sm" data-toggle="modal" data-target="#modalChanging" data-id="'.$row->video->id.'" data-type="changing" style="font-size:12px;line-height:15px">hacer <br>cambios</button>';
                         }
                     }
                 }
@@ -131,7 +137,7 @@ class OrderController extends Controller
                     if ($alias == 'changing') {
                         $tools = '<button class="btn btn-warning shadow-sm btn-solvideo" data-oid="'.$row->objective_id.'" data-video="'.htmlspecialchars(json_encode($row->video->statuses), ENT_QUOTES, 'UTF-8').'" data-uid="'.$row->user_id.'" data-rid="'.$row->id.'" data-type="edit" title="Editar vídeo"><i class="fas fa-edit"></i></button> ';
                     } else {
-                        $tools = '<button class="btn btn-warning shadow-sm btn-solvideo" data-oid="'.$row->objective_id.'" data-uid="'.$row->user_id.'" data-rid="'.$row->id.'" data-type="upload" title="Subir vídeo"><i class="fas fa-upload"></i></button> ';
+                        $tools = '<button class="btn btn-warning shadow-sm btn-solvideo btn-'.$alias.' '.$last_status->name. '" data-oid="'.$row->objective_id.'" data-uid="'.$row->user_id.'" data-rid="'.$row->id.'" data-type="upload" title="Subir vídeo"><i class="fa-upload"></i></button> ';
                     }
                 }
                 $user = '<span class="badge badge-success uname-name">'.$empresa.'</span>';

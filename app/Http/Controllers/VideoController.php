@@ -90,7 +90,7 @@ class VideoController extends Controller
         $video = new Video();
         $video->name = $request->get('name');
         $video->file = $uniqueFileName;
-        $video->description = $uniqueFileName;
+        //$video->description = $uniqueFileName; //se usará para los comentarios al editar video solicitado
         $video->part = $request->get('part');
         $video->objective_id = $request->get('objetivo');
         $video->format = $file->getMimeType();
@@ -582,7 +582,14 @@ class VideoController extends Controller
         $this->validate($request, $rules);
 
         $alias = $request->get('type');
+        $description = $request->get('description');
         $status = Status::where('alias', $alias)->firstOrFail();
+
+        if ($alias == 'changing') {
+            $video = Video::findOrFail($video_id);
+            $video->description = $description;
+            $video->save();
+        }
 
         $video_status = new VideoStatus();
         $video_status->video_id = $video_id;
