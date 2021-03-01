@@ -137,19 +137,19 @@ class RitualController extends Controller
 
         if ($role == 'superadmin') {
             $rituals = Ritual::join('ritual_types', 'ritual_types.id', '=', 'rituals.type_id')
-                ->join('ritual_status', 'ritual_status.id', '=', 'rituals.ritual_status_id')
+                ->join('ritual_status', 'ritual_status.id', '=', 'rituals.status_id')
                 ->join('ritual_objectives', 'ritual_objectives.ritual_id', '=', 'rituals.id')
                 ->join('objectives', 'objectives.id', '=', 'ritual_objectives.objective_id')
-                ->select('rituals.*', 'ritual_types.name as rituak_type', 'ritual_status.name as status', 'rituals.ritual_status_id', 'objectives.id as objective_id', 'objectives.name as objective')
+                ->select('rituals.*', 'ritual_types.name as ritual_type', 'ritual_status.name as status', 'rituals.status_id', 'objectives.id as objective_id', 'objectives.name as objective')
                 //->where('enabled', 1)
                 ->orderBy('id', 'desc')
                 ->get();
         } else {
             $rituals = Ritual::join('ritual_types', 'ritual_types.id', '=', 'rituals.type_id')
-                ->join('ritual_status', 'ritual_status.id', '=', 'rituals.ritual_status_id')
+                ->join('ritual_status', 'ritual_status.id', '=', 'rituals.status_id')
                 ->join('ritual_objectives', 'ritual_objectives.ritual_id', '=', 'rituals.id')
                 ->join('objectives', 'objectives.id', '=', 'ritual_objectives.objective_id')
-                ->select('rituals.*', 'ritual_types.name as ritual_type', 'ritual_status.name as status', 'rituals.ritual_status_id', 'objectives.id as objective_id', 'objectives.name as objective')
+                ->select('rituals.*', 'ritual_types.name as ritual_type', 'ritual_status.name as status', 'rituals.status_id', 'objectives.id as objective_id', 'objectives.name as objective')
                 //->where('enabled', 1)
                 ->where('user_id', \Auth::id())
                 ->orderBy('id', 'desc')
