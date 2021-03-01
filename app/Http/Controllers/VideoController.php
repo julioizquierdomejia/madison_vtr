@@ -331,6 +331,8 @@ class VideoController extends Controller
         $items_array = [];
 
         foreach($records as $item) {
+            $objective = $item->objectives->name;
+            $type = $item->type;
             $status = $item->statuses->count() ? $item->statuses->last() : [];
             if ($role == 'superadmin') {
                 $video = '<div class="video bg-dark" style="height: 60px;width: 60px;">
@@ -341,7 +343,7 @@ class VideoController extends Controller
                         </div>
                     </div>';
                 $details = '<h6 class="mb-1 video-title"><span class="v-title">'.$item->name.'</span></h6>
-                        <p class="mb-0"><span class="align-middle">'.date('d-m-Y', strtotime($item->created_at)).'</span> <span class="badge badge-primary align-middle px-2">'. $item->objectives->name .' - Parte '.$item->part.'</span></p>';
+                        <p class="mb-0"><span class="align-middle">'.date('d-m-Y', strtotime($item->created_at)).'</span> <span class="badge badge-primary align-middle px-2">'. $objective .' - Parte '.$item->part.'</span></p>';
                 $tools = '<div class="buttons-group"><button class="btn py-2 btn-success shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="/uploads/videos/' .$item->file .'" title="Ver"><i class="fas fa-eye d-block"></i></button>
                     <button class="btn btn-danger py-2 shadow-sm h-100 btn-delete" data-id="'.$item->id.'" title="Eliminar"><i class="fas fa-trash d-block"></i></button></div>';
             } else {
@@ -352,7 +354,7 @@ class VideoController extends Controller
                             </video>
                         </div>
                     </div>';
-                $details = '<h6 class="mb-1">'.date('d-m-Y', strtotime($item->created_at)).' <span class="badge badge-primary align-middle" style="font-size:14px;padding-top:2px">'.$item->objectives->name.'</span></h6>
+                $details = '<h6 class="mb-1">'.date('d-m-Y', strtotime($item->created_at)).' <span class="badge badge-primary align-middle" style="font-size:15px;font-weight:500;padding-top:2px">'.$objective.'</span><span class="badge '.($type->id == 1 ? 'badge-secondary' : 'badge-dark').' align-middle ml-1" style="font-size:15px;font-weight:500;padding-top:2px">'.$type->name.'</span></h6>
                     <p class="mb-0"><span class="align-middle">'.$item->name.' </span></p>';
                 /*if ($show_statuses) {
                     if ($status) {
@@ -372,7 +374,7 @@ class VideoController extends Controller
 
             $items_array[] = array(
                 "video" => $video,
-                "objective" => $item->objectives->name,
+                "objective" => $objective,
                 "details" => $details,
                 "tools" => $tools
             );
@@ -501,14 +503,11 @@ class VideoController extends Controller
                 $videos = Video::join('video_types', 'video_types.id', '=', 'videos.type_id')
                 ->select('videos.*', 'video_types.name as video_type')
                 ->where('videos.part', '=', $part)
-                ->whereHas('objectives', function ($query) use ($objective) {
-                    $query->where("video_objectives.objective_id", $objective);
-                })
                 ->whereHas('statuses', function ($query) {
-                    $query->where("statuses.id", "=", 2);
-                    $query->where("statuses.id", "=", 5);
+                    $query->where("statuses.id", "=", 2)
+                        ->orWhere("statuses.id", "=", 5);
                 })
-                ->with('objectives')
+                ->where('objective_id', $objective)
                 ->orderBy('id', 'desc')
                 ->where('user_id', $user_id)
                 ->where('enabled', 1)
@@ -518,14 +517,11 @@ class VideoController extends Controller
                 $videos = Video::join('video_types', 'video_types.id', '=', 'videos.type_id')
                 ->select('videos.*', 'video_types.name as video_type')
                 ->where('videos.part', '=', $part)
-                ->whereHas('objectives', function ($query) use ($objective) {
-                    $query->where("video_objectives.objective_id", $objective);
-                })
                 ->whereHas('statuses', function ($query) {
-                    $query->where("statuses.id", "=", 2);
-                    $query->where("statuses.id", "=", 5);
+                    $query->where("statuses.id", "=", 2)
+                        ->orWhere("statuses.id", "=", 5);
                 })
-                ->with('objectives')
+                ->where('objective_id', $objective)
                 ->orderBy('id', 'desc')
                 //->where('user_id', $user_id) //no debe ir
                 ->where('enabled', 1)
@@ -538,14 +534,11 @@ class VideoController extends Controller
                 $videos = Video::join('video_types', 'video_types.id', '=', 'videos.type_id')
                 ->select('videos.*', 'video_types.name as video_type')
                 ->where('videos.part', '=', $part)
-                ->whereHas('objectives', function ($query) use ($objective) {
-                    $query->where("video_objectives.objective_id", $objective);
-                })
                 ->whereHas('statuses', function ($query) {
-                    $query->where("statuses.id", "=", 2);
-                    $query->where("statuses.id", "=", 5);
+                    $query->where("statuses.id", "=", 2)
+                        ->orWhere("statuses.id", "=", 5);
                 })
-                ->with('objectives')
+                ->where('objective_id', $objective)
                 ->orderBy('id', 'desc')
                 ->where('user_id', $user_id)
                 ->where('enabled', 1)
@@ -555,14 +548,11 @@ class VideoController extends Controller
                 $videos = Video::join('video_types', 'video_types.id', '=', 'videos.type_id')
                 ->select('videos.*', 'video_types.name as video_type')
                 ->where('videos.part', '=', $part)
-                ->whereHas('objectives', function ($query) use ($objective) {
-                    $query->where("video_objectives.objective_id", $objective);
-                })
                 ->whereHas('statuses', function ($query) {
-                    $query->where("statuses.id", "=", 2);
-                    $query->where("statuses.id", "=", 5);
+                    $query->where("statuses.id", "=", 2)
+                        ->orWhere("statuses.id", "=", 5);
                 })
-                ->with('objectives')
+                ->where('objective_id', $objective)
                 ->orderBy('id', 'desc')
                 //->where('user_id', $user_id) //no debe ir
                 ->where('enabled', 1)
