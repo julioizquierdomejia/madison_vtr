@@ -4,15 +4,6 @@
     var_dump($ffmpeg);*/
 @endphp
 @section('content')
-<form method="POST" enctype="multipart/form-data" action="{{ route('ritual.store') }}">
-    @csrf
-                <div class="form-group">
-                    <label>Select videos
-                    <input type="file" name="videos[]" class="form-control" accept="video/mp4,video/x-msvideo,video/*" required multiple>
-                </div>
- 
-                <input type="submit" name="submit" class="btn btn-primary" value="Merge">
-            </form>
 <div class="row">
     <div class="col-12 col-md-6">
         <form class="card shadow form-uploadvideo mb-4" action="{{route('videos.upload')}}" method="POST" enctype="multipart/form-data">
