@@ -24,4 +24,12 @@ class Ritual extends Model
         'created_at',
         'updated_at'
     ];
+
+    public function objective() {
+        return $this->hasOne(Objective::class, 'id', 'objective_id');
+    }
+
+    public function type() {
+        return $this->hasOne(RitualType::class, 'id', 'type_id');
+    }
 }

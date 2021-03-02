@@ -102,7 +102,7 @@ class RitualController extends Controller
             $video_txt = "file '" .$video_1 . "'\nfile '" . $video_2 ."'\nfile '" . $video_3 ."'\nfile '" . $video_4."'";
             $video_content = file_put_contents($path."mylist.txt", $video_txt);
 
-            $command = 'ffmpeg -f concat -i '.$path.'mylist.txt -c copy '.$path.$output;
+            $command = 'ffmpeg -safe 0 -f concat -i '.$path.'mylist.txt -c copy '.$path.$output;
         } else {
             $command = "(echo file 'first ".$video_1."' & echo file 'second ".$video_2."' & echo file 'third ".$video_3."' & echo file 'four ".$video_4."' )>".$path."list.txt
             ffmpeg -safe 0 -f concat -i list.txt -c copy ".$path.$output;
@@ -111,7 +111,7 @@ class RitualController extends Controller
         system($command);
 
         if (!is_file($path.$output)) {
-            return response()->json(['data'=>'No se generó el vídeo para el ritual','success'=>true]);
+            return response()->json(['data'=>'No se generó el vídeo para el ritual','success'=>false]);
         }
 
         $ritual = new Ritual();
@@ -146,24 +146,128 @@ class RitualController extends Controller
         $ritual_video4->video_id = $video4;
         $ritual_video4->ritual_id = $ritual->id;
         $ritual_video4->save();
-
-        if ($role == 'superadmin') {
-            $rituals = Ritual::join('ritual_types', 'ritual_types.id', '=', 'rituals.type_id')
-                ->join('ritual_status', 'ritual_status.id', '=', 'rituals.status_id')
-                ->select('rituals.*', 'ritual_types.name as ritual_type', 'ritual_status.name as status', 'rituals.status_id')
-                //->where('enabled', 1)
-                ->orderBy('id', 'desc')
-                ->get();
-        } else {
-            $rituals = Ritual::join('ritual_types', 'ritual_types.id', '=', 'rituals.type_id')
-                ->join('ritual_status', 'ritual_status.id', '=', 'rituals.status_id')
-                ->select('rituals.*', 'ritual_types.name as ritual_type', 'ritual_status.name as status', 'rituals.status_id')
-                //->where('enabled', 1)
-                ->where('user_id', \Auth::id())
-                ->orderBy('id', 'desc')
-                ->get();
-        }
         
         return response()->json(['data'=>json_encode($rituals),'success'=>true]);
+    }
+
+    public function list(Request $request)
+    {
+        $roles = \Auth::user()->roles->first();
+        $role = '';
+        if($roles) {
+            $role = $roles->name;
+        }
+
+        $user_id = \Auth::id();
+        ## Read value
+        $draw = $request->get('draw');
+        $start = $request->get("start");
+        $rowperpage = $request->get("length"); // Rows display per page
+
+        $columnIndex_arr = $request->get('order');
+        $columnName_arr = $request->get('columns');
+        $order_arr = $request->get('order');
+        $search_arr = $request->get('search');
+
+        $columnIndex = $columnIndex_arr[0]['column']; // Column index
+        $columnName = $columnName_arr[$columnIndex]['data']; // Column name
+        $columnSortOrder = $order_arr[0]['dir']; // asc or desc
+        $searchValue = $search_arr['value']; // Search value
+
+        $totalRecords = Ritual::select('count(*) as allcount')
+                ->where(function ($query) use ($role) {
+                    if ($role != 'superadmin') {
+                        $query->where('user_id', \Auth::id());
+                    }
+                })
+                ->where('enabled', 1)
+                ->count();
+
+        $totalRecordswithFilter = Ritual::join('ritual_types', 'ritual_types.id', '=', 'rituals.type_id')
+                ->join('ritual_status', 'ritual_status.id', '=', 'rituals.status_id')
+                ->select('rituals.*', 'ritual_types.name as ritual_type', 'ritual_status.name as status', 'rituals.status_id')
+                ->where(function($query) use ($searchValue) {
+                    $query->where('rituals.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ritual_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ritual_status.name', 'like', '%'.$searchValue.'%');
+                })
+                ->where(function ($query) use ($role) {
+                    if ($role != 'superadmin') {
+                        $query->where('user_id', \Auth::id());
+                    }
+                })
+                ->where('enabled', 1)
+                ->orderBy('id', 'desc')
+                ->count();
+
+        $records = Ritual::join('ritual_types', 'ritual_types.id', '=', 'rituals.type_id')
+                ->join('ritual_status', 'ritual_status.id', '=', 'rituals.status_id')
+                ->select('rituals.*', 'ritual_types.name as ritual_type', 'ritual_status.name as status', 'rituals.status_id')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('rituals.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ritual_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ritual_status.name', 'like', '%'.$searchValue.'%');
+                })
+                ->where(function ($query) use ($role) {
+                    if ($role != 'superadmin') {
+                        $query->where('user_id', \Auth::id());
+                    }
+                })
+                ->where('enabled', 1)
+                ->orderBy('created_at', $columnSortOrder)
+                ->get();
+
+        $items_array = [];
+
+        foreach($records as $item) {
+            $objective = $item->objective->name;
+            $type = $item->type;
+            $status = $item->statuses->count() ? $item->statuses->last() : [];
+            if ($role == 'superadmin') {
+                $video = '<div class="video bg-dark" style="height: 60px;width: 60px;">
+                        <div class="embed-responsive embed-responsive-16by9 h-100">
+                            <video class="embed-responsive-item item-video">
+                                <source src="/uploads/videos/'.$item->file.'">
+                            </video>
+                        </div>
+                    </div>';
+                $details = '<h6 class="mb-1 video-title"><span class="v-title">'.$item->name.'</span></h6>
+                        <p class="mb-0"><span class="align-middle">'.date('d-m-Y', strtotime($item->created_at)).'</span> <span class="badge badge-primary align-middle px-2">'. $objective .' - Parte '.$item->part.'</span></p>';
+                $tools = '<div class="buttons-group"><button class="btn py-2 btn-success shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="/uploads/videos/' .$item->file .'" title="Ver"><i class="fas fa-eye d-block"></i></button>
+                    <button class="btn btn-danger py-2 shadow-sm h-100 btn-delete" data-id="'.$item->id.'" title="Eliminar"><i class="fas fa-trash d-block"></i></button></div>';
+            } else {
+                $video = '<div class="video bg-dark" style="height: 60px;width: 60px;">
+                        <div class="embed-responsive embed-responsive-16by9 h-100">
+                            <video class="embed-responsive-item item-video">
+                                <source src="/uploads/videos/'.$item->file.'">
+                            </video>
+                        </div>
+                    </div>';
+                $details = '<h6 class="mb-1">'.date('d-m-Y', strtotime($item->created_at)).' <span class="badge badge-primary align-middle" style="font-size:15px;font-weight:500;padding-top:2px">'.$objective.'</span><span class="badge '.($type->id == 1 ? 'badge-secondary' : 'badge-dark').' align-middle ml-1" style="font-size:15px;font-weight:500;padding-top:2px">'.$type->name.'</span></h6>
+                    <p class="mb-0"><span class="align-middle">'.$item->name.' </span></p>';
+                
+                $tools = '<div class="buttons-group"><button class="btn btn-success py-2 shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="/uploads/videos/' .$item->file .'" title="Ver"><i class="fas fa-eye d-block"></i></button>
+                    <button class="btn btn-danger py-2 shadow-sm h-100 btn-delete" data-id="'.$item->id.'" title="Eliminar"><i class="fas fa-trash d-block"></i></button></div>';
+            }
+
+            $items_array[] = array(
+                "video" => $video,
+                "objective" => $objective,
+                "details" => $details,
+                "tools" => $tools
+            );
+        }
+
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordswithFilter,
+            "aaData" => $items_array
+        );
+
+        echo json_encode($response);
+        exit;
     }
 }
