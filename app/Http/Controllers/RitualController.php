@@ -228,26 +228,26 @@ class RitualController extends Controller
                 $video = '<div class="video bg-dark" style="height: 60px;width: 60px;">
                         <div class="embed-responsive embed-responsive-16by9 h-100">
                             <video class="embed-responsive-item item-video">
-                                <source src="/uploads/videos/'.$item->file.'">
+                                <source src="/uploads/rituals/'.$item->file.'">
                             </video>
                         </div>
                     </div>';
                 $details = '<h6 class="mb-1 video-title"><span class="v-title">'.$item->name.'</span></h6>
                         <p class="mb-0"><span class="align-middle">'.date('d-m-Y', strtotime($item->created_at)).'</span> <span class="badge badge-primary align-middle px-2">'. $objective .' - Parte '.$item->part.'</span></p>';
-                $tools = '<div class="buttons-group"><button class="btn py-2 btn-success shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="/uploads/videos/' .$item->file .'" title="Ver"><i class="fas fa-eye d-block"></i></button>
+                $tools = '<div class="buttons-group"><button class="btn py-2 btn-success shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="/uploads/rituals/' .$item->file .'" title="Ver"><i class="fas fa-eye d-block"></i></button>
                     <button class="btn btn-danger py-2 shadow-sm h-100 btn-delete" data-id="'.$item->id.'" title="Eliminar"><i class="fas fa-trash d-block"></i></button></div>';
             } else {
                 $video = '<div class="video bg-dark" style="height: 60px;width: 60px;">
                         <div class="embed-responsive embed-responsive-16by9 h-100">
                             <video class="embed-responsive-item item-video">
-                                <source src="/uploads/videos/'.$item->file.'">
+                                <source src="/uploads/rituals/'.$item->file.'">
                             </video>
                         </div>
                     </div>';
                 $details = '<h6 class="mb-1">'.date('d-m-Y', strtotime($item->created_at)).' <span class="badge badge-primary align-middle" style="font-size:15px;font-weight:500;padding-top:2px">'.$objective.'</span><span class="badge '.($type->id == 1 ? 'badge-secondary' : 'badge-dark').' align-middle ml-1" style="font-size:15px;font-weight:500;padding-top:2px">'.$type->name.'</span></h6>
                     <p class="mb-0"><span class="align-middle">'.$item->name.' </span></p>';
                 
-                $tools = '<div class="buttons-group"><button class="btn btn-success py-2 shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="/uploads/videos/' .$item->file .'" title="Ver"><i class="fas fa-eye d-block"></i></button>
+                $tools = '<div class="buttons-group"><button class="btn btn-success py-2 shadow-sm h-100" data-toggle="modal" data-target="#modalVideo" data-video="/uploads/rituals/' .$item->file .'" title="Ver"><i class="fas fa-eye d-block"></i></button>
                     <button class="btn btn-danger py-2 shadow-sm h-100 btn-delete" data-id="'.$item->id.'" title="Eliminar"><i class="fas fa-trash d-block"></i></button></div>';
             }
 
