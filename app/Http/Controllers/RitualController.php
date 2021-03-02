@@ -100,7 +100,7 @@ class RitualController extends Controller
         $video_txt = "file '" .$video_1 . "'\nfile '" . $video_2 ."'\nfile '" . $video_3 ."'\nfile '" . $video_4."'";
         $video_content = file_put_contents($path."mylist.txt", $video_txt);
 
-        $command = 'ffmpeg -safe 0 -map 0:v -map 1:a -f concat -i "'.$path.'mylist.txt" -c copy "'.$path.$output.'"';
+        $command = 'ffmpeg -safe 0 -f concat -i "'.$path.'mylist.txt" -c copy "'.$path.$output.'"';
         
         system($command);
 

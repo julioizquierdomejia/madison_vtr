@@ -11,6 +11,7 @@ use App\Models\VideoStatus;
 use App\Models\Service;
 use App\Models\OrderStatus;
 use App\Models\Order;
+use App\Rules\VideoDimension;
 
 class VideoController extends Controller
 {
@@ -118,7 +119,12 @@ class VideoController extends Controller
         $role = \Auth::user()->roles->first()->name;
 
         $rules = array(
-            'video'       => 'required|mimes:mp4,avi,qt | max:1000000',
+            'video'       => [
+                'required',
+                'mimes:mp4,avi,qt',
+                'max:1000000',
+                new VideoDimension(1280, 720)
+            ],
             'name'      => 'required|string',
             'parte'      => 'required|integer|in:1,2,3,4',
             'objetivo'      => 'required|integer',
@@ -131,6 +137,7 @@ class VideoController extends Controller
             'parte.required'      => 'La parte del vídeo es requerida',
             'objetivo.required'      => 'El objetivo es requerido',
             'name.required'      => 'El nombre es requerido',
+            //'video'      => 'El video no cumple con las dimensiones especificadas (1280 x 720)',
         );
         $this->validate($request, $rules, $messages);
 
