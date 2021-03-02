@@ -485,13 +485,13 @@
                     $.each(request, function (id, item) {
                         $('.list-rituals').append(getRequestList(item));
                     })
-                    $('.btn-uploadRitual').attr('disabled', false);
                     Swal.fire(
                       'Rituales',
                       'Se registró el ritual',
                       'success'
                     )
                 }
+                $('.btn-uploadRitual').attr('disabled', false);
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 var errors = jqXHR.responseJSON;
