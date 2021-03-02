@@ -26,6 +26,9 @@ class CreateRitualsTable extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
+            $table->bigInteger('objective_id')->unsigned();
+            $table->foreign('objective_id')->references('id')->on('objectives')->onDelete('cascade');
+
             $table->date('published_at');
             $table->string('file');
             $table->boolean('enabled');
@@ -33,7 +36,7 @@ class CreateRitualsTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('ritual_objectives', function (Blueprint $table) {
+        /*Schema::create('ritual_objectives', function (Blueprint $table) {
             $table->id();
 
             $table->bigInteger('ritual_id')->unsigned();
@@ -43,7 +46,7 @@ class CreateRitualsTable extends Migration
             $table->foreign('objective_id')->references('id')->on('objectives')->onDelete('cascade');
 
             $table->timestamps();
-        });
+        });*/
 
         Schema::create('ritual_videos', function (Blueprint $table) {
             $table->id();
@@ -69,11 +72,12 @@ class CreateRitualsTable extends Migration
             $table->dropForeign('rituals_status_id_foreign');
             $table->dropForeign('rituals_type_id_foreign');
             $table->dropForeign('rituals_user_id_foreign');
+            $table->dropForeign('rituals_objective_id_foreign');
         });
-        Schema::table('ritual_objectives', function (Blueprint $table) {
+        /*Schema::table('ritual_objectives', function (Blueprint $table) {
             $table->dropForeign('ritual_objectives_ritual_id_foreign');
             $table->dropForeign('ritual_objectives_objective_id_foreign');
-        });
+        });*/
 
         Schema::table('ritual_parts', function (Blueprint $table) {
             $table->dropForeign('ritual_parts_ritual_id_foreign');
@@ -81,6 +85,7 @@ class CreateRitualsTable extends Migration
         });
 
         Schema::dropIfExists('rituals');
+        //Schema::dropIfExists('ritual_objectives');
         Schema::dropIfExists('ritual_parts');
     }
 }

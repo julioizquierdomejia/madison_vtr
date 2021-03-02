@@ -13,7 +13,7 @@ class Ritual extends Model
         'name',
         'status_id',
         'type_id',
-        //'objective_id',
+        'objective_id',
         'user_id',
         'file',
         'enabled',
