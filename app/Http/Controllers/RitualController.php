@@ -147,7 +147,7 @@ class RitualController extends Controller
         $ritual_video4->ritual_id = $ritual->id;
         $ritual_video4->save();
         
-        return response()->json(['data'=>json_encode($rituals),'success'=>true]);
+        return response()->json(['data'=>json_encode($ritual),'success'=>true]);
     }
 
     public function list(Request $request)
