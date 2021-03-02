@@ -224,7 +224,6 @@ class RitualController extends Controller
         foreach($records as $item) {
             $objective = $item->objective->name;
             $type = $item->type;
-            $status = $item->statuses->count() ? $item->statuses->last() : [];
             if ($role == 'superadmin') {
                 $video = '<div class="video bg-dark" style="height: 60px;width: 60px;">
                         <div class="embed-responsive embed-responsive-16by9 h-100">
