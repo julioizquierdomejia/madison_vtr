@@ -97,16 +97,10 @@ class RitualController extends Controller
         system($command);*/
         $output = uniqid().'_'."output.mp4";
 
-        if (DIRECTORY_SEPARATOR === '/') {
-            // unix, linux, mac
-            $video_txt = "file '" .$video_1 . "'\nfile '" . $video_2 ."'\nfile '" . $video_3 ."'\nfile '" . $video_4."'";
+        $video_txt = "file '" .$video_1 . "'\nfile '" . $video_2 ."'\nfile '" . $video_3 ."'\nfile '" . $video_4."'";
             $video_content = file_put_contents($path."mylist.txt", $video_txt);
 
-            $command = 'ffmpeg -safe 0 -f concat -i '.$path.'mylist.txt -c copy '.$path.$output;
-        } else {
-            $command = "(echo file 'first ".$video_1."' & echo file 'second ".$video_2."' & echo file 'third ".$video_3."' & echo file 'four ".$video_4."' )>".$path."list.txt
-            ffmpeg -safe 0 -f concat -i list.txt -c copy ".$path.$output;
-        }
+            $command = 'ffmpeg -safe 0 -f concat -i -vf "scale=\'min(1280,iw)\':-2" '.$path.'mylist.txt -c copy '.$path.$output;
         
         system($command);
 
