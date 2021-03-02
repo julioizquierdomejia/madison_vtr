@@ -6,7 +6,7 @@
             @csrf
             <nav class="card-header py-3 d-flex align-items-center">
                 <h6 class="m-0 font-weight-bold text-white"><span>Crea un ritual</span></h6>
-                <div class="nav nav-tabs ml-auto user-no-select" id="nav-tab" role="tablist">
+                <div class="nav nav-tabs ml-auto user-no-select" id="nav-tab" role="tablist" style="pointer-events: none;">
                     <a class="nav-item nav-link active" id="nav-home-tab" data-text="Crea un ritual" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true"><i class="fas fa-dot-circle"></i></a>
                     <a class="nav-item nav-link" id="nav-armando1-tab" data-text="Armando ritual" data-toggle="tab" href="#nav-armando1" role="tab" aria-controls="nav-armando1" aria-selected="false"><i class="fas fa-dot-circle"></i></a>
                     <a class="nav-item nav-link" id="nav-armando2-tab" data-text="Armando ritual" data-toggle="tab" href="#nav-armando2" role="tab" aria-controls="nav-armando2" aria-selected="false"><i class="fas fa-dot-circle"></i></a>
