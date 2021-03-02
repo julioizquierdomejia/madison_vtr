@@ -592,13 +592,13 @@ $(document).ready(function (event) {
                         $('.request-list').append(getRequestList(item));
                     })*/
                     tbsolvideos.ajax.reload();
-                    $('.btn-requestVideo').attr('disabled', false);
                     Swal.fire(
                       'Solicitar Vídeo',
                       'Se envió la solicitud de vídeo',
                       'success'
                     )
                 }
+                $('.btn-requestVideo').attr('disabled', false);
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 var errors = jqXHR.responseJSON;

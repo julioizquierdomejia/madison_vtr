@@ -95,12 +95,24 @@ class RitualController extends Controller
         /*$video_content = $video_1 .'|'. $video_2 .'|'. $video_3 .'|'. $video_4;
         $command = 'ffmpeg -i "concat:'.$video_content.'" -c copy '.$path.'output.mp4';
         system($command);*/
-
-        $video_txt = "file " .$video_1 . "\nfile " . $video_2 ."\nfile " . $video_3 ."\nfile " . $video_4;
         $output = uniqid().'_'."output.mp4";
-        $video_content = file_put_contents($path."mylist.txt", $video_txt);
-        $command = "ffmpeg -f concat -i ".$path."mylist.txt -c copy ".$path.$output;
+
+        if (DIRECTORY_SEPARATOR === '/') {
+            // unix, linux, mac
+            $video_txt = "file '" .$video_1 . "'\nfile '" . $video_2 ."'\nfile '" . $video_3 ."'\nfile '" . $video_4."'";
+            $video_content = file_put_contents($path."mylist.txt", $video_txt);
+
+            $command = 'ffmpeg -f concat -i '.$path.'mylist.txt -c copy '.$path.$output;
+        } else {
+            $command = "(echo file 'first ".$video_1."' & echo file 'second ".$video_2."' & echo file 'third ".$video_3."' & echo file 'four ".$video_4."' )>".$path."list.txt
+            ffmpeg -safe 0 -f concat -i list.txt -c copy ".$path.$output;
+        }
+        
         system($command);
+
+        if (!is_file($path.$output)) {
+            return response()->json(['data'=>'No se generó el vídeo para el ritual','success'=>true]);
+        }
 
         $ritual = new Ritual();
         $ritual->name = $request->get('name');
