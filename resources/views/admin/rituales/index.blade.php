@@ -2,12 +2,12 @@
 @section('content')
 <div class="row">
     <div class="col-12 col-md-6 mb-4">
-        <form class="card shadow form-Steps h-100" action="/rituales" method="POST">
+        <form class="card shadow formSteps h-100" action="/rituales" method="POST" novalidate="">
             @csrf
             <nav class="card-header py-3 d-flex align-items-center">
                 <h6 class="m-0 font-weight-bold text-white"><span>Crea un ritual</span></h6>
                 <div class="nav nav-tabs ml-auto user-no-select" id="nav-tab" role="tablist" style="pointer-events: none;">
-                    <a class="nav-item nav-link active" id="nav-home-tab" data-text="Crea un ritual" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true"><i class="fas fa-dot-circle"></i></a>
+                    <a class="nav-item nav-link active" id="nav-firstrit-tab" data-text="Crea un ritual" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true"><i class="fas fa-dot-circle"></i></a>
                     <a class="nav-item nav-link" id="nav-armando1-tab" data-text="Armando ritual" data-toggle="tab" href="#nav-armando1" role="tab" aria-controls="nav-armando1" aria-selected="false"><i class="fas fa-dot-circle"></i></a>
                     <a class="nav-item nav-link" id="nav-armando2-tab" data-text="Armando ritual" data-toggle="tab" href="#nav-armando2" role="tab" aria-controls="nav-armando2" aria-selected="false"><i class="fas fa-dot-circle"></i></a>
                     <a class="nav-item nav-link" id="nav-configuracion-tab" data-text="Configuración final" data-toggle="tab" href="#nav-configuracion" role="tab" aria-controls="nav-configuracion" aria-selected="false"><i class="fas fa-dot-circle"></i></a>
@@ -23,7 +23,7 @@
                 </div>
             </nav>
             <div class="tab-content card-body" id="nav-tabContent">
-                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-firstrit-tab">
                     <p>Es un gusto acompañarte en alcanzar tus  metas, recuerda es mmuy importante que .... Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at porttitor sem.  Aliquam erat volutpat. Donec placerat nisl magna, et faucibus arcu condimentum sed.</p>
                     <div class="form-group">
                         <label class="mb-1" for="rname">Nombre del ritual</label>
@@ -52,8 +52,8 @@
                     </div>
                     <div class="form-group">
                         <div class="f-g">
-                            <label class="mb-2" for="modo">Tercera parte</label>
-                            <input class="form-control" type="date" name="published_at" min="{{date('Y-m-d')}}" value="{{date('Y-m-d')}}">
+                            <label class="mb-2" for="published_at">Tercera parte</label>
+                            <input class="form-control" type="date" id="published_at" name="published_at" min="{{date('Y-m-d')}}" value="{{date('Y-m-d')}}" required="">
                         </div>
                         <p class="error date-error" style="display: none;">Escoge una fecha</p>
                     </div>
@@ -273,7 +273,7 @@
 
     $('#nav-tab').on('show.bs.tab', function (event) {
         var element = $(event.target);
-        $('.form-Steps .card-header h6 span').text(element.data('text'));
+        $('.formSteps .card-header h6 span').text(element.data('text'));
     })
     $('[data-back="true"]').on('click', function (event) {
         $('.nav-tabs .nav-item.active').prev().trigger('click');
@@ -477,7 +477,7 @@
         return html;
     }
 
-    $('.form-Steps').submit(function (event) {
+    $('.formSteps').submit(function (event) {
         event.preventDefault();
         var form = $(this);
         var url = form.attr('action');
@@ -492,9 +492,9 @@
             },
             success: function (response) {
                 if(response.success) {
-                    $('.list-rituals').empty();
                     var request = $.parseJSON(response.data);
-                    /*$.each(request, function (id, item) {
+                    /*$('.list-rituals').empty();
+                    $.each(request, function (id, item) {
                         $('.list-rituals').append(getRequestList(item));
                     })*/
                     tbrituales.ajax.reload();
@@ -503,12 +503,17 @@
                       'Se registró el ritual',
                       'success'
                     )
+                    $('#nav-firstrit-tab').tab('show');
+                    $('#rname').val('');
+                    $('#objetivo').val($('#objetivo option:first').attr('value'));
+                    $('[name="published_at"]').val('{{date('Y-m-d')}}');
+                    $('#nav-tabContent .list').empty();
                 }
                 $('.btn-uploadRitual').attr('disabled', false);
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 var errors = jqXHR.responseJSON;
-                errorsHtml = '<div class="alert alert-danger mb-0"><ul class="mb-0">';
+                errorsHtml = '<div class="alert alert-danger mb-0"><ul class="mb-0 text-left small">';
 
                 $.each( errors.errors, function( key, value ) {
                     errorsHtml += '<li>'+ value + '</li>'; //showing only the first error.

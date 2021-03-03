@@ -61,7 +61,7 @@ class RitualController extends Controller
             'name'            => 'required|string',
             'ritual_type_id'  => 'required|integer|in:1,2,3,4',
             'objetivo'        => 'required|integer',
-            'published_at'    => 'date|required',
+            'published_at'    => 'date|required|after_or_equal:today'.date('Y-m-d'),
             'video1'    => 'required|integer|exists:videos,id',
             'video2'    => 'required|integer|exists:videos,id',
             'video3'    => 'required|integer|exists:videos,id',
@@ -76,6 +76,7 @@ class RitualController extends Controller
             'video2.required'      => 'El segundo vídeo es requerido',
             'video3.required'      => 'El tercer vídeo es requerido',
             'video4.required'      => 'El vídeo final es requerido',
+            'published_at.after_or_equal'  => 'La fecha de publicación debe ser una fecha igual o mayor a '.date('d-m-Y').'.'
         );
         $this->validate($request, $rules, $messages);
 
