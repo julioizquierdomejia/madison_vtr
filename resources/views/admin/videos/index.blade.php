@@ -350,6 +350,9 @@ $(document).ready(function (event) {
             _class = $(this).attr('class') || '';
         $(this).html( '<input class="iv-input input-'+_class+'" type="text" placeholder="Buscar '+title+'" />' );
     } );
+    var tbVideosLg = dLanguage;
+    tbVideosLg.sEmptyTable = "Aún no hay vídeos.";
+    tbVideosLg.sZeroRecords = "Aún no hay vídeos.";
     tbvideos = $('#tbVideos').DataTable({
          processing: true,
          serverSide: true,
@@ -367,7 +370,7 @@ $(document).ready(function (event) {
           { orderable: false, targets: 2 }
         ],
         order: [[ 0, "desc" ]],
-        language: dLanguage,
+        language: tbVideosLg,
         initComplete: function () {
             // Apply the search
             this.api().columns().every( function () {
@@ -395,6 +398,9 @@ $(document).ready(function (event) {
         { data: 'tools', class: 'text-center border-0 text-nowrap'}
     ]
 
+    var tbSolVideosLg = dLanguage;
+    tbSolVideosLg.sEmptyTable = "Aún no hay solicitudes.";
+    tbSolVideosLg.sZeroRecords = "Aún no hay solicitudes.";
     tbsolvideos = $('#tbSolVideos').DataTable({
          processing: true,
          serverSide: true,
@@ -406,7 +412,7 @@ $(document).ready(function (event) {
           { orderable: false, targets: @if ($role == 'superadmin') 2 @else 1 @endif },
         ],
         order: [[ 0, "desc" ]],
-        language: dLanguage
+        language: tbSolVideosLg
       });
 
     $('#modalVideo').on('show.bs.modal', function (event) {

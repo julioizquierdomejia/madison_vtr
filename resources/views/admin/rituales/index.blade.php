@@ -285,7 +285,7 @@
             btn_collapse.trigger('click');
         }
     })
-
+    dLanguage.sEmptyTable = "Aún no hay rituales.";
     tbrituales = $('#tbRituales').DataTable({
          processing: true,
          serverSide: true,
